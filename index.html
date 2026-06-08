@@ -1,849 +1,485 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROVOCHÉ — Premium Web Design Studio</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
 
-// ─── FONTS ─────────────────────────────────────────────────────────────────
-const fontLink = document.createElement("link");
-fontLink.href = "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap";
-fontLink.rel = "stylesheet";
-document.head.appendChild(fontLink);
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
-const style = document.createElement("style");
-style.textContent = `
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: #080808; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; cursor: none; }
-  
-  .serif { font-family: 'Instrument Serif', serif; }
-  .serif-italic { font-family: 'Instrument Serif', serif; font-style: italic; }
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: #080808; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; cursor: none; }
+        
+        .serif { font-family: 'Instrument Serif', serif; }
+        .serif-italic { font-family: 'Instrument Serif', serif; font-style: italic; }
 
-  /* Custom cursor */
-  .cursor {
-    width: 10px; height: 10px;
-    background: #fff;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, background 0.3s;
-    mix-blend-mode: difference;
-  }
-  .cursor.hovering {
-    width: 40px; height: 40px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.5);
-    backdrop-filter: blur(4px);
-  }
+        .cursor {
+            width: 10px; height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+            mix-blend-mode: difference;
+        }
+        .cursor.hovering {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(4px);
+        }
 
-  /* Liquid glass */
-  .glass {
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-  }
+        .glass {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
 
-  /* Opening animation overlay */
-  .intro-overlay {
-    position: fixed; inset: 0;
-    background: #080808;
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
+        .intro-overlay {
+            position: fixed; inset: 0;
+            background: #080808;
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
 
-  /* Marquee */
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  .marquee-inner {
-    display: flex;
-    animation: marquee 22s linear infinite;
-    white-space: nowrap;
-  }
-  .marquee-inner-rev {
-    display: flex;
-    animation: marquee 18s linear infinite reverse;
-    white-space: nowrap;
-  }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-inner {
+            display: flex;
+            animation: marquee 22s linear infinite;
+            white-space: nowrap;
+        }
+        .marquee-inner-rev {
+            display: flex;
+            animation: marquee 18s linear infinite reverse;
+            white-space: nowrap;
+        }
 
-  /* Nav underline hover */
-  .nav-link {
-    position: relative;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0; right: 0;
-    height: 1px;
-    background: #fff;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s ease;
-  }
-  .nav-link:hover { color: #fff; }
-  .nav-link:hover::after { transform: scaleX(1); }
+        .nav-link {
+            position: relative;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 1px;
+            background: #fff;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+        .nav-link:hover { color: #fff; }
+        .nav-link:hover::after { transform: scaleX(1); }
 
-  /* Work row hover */
-  .work-row {
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    transition: background 0.3s;
-    cursor: pointer;
-  }
-  .work-row:hover { background: rgba(255,255,255,0.03); }
+        .work-row {
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        .work-row:hover { background: rgba(255,255,255,0.03); }
 
-  /* Preview iframe overlay */
-  .preview-panel {
-    position: fixed;
-    top: 50%; right: 48px;
-    transform: translateY(-50%);
-    width: 360px; height: 240px;
-    border-radius: 16px;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 100;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-  }
+        .preview-panel {
+            position: fixed;
+            top: 50%; right: 48px;
+            transform: translateY(-50%);
+            width: 360px; height: 240px;
+            border-radius: 16px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #080808; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
 
-  section { padding: 120px 0; }
-`;
-document.head.appendChild(style);
+        section { padding: 120px 0; }
+        
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            .cursor { display: none; }
+        }
+    </style>
+</head>
+<body>
 
-// ─── DATA ─────────────────────────────────────────────────────────────────
-const WORK = [
-  { type: "Luxury Fashion House", url: "https://rovoche.github.io/luxuryfashion/", tag: "E-Commerce" },
-  { type: "Beauty Atelier", url: "https://rovoche.github.io/Glam-and-Makeup/", tag: "Brand Identity" },
-  { type: "Community NGO Platform", url: "https://twaynesafehaven.org", tag: "Systems" },
-  { type: "Fashion & Couture Commerce", url: "https://peasis.com", tag: "Retail" },
-];
+    <div id="root"></div>
 
-const SERVICES = [
-  {
-    num: "01",
-    title: "Premium Brand Websites",
-    desc: "Custom, fast-loading digital presences for fashion houses, beauty clinics, lifestyle brands, and professional services. SEO-ready and mobile-first from the foundation up.",
-    tag: "Foundation",
-  },
-  {
-    num: "02",
-    title: "E-Commerce Stores",
-    desc: "Full Shopify and custom storefronts built for brands selling seriously online. Product architecture, payment flows, and brand storytelling — all in one.",
-    tag: "Commerce",
-  },
-  {
-    num: "03",
-    title: "Corporate Architecture",
-    desc: "WordPress-powered platforms for institutions, NGOs, and corporates that require full content management and team-level publishing.",
-    tag: "Systems",
-  },
-];
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = FramerMotion;
 
-// ─── CURSOR ────────────────────────────────────────────────────────────────
-function Cursor() {
-  const cursorRef = useRef(null);
-  const [hovering, setHovering] = useState(false);
+        // Custom useInView hook replacement optimized for single-file builds
+        function useInView(ref, options = {}) {
+            const [isInView, setIsInView] = useState(false);
+            useEffect(() => {
+                if (!ref.current) return;
+                const observer = new IntersectionObserver(([entry]) => {
+                    if (entry.isIntersecting) {
+                        setIsInView(true);
+                        if (options.once) observer.unobserve(ref.current);
+                    }
+                }, options);
+                observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, [ref, options.once, options.margin]);
+            return isInView;
+        }
 
-  useEffect(() => {
-    const move = (e) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = e.clientX + "px";
-        cursorRef.current.style.top = e.clientY + "px";
-      }
-    };
-    const over = (e) => { if (e.target.closest("a,button,[role=button],.work-row")) setHovering(true); };
-    const out = () => setHovering(false);
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseover", over);
-    document.addEventListener("mouseout", out);
-    return () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseover", over);
-      document.removeEventListener("mouseout", out);
-    };
-  }, []);
+        const WORK = [
+            { type: "Luxury Fashion House", url: "https://rovoche.github.io/luxuryfashion/", tag: "E-Commerce" },
+            { type: "Beauty Atelier", url: "https://rovoche.github.io/Glam-and-Makeup/", tag: "Brand Identity" },
+            { type: "Community NGO Platform", url: "https://twaynesafehaven.org", tag: "Systems" },
+            { type: "Fashion & Couture Commerce", url: "https://peasis.com", tag: "Retail" },
+        ];
 
-  return <div ref={cursorRef} className={`cursor ${hovering ? "hovering" : ""}`} />;
-}
+        const SERVICES = [
+            { num: "01", title: "Premium Brand Websites", desc: "Custom, fast-loading digital presences for fashion houses, beauty clinics, lifestyle brands, and professional services. SEO-ready and mobile-first from the foundation up.", tag: "Foundation" },
+            { num: "02", title: "E-Commerce Stores", desc: "Full Shopify and custom storefronts built for brands selling seriously online. Product architecture, payment flows, and brand storytelling — all in one.", tag: "Commerce" },
+            { num: "03", title: "Corporate Architecture", desc: "WordPress-powered platforms for institutions, NGOs, and corporates that require full content management and team-level publishing.", tag: "Systems" }
+        ];
 
-// ─── INTRO ANIMATION ───────────────────────────────────────────────────────
-function Intro({ onDone }) {
-  const [phase, setPhase] = useState(0); // 0=word reveal, 1=split, 2=done
+        function Cursor() {
+            const cursorRef = useRef(null);
+            const [hovering, setHovering] = useState(false);
 
-  useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 1800);
-    const t2 = setTimeout(() => setPhase(2), 2800);
-    const t3 = setTimeout(() => onDone(), 3200);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, []);
+            useEffect(() => {
+                const move = (e) => {
+                    if (cursorRef.current) {
+                        cursorRef.current.style.left = e.clientX + "px";
+                        cursorRef.current.style.top = e.clientY + "px";
+                    }
+                };
+                const over = (e) => { if (e.target.closest("a,button,[role=button],.work-row")) setHovering(true); };
+                const out = () => setHovering(false);
+                document.addEventListener("mousemove", move);
+                document.addEventListener("mouseover", over);
+                document.addEventListener("mouseout", out);
+                return () => {
+                    document.removeEventListener("mousemove", move);
+                    document.removeEventListener("mouseover", over);
+                    document.removeEventListener("mouseout", out);
+                };
+            }, []);
 
-  return (
-    <AnimatePresence>
-      {phase < 2 && (
-        <motion.div
-          className="intro-overlay"
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
-          {/* Background lines */}
-          <div style={{ position: "absolute", inset: 0, overflow: "hidden", opacity: 0.04 }}>
-            {[...Array(8)].map((_, i) => (
-              <div key={i} style={{
-                position: "absolute",
-                top: 0, bottom: 0,
-                left: `${(i + 1) * 12.5}%`,
-                width: "1px",
-                background: "rgba(255,255,255,0.5)",
-              }} />
-            ))}
-          </div>
+            return <div ref={cursorRef} className={`cursor ${hovering ? "hovering" : ""}`} />;
+        }
 
-          <div style={{ textAlign: "center", position: "relative" }}>
-            {/* Tagline above */}
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: phase >= 0 ? 0.35 : 0, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              style={{ fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "#fff", marginBottom: 20, fontFamily: "DM Sans, sans-serif" }}
-            >
-              Built on rock
-            </motion.p>
+        function Intro({ onDone }) {
+            const [phase, setPhase] = useState(0);
 
-            {/* Main wordmark reveal */}
-            <div style={{ overflow: "hidden" }}>
-              <motion.h1
-                className="serif"
-                initial={{ y: "100%" }}
-                animate={{ y: phase === 0 ? 0 : phase === 1 ? "-5%" : 0 }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                style={{
-                  fontSize: "clamp(72px, 14vw, 160px)",
-                  fontWeight: 400,
-                  color: "#fff",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1,
-                }}
-              >
-                ROVOCHÉ
-              </motion.h1>
-            </div>
+            useEffect(() => {
+                const t1 = setTimeout(() => setPhase(1), 1800);
+                const t2 = setTimeout(() => setPhase(2), 2800);
+                const t3 = setTimeout(() => onDone(), 3200);
+                return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+            }, []);
 
-            {/* Horizontal rule */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-              style={{ height: 1, background: "rgba(255,255,255,0.15)", marginTop: 16, transformOrigin: "left" }}
-            />
+            return (
+                <AnimatePresence>
+                    {phase < 2 && (
+                        <motion.div className="intro-overlay" exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: "easeInOut" }}>
+                            <div style={{ position: "absolute", inset: 0, overflow: "hidden", opacity: 0.04 }}>
+                                {[...Array(8)].map((_, i) => (
+                                    <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${(i + 1) * 12.5}%`, width: "1px", background: "rgba(255,255,255,0.5)" }} />
+                                ))}
+                            </div>
+                            <div style={{ textAlign: "center", position: "relative" }}>
+                                <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: phase >= 0 ? 0.35 : 0, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} style={{ fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "#fff", marginBottom: 20 }}>
+                                    Built on rock
+                                </motion.p>
+                                <div style={{ overflow: "hidden" }}>
+                                    <motion.h1 className="serif" initial={{ y: "100%" }} animate={{ y: phase === 0 ? 0 : phase === 1 ? "-5%" : 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }} style={{ fontSize: "clamp(62px, 14vw, 160px)", fontWeight: 400, color: "#fff", letterSpacing: "-0.03em", lineHeight: 1 }}>
+                                        ROVOCHÉ
+                                    </motion.h1>
+                                </div>
+                                <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }} style={{ height: 1, background: "rgba(255,255,255,0.15)", marginTop: 16, transformOrigin: "left" }} />
+                                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ duration: 0.6, delay: 1.1 }} style={{ fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", marginTop: 14, color: "#fff" }}>
+                                    Web Design Studio · Lagos · London · New York
+                                </motion.p>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            );
+        }
 
-            {/* Sub */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              transition={{ duration: 0.6, delay: 1.1 }}
-              style={{ fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", marginTop: 14, fontFamily: "DM Sans, sans-serif", color: "#fff" }}
-            >
-              Web Design Studio · Lagos · London · New York
-            </motion.p>
-          </div>
+        function Navbar({ visible }) {
+            return (
+                <motion.nav initial={{ y: -20, opacity: 0 }} animate={visible ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }} style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span className="serif" style={{ fontSize: 18, letterSpacing: "-0.01em", color: "#fff" }}>ROVOCHÉ</span>
+                    <div style={{ display: "flex", gap: 36, alignItems: "center" }}>
+                        {["Work", "Method", "Studio", "Contact"].map(l => (
+                            <a key={l} href={`#${l.toLowerCase()}`} className="nav-link">{l}</a>
+                        ))}
+                    </div>
+                    <a href="mailto:hello@rovoche.com" className="glass" style={{ padding: "8px 20px", borderRadius: 999, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>
+                        Begin a Project
+                    </a>
+                </motion.nav>
+            );
+        }
 
-          {/* Split panels */}
-          <AnimatePresence>
-            {phase === 1 && (
-              <>
-                <motion.div
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-                  style={{
-                    position: "absolute", inset: 0,
-                    background: "#080808",
-                    transformOrigin: "bottom",
-                    clipPath: "inset(0 50% 0 0)",
-                  }}
-                />
-                <motion.div
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  exit={{ x: "100%" }}
-                  transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-                  style={{
-                    position: "absolute", inset: 0,
-                    background: "#080808",
-                    transformOrigin: "top",
-                    clipPath: "inset(0 0 0 50%)",
-                  }}
-                />
-              </>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
+        function Hero({ visible }) {
+            return (
+                <section id="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 48px 72px", position: "relative", overflow: "hidden" }}>
+                    <div style={{ position: "absolute", inset: 0, opacity: 0.025, pointerEvents: "none" }}>
+                        {[...Array(6)].map((_, i) => (
+                            <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${(i + 1) * (100 / 7)}%`, width: "1px", background: "#fff" }} />
+                        ))}
+                    </div>
+                    <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)", width: "60vw", height: "60vw", background: "radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 65%)", pointerEvents: "none" }} />
+                    <motion.div initial={{ opacity: 0 }} animate={visible ? { opacity: 1 } : {}} transition={{ duration: 0.6, delay: 0.4 }} style={{ position: "absolute", top: 100, left: 48, fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>
+                        Premium Web Architecture — Est. 2024
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={visible ? { opacity: 1 } : {}} transition={{ duration: 0.6, delay: 0.5 }} style={{ position: "absolute", top: 100, right: 48, textAlign: "right", fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.7 }}>
+                        <div>Lagos · London · New York</div>
+                        <div>Built on rock.</div>
+                    </motion.div>
+                    <div style={{ maxWidth: 1100 }}>
+                        <div style={{ overflow: "hidden", marginBottom: 4 }}>
+                            <motion.h1 className="serif" initial={{ y: "100%" }} animate={visible ? { y: 0 } : {}} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }} style={{ fontSize: "clamp(46px, 9vw, 110px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 0.95, color: "#fff" }}>
+                                Digital presence,
+                            </motion.h1>
+                        </div>
+                        <div style={{ overflow: "hidden" }}>
+                            <motion.h1 className="serif-italic" initial={{ y: "100%" }} animate={visible ? { y: 0 } : {}} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.48 }} style={{ fontSize: "clamp(46px, 9vw, 110px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 0.95, color: "rgba(255,255,255,0.4)" }}>
+                                crafted on solid ground.
+                            </motion.h1>
+                        </div>
+                    </div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.85 }} style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 48 }}>
+                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: 340 }}>
+                            Bespoke web architecture for premium brands demanding unshakeable digital foundations — from Lagos to the world stage.
+                        </p>
+                        <a href="mailto:hello@rovoche.com" style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}>
+                            Start a project
+                            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.2)" }}>
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H4M12 2V10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </span>
+                        </a>
+                    </motion.div>
+                </section>
+            );
+        }
 
-// ─── NAVBAR ────────────────────────────────────────────────────────────────
-function Navbar({ visible }) {
-  return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={visible ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }}
-      transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-      style={{
-        position: "fixed", top: 0, left: 0, right: 0,
-        zIndex: 50, padding: "20px 32px",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-      }}
-    >
-      <span className="serif" style={{ fontSize: 18, letterSpacing: "-0.01em", color: "#fff" }}>ROVOCHÉ</span>
+        function Marquee({ visible }) {
+            const items = ["ROVOCHÉ", "Built on Rock", "Lagos", "London", "New York", "Premium Web", "Unshakeable Foundations", "Digital Presence", "Crafted with Precision"];
+            const str = items.map(i => `${i}   ·   `).join("");
+            return (
+                <motion.div initial={{ opacity: 0 }} animate={visible ? { opacity: 1 } : {}} transition={{ duration: 0.8 }} style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "14px 0" }}>
+                    <div class="marquee-inner" style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
+                        {[str, str].map((t, i) => <span key={i}>{t}</span>)}
+                    </div>
+                </motion.div>
+            );
+        }
 
-      <div style={{ display: "flex", gap: 36, alignItems: "center" }}>
-        {["Work", "Method", "Studio", "Contact"].map(l => (
-          <a key={l} href={`#${l.toLowerCase()}`} className="nav-link">{l}</a>
-        ))}
-      </div>
+        function About() {
+            const ref = useRef(null);
+            const inView = useInView(ref, { once: true, margin: "-80px" });
+            return (
+                <section id="studio" ref={ref} style={{ padding: "140px 48px" }}>
+                    <motion.span initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }} style={{ display: "block", fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 48 }}>
+                        01 / The Studio
+                    </motion.span>
+                    <div style={{ maxWidth: 900 }}>
+                        {["A decade spent building organisations across Nigeria", "embedded a singular truth:", "the difference between a brand people remember", "and one they scroll past lies entirely in", "how it is presented."].map((line, i) => (
+                            <div key={i} style={{ overflow: "hidden" }}>
+                                <motion.span initial={{ y: "100%" }} animate={inView ? { y: 0 } : {}} transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.08 }} style={{ display: "inline-block", fontStyle: [1, 3, 4].includes(i) ? "italic" : "normal", fontSize: "clamp(28px, 4vw, 52px)", lineHeight: 1.2, color: [1, 3, 4].includes(i) ? "rgba(255,255,255,0.35)" : "#fff", letterSpacing: "-0.02em" }} className="serif">
+                                    {line}
+                                </motion.span>
+                            </div>
+                        ))}
+                    </div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.7 }} style={{ marginTop: 64, display: "flex", gap: 64, borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 40 }}>
+                        {[["Sammie Friday", "Founder & Creative Director"], ["Rovoché", "Premium Web Studio, Lagos"]].map(([a, b], i) => (
+                            <div key={i}>
+                                <div style={{ fontSize: 13, color: "#fff", marginBottom: 4 }}>{a}</div>
+                                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>{b}</div>
+                            </div>
+                        ))}
+                    </motion.div>
+                </section>
+            );
+        }
 
-      <a
-        href="mailto:Rovoche@gmail.com"
-        className="glass"
-        style={{
-          padding: "8px 20px",
-          borderRadius: 999,
-          fontSize: 11,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          color: "rgba(255,255,255,0.7)",
-          textDecoration: "none",
-          transition: "color 0.3s",
-        }}
-        onMouseEnter={e => e.currentTarget.style.color = "#fff"}
-        onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.7)"}
-      >
-        Begin a Project
-      </a>
-    </motion.nav>
-  );
-}
+        function Work() {
+            const ref = useRef(null);
+            const inView = useInView(ref, { once: true, margin: "-80px" });
+            const [hovered, setHovered] = useState(null);
+            return (
+                <section id="work" ref={ref} style={{ padding: "80px 48px 140px" }}>
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: 20 }}>
+                        <span style={{ fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>
+                            02 / Selected Work & Demos
+                        </span>
+                        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>{WORK.length} Projects</span>
+                    </motion.div>
+                    <div>
+                        {WORK.map((item, i) => (
+                            <motion.div key={i} className="work-row" initial={{ opacity: 0, x: -20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }} onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)} onClick={() => window.open(item.url, "_blank")} style={{ padding: "28px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+                                    <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", minWidth: 24 }}>{String(i + 1).padStart(2, "0")}</span>
+                                    <span className="serif" style={{ fontSize: "clamp(22px, 3vw, 38px)", color: hovered === i ? "#fff" : "rgba(255,255,255,0.75)", letterSpacing: "-0.02em", transition: "color 0.3s" }}>{item.type}</span>
+                                </div>
+                                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.5)" }}>View &rarr;</span>
+                            </motion.div>
+                        ))}
+                    </div>
+                    <AnimatePresence>
+                        {hovered !== null && (
+                            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="preview-panel">
+                                <iframe src={WORK[hovered].url} style={{ border: "none", transform: "scale(0.65)", transformOrigin: "top left", width: "154%", height: "154%" }} title={WORK[hovered].type} />
+                                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.3), transparent)" }} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </section>
+            );
+        }
 
-// ─── HERO ──────────────────────────────────────────────────────────────────
-function Hero({ visible }) {
-  return (
-    <section id="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 48px 72px", position: "relative", overflow: "hidden" }}>
-      {/* Grid lines */}
-      <div style={{ position: "absolute", inset: 0, opacity: 0.025, pointerEvents: "none" }}>
-        {[...Array(6)].map((_, i) => (
-          <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${(i + 1) * (100 / 7)}%`, width: "1px", background: "#fff" }} />
-        ))}
-      </div>
+        function Method() {
+            const ref = useRef(null);
+            const inView = useInView(ref, { once: true, margin: "-80px" });
+            const steps = [
+                { n: "01", title: "Architecture & Strategy", body: "We map the exact information hierarchy, interface flows, and visual balance before a single line of code is deployed. Form follows strategy." },
+                { n: "02", title: "Precision Craft", body: "Hand-crafted in pristine code environments. No templates, no performance drag. Every site is built mobile-first and optimised for international scaling." },
+                { n: "03", title: "Launch & Maintain", body: "Every Rovoche site launches with SEO foundations, Google Analytics, and an optional retainer. Your digital foundation shouldn't need to be rebuilt." }
+            ];
+            return (
+                <section id="method" ref={ref} style={{ padding: "80px 48px 140px" }}>
+                    <div style={{ overflow: "hidden", marginBottom: 80 }}>
+                        <motion.h2 className="serif" initial={{ y: "100%" }} animate={inView ? { y: 0 } : {}} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} style={{ fontSize: "clamp(40px, 6vw, 80px)", letterSpacing: "-0.03em", color: "#fff" }}>
+                            Architecture <span className="serif-italic" style={{ color: "rgba(255,255,255,0.25)" }}>×</span> Precision.
+                        </motion.h2>
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 1, background: "rgba(255,255,255,0.07)" }}>
+                        {steps.map((s, i) => (
+                            <div key={i} style={{ background: "#080808", padding: "48px 40px" }}>
+                                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", marginBottom: 32 }}>{s.n}</div>
+                                <div className="serif" style={{ fontSize: 22, color: "#fff", marginBottom: 16 }}>{s.title}</div>
+                                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.8 }}>{s.body}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
 
-      {/* Radial glow */}
-      <div style={{
-        position: "absolute", top: "30%", left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: "60vw", height: "60vw",
-        background: "radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 65%)",
-        pointerEvents: "none",
-      }} />
+        function Services() {
+            const ref = useRef(null);
+            const inView = useInView(ref, { once: true, margin: "-80px" });
+            return (
+                <section ref={ref} style={{ padding: "80px 48px 140px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 64 }}>
+                        <h2 className="serif" style={{ fontSize: "clamp(36px, 5vw, 68px)", color: "#fff" }}>What We Build</h2>
+                    </div>
+                    <div>
+                        {SERVICES.map((s, i) => (
+                            <div key={i} style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "40px 0", display: "grid", gridTemplateColumns: "80px 1fr 1fr", gap: 40, alignItems: "start" }}>
+                                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)" }}>{s.num}</span>
+                                <div>
+                                    <div className="serif" style={{ fontSize: "clamp(20px, 2.5vw, 32px)", color: "#fff", lineHeight: 1.1 }}>{s.title}</div>
+                                </div>
+                                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.9 }}>{s.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
 
-      {/* Top label */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={visible ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        style={{ position: "absolute", top: 100, left: 48, fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}
-      >
-        Premium Web Architecture — Est. 2024
-      </motion.div>
+        function MarqueeReverse() {
+            const items2 = ["Your brand deserves", "a foundation that doesn't move", "ROVOCHÉ"];
+            const str2 = items2.map(i => `${i}   ·   `).join("");
+            return (
+                <div style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "14px 0" }}>
+                    <div className="marquee-inner-rev" style={{ fontSize: 11, fontStyle: "italic", fontFamily: "'Instrument Serif', serif", color: "rgba(255,255,255,0.18)" }}>
+                        {[str2, str2].map((t, i) => <span key={i}>{t}</span>)}
+                    </div>
+                </div>
+            );
+        }
 
-      {/* Top-right descriptor */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={visible ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        style={{ position: "absolute", top: 100, right: 48, textAlign: "right", fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.7 }}
-      >
-        <div>Lagos · London · New York</div>
-        <div>Built on rock.</div>
-      </motion.div>
+        function Contact() {
+            const ref = useRef(null);
+            const inView = useInView(ref, { once: true, margin: "-80px" });
+            return (
+                <section id="contact" ref={ref} style={{ padding: "120px 48px 80px" }}>
+                    <div style={{ overflow: "hidden", marginBottom: 48 }}>
+                        <a href="mailto:hello@rovoche.com" className="serif-italic" style={{ display: "inline-block", fontSize: "clamp(32px, 5vw, 72px)", color: "#fff", textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.2)" }}>
+                            hello@rovoche.com
+                        </a>
+                    </div>
+                    <footer>
+                        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>© 2026 ROVOCHÉ</span>
+                        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>LAGOS · LONDON · NEW YORK</span>
+                    </footer>
+                </section>
+            );
+        }
 
-      {/* Main headline */}
-      <div style={{ maxWidth: 1100 }}>
-        <div style={{ overflow: "hidden", marginBottom: 4 }}>
-          <motion.h1
-            className="serif"
-            initial={{ y: "100%" }}
-            animate={visible ? { y: 0 } : {}}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
-            style={{ fontSize: "clamp(56px, 9vw, 110px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 0.95, color: "#fff" }}
-          >
-            Digital presence,
-          </motion.h1>
-        </div>
-        <div style={{ overflow: "hidden" }}>
-          <motion.h1
-            className="serif-italic"
-            initial={{ y: "100%" }}
-            animate={visible ? { y: 0 } : {}}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.48 }}
-            style={{ fontSize: "clamp(56px, 9vw, 110px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 0.95, color: "rgba(255,255,255,0.4)" }}
-          >
-            crafted on solid ground.
-          </motion.h1>
-        </div>
-      </div>
+        function App() {
+            const [introComplete, setIntroComplete] = useState(false);
+            const [contentVisible, setContentVisible] = useState(false);
 
-      {/* Bottom row */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={visible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, delay: 0.85 }}
-        style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 48 }}
-      >
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: 340 }}>
-          Bespoke web architecture for premium brands demanding unshakeable digital foundations — from Lagos to the world stage.
-        </p>
+            useEffect(() => {
+                if (introComplete) {
+                    const t = setTimeout(() => setContentVisible(true), 100);
+                    return () => clearTimeout(t);
+                }
+            }, [introComplete]);
 
-        <a
-          href="mailto:Rovoche@gmail.com"
-          style={{
-            display: "flex", alignItems: "center", gap: 12,
-            fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase",
-            color: "rgba(255,255,255,0.6)", textDecoration: "none",
-            transition: "color 0.3s",
-          }}
-          onMouseEnter={e => e.currentTarget.style.color = "#fff"}
-          onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.6)"}
-        >
-          Start a project
-          <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.2)" }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H4M12 2V10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </span>
-        </a>
-      </motion.div>
+            return (
+                <div style={{ background: "#080808", minHeight: "100vh" }}>
+                    <Cursor />
+                    <Intro onDone={() => setIntroComplete(true)} />
+                    <AnimatePresence>
+                        {contentVisible && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                                <Navbar visible={contentVisible} />
+                                <Hero visible={contentVisible} />
+                                <Marquee visible={contentVisible} />
+                                <About />
+                                <Work />
+                                <Method />
+                                <Services />
+                                <MarqueeReverse />
+                                <Contact />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            );
+        }
 
-      {/* Scroll hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={visible ? { opacity: 1 } : {}}
-        transition={{ delay: 1.4, duration: 0.6 }}
-        style={{ position: "absolute", bottom: 72, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          style={{ width: 1, height: 40, background: "linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)" }}
-        />
-      </motion.div>
-    </section>
-  );
-}
-
-// ─── MARQUEE ───────────────────────────────────────────────────────────────
-function Marquee({ visible }) {
-  const items = ["ROVOCHÉ", "Built on Rock", "Lagos", "London", "New York", "Premium Web", "Unshakeable Foundations", "Digital Presence", "Crafted with Precision"];
-  const str = items.map(i => `${i}   ·   `).join("");
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={visible ? { opacity: 1 } : {}}
-      transition={{ duration: 0.8 }}
-      style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "14px 0" }}
-    >
-      <div className="marquee-inner" style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
-        {[str, str].map((t, i) => <span key={i} style={{ paddingRight: 0 }}>{t}</span>)}
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── ABOUT ─────────────────────────────────────────────────────────────────
-function About() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section id="studio" ref={ref} style={{ padding: "140px 48px" }}>
-      <motion.span
-        initial={{ opacity: 0, y: 10 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        style={{ display: "block", fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 48 }}
-      >
-        01 / The Studio
-      </motion.span>
-
-      <div style={{ maxWidth: 900 }}>
-        {["A decade spent building organisations across Nigeria", "embedded a singular truth:", "the difference between a brand people remember", "and one they scroll past lies entirely in", "how it is presented."].map((line, i) => (
-          <div key={i} style={{ overflow: "hidden" }}>
-            <motion.span
-              initial={{ y: "100%" }}
-              animate={inView ? { y: 0 } : {}}
-              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.08 }}
-              style={{
-                display: "inline-block",
-                fontFamily: i % 2 === 0 ? "'Instrument Serif', serif" : "'Instrument Serif', serif",
-                fontStyle: [1, 3, 4].includes(i) ? "italic" : "normal",
-                fontSize: "clamp(28px, 4vw, 52px)",
-                lineHeight: 1.2,
-                color: [1, 3, 4].includes(i) ? "rgba(255,255,255,0.35)" : "#fff",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              {line}
-            </motion.span>
-          </div>
-        ))}
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.7 }}
-        style={{ marginTop: 64, display: "flex", gap: 64, borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 40 }}
-      >
-        {[["Sammie Friday", "Founder & Creative Director"], ["Rovoche", "Premium Web Studio, Lagos"], ["2024 —", "Present"]].map(([a, b], i) => (
-          <div key={i}>
-            <div style={{ fontSize: 13, color: "#fff", marginBottom: 4 }}>{a}</div>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>{b}</div>
-          </div>
-        ))}
-      </motion.div>
-    </section>
-  );
-}
-
-// ─── WORK ──────────────────────────────────────────────────────────────────
-function Work() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [hovered, setHovered] = useState(null);
-  const [mouseY, setMouseY] = useState(0);
-
-  return (
-    <section id="work" ref={ref} style={{ padding: "80px 48px 140px" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: 20 }}
-      >
-        <span style={{ fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>
-          02 / Selected Work & Demos
-        </span>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>{WORK.length} Projects</span>
-      </motion.div>
-
-      <div onMouseMove={e => setMouseY(e.clientY)}>
-        {WORK.map((item, i) => (
-          <motion.div
-            key={i}
-            className="work-row"
-            initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
-            onMouseEnter={() => setHovered(i)}
-            onMouseLeave={() => setHovered(null)}
-            onClick={() => window.open(item.url, "_blank")}
-            style={{ padding: "28px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", fontVariantNumeric: "tabular-nums", minWidth: 24 }}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="serif" style={{ fontSize: "clamp(22px, 3vw, 38px)", color: hovered === i ? "#fff" : "rgba(255,255,255,0.75)", letterSpacing: "-0.02em", transition: "color 0.3s" }}>
-                {item.type}
-              </span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-              <span style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", display: "none" }} className="tag">
-                {item.tag}
-              </span>
-              <motion.span
-                animate={{ x: hovered === i ? 4 : 0, opacity: hovered === i ? 1 : 0.3 }}
-                transition={{ duration: 0.25 }}
-                style={{ fontSize: 11, color: "rgba(255,255,255,0.5)" }}
-              >
-                View →
-              </motion.span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Floating preview */}
-      <AnimatePresence>
-        {hovered !== null && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.25 }}
-            style={{
-              position: "fixed",
-              right: 48, top: "50%",
-              transform: "translateY(-50%)",
-              width: 340, height: 220,
-              borderRadius: 16,
-              overflow: "hidden",
-              pointerEvents: "none",
-              zIndex: 100,
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 40px 80px rgba(0,0,0,0.7)",
-            }}
-          >
-            <iframe
-              src={WORK[hovered].url}
-              style={{ width: "100%", height: "100%", border: "none", transform: "scale(0.65)", transformOrigin: "top left", width: "154%", height: "154%" }}
-              title={WORK[hovered].type}
-            />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.3), transparent)" }} />
-            <div style={{ position: "absolute", bottom: 12, left: 14, fontSize: 10, color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-              {WORK[hovered].tag}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
-}
-
-// ─── METHOD ────────────────────────────────────────────────────────────────
-function Method() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  const steps = [
-    { n: "01", title: "Architecture & Strategy", body: "We map the exact information hierarchy, interface flows, and visual balance before a single line of code is deployed. Form follows strategy." },
-    { n: "02", title: "Precision Craft", body: "Hand-crafted in pristine code environments. No templates, no performance drag. Every site is built mobile-first and optimised for international scaling." },
-    { n: "03", title: "Launch & Maintain", body: "Every Rovoche site launches with SEO foundations, Google Analytics, and an optional annual retainer. Your digital foundation shouldn't need to be rebuilt — it should be maintained." },
-  ];
-
-  return (
-    <section id="method" ref={ref} style={{ padding: "80px 48px 140px" }}>
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5 }}
-        style={{ display: "block", fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 64 }}
-      >
-        03 / Method
-      </motion.span>
-
-      <div style={{ overflow: "hidden", marginBottom: 80 }}>
-        <motion.h2
-          className="serif"
-          initial={{ y: "100%" }}
-          animate={inView ? { y: 0 } : {}}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          style={{ fontSize: "clamp(40px, 6vw, 80px)", letterSpacing: "-0.03em", lineHeight: 0.95, color: "#fff" }}
-        >
-          Architecture{" "}
-          <span className="serif-italic" style={{ color: "rgba(255,255,255,0.25)" }}>×</span>{" "}
-          Precision.
-        </motion.h2>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "rgba(255,255,255,0.07)" }}>
-        {steps.map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 + i * 0.12 }}
-            style={{ background: "#080808", padding: "48px 40px" }}
-          >
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em", marginBottom: 32, fontVariantNumeric: "tabular-nums" }}>{s.n}</div>
-            <div className="serif" style={{ fontSize: 22, color: "#fff", letterSpacing: "-0.01em", marginBottom: 16, lineHeight: 1.2 }}>{s.title}</div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.8 }}>{s.body}</p>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-// ─── SERVICES ──────────────────────────────────────────────────────────────
-function Services() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section ref={ref} style={{ padding: "80px 48px 140px" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 64 }}
-      >
-        <div style={{ overflow: "hidden" }}>
-          <motion.h2
-            className="serif"
-            initial={{ y: "100%" }}
-            animate={inView ? { y: 0 } : {}}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            style={{ fontSize: "clamp(36px, 5vw, 68px)", letterSpacing: "-0.02em", color: "#fff" }}
-          >
-            What We Build
-          </motion.h2>
-        </div>
-        <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.2em", textTransform: "uppercase" }}>Bespoke Capabilities</span>
-      </motion.div>
-
-      <div>
-        {SERVICES.map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 + i * 0.12 }}
-            style={{
-              borderTop: "1px solid rgba(255,255,255,0.07)",
-              padding: "40px 0",
-              display: "grid",
-              gridTemplateColumns: "80px 1fr 1fr",
-              gap: 40,
-              alignItems: "start",
-            }}
-          >
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", fontVariantNumeric: "tabular-nums", paddingTop: 4 }}>{s.num}</span>
-            <div>
-              <div style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", marginBottom: 12 }}>{s.tag}</div>
-              <div className="serif" style={{ fontSize: "clamp(20px, 2.5vw, 32px)", color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.1 }}>{s.title}</div>
-            </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.9, paddingTop: 4 }}>{s.desc}</p>
-          </motion.div>
-        ))}
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }} />
-      </div>
-    </section>
-  );
-}
-
-// ─── MARQUEE 2 ─────────────────────────────────────────────────────────────
-function MarqueeReverse() {
-  const items2 = ["Your brand deserves", "a foundation that doesn't move", "ROVOCHÉ", "Your brand deserves", "a foundation that doesn't move", "ROVOCHÉ"];
-  const str2 = items2.map(i => `${i}   ·   `).join("");
-  return (
-    <div style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "14px 0" }}>
-      <div className="marquee-inner-rev" style={{ fontSize: 11, letterSpacing: "0.2em", fontStyle: "italic", fontFamily: "'Instrument Serif', serif", color: "rgba(255,255,255,0.18)" }}>
-        {[str2, str2].map((t, i) => <span key={i}>{t}</span>)}
-      </div>
-    </div>
-  );
-}
-
-// ─── CONTACT ───────────────────────────────────────────────────────────────
-function Contact() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section id="contact" ref={ref} style={{ padding: "120px 48px 80px" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        style={{ fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 32 }}
-      >
-        Begin a Conversation
-      </motion.div>
-
-      <div style={{ overflow: "hidden", marginBottom: 48 }}>
-        <motion.a
-          href="mailto:Rovoche@gmail.com"
-          className="serif-italic"
-          initial={{ y: "100%" }}
-          animate={inView ? { y: 0 } : {}}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          style={{
-            display: "inline-block",
-            fontSize: "clamp(32px, 5vw, 72px)",
-            color: "#fff",
-            textDecoration: "none",
-            letterSpacing: "-0.02em",
-            borderBottom: "1px solid rgba(255,255,255,0.2)",
-            paddingBottom: 4,
-            transition: "color 0.3s, border-color 0.3s",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.6)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)"; }}
-          onMouseLeave={e => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
-        >
-          Rovoche@gmail.com
-        </motion.a>
-      </div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 10 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        style={{ fontSize: 13, color: "rgba(255,255,255,0.3)", maxWidth: 400, lineHeight: 1.8, marginBottom: 80 }}
-      >
-        We work with a limited number of projects at a time. If you have a brand that deserves better online — we'd like to hear about it.
-      </motion.p>
-
-      {/* Footer */}
-      <motion.footer
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 32, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}
-      >
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: "0.05em" }}>© 2024 ROVOCHÉ</span>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: "0.15em" }}>LAGOS · LONDON · NEW YORK</span>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: "0.05em" }}>ALL INFRASTRUCTURE ROOTED ON ROCK.</span>
-      </motion.footer>
-    </section>
-  );
-}
-
-// ─── APP ───────────────────────────────────────────────────────────────────
-export default function App() {
-  const [introComplete, setIntroComplete] = useState(false);
-  const [contentVisible, setContentVisible] = useState(false);
-
-  useEffect(() => {
-    if (introComplete) {
-      const t = setTimeout(() => setContentVisible(true), 100);
-      return () => clearTimeout(t);
-    }
-  }, [introComplete]);
-
-  return (
-    <div style={{ background: "#080808", minHeight: "100vh" }}>
-      <Cursor />
-      <Intro onDone={() => setIntroComplete(true)} />
-
-      <AnimatePresence>
-        {contentVisible && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <Navbar visible={contentVisible} />
-            <Hero visible={contentVisible} />
-            <Marquee visible={contentVisible} />
-            <About />
-            <Work />
-            <Method />
-            <Services />
-            <MarqueeReverse />
-            <Contact />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
