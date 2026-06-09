@@ -1,667 +1,1077 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROVOCHÉ — Premium Web Design Studio</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROVOCHÉ — Premium Digital Studio</title>
+  <meta name="description" content="ROVOCHÉ builds premium digital experiences for fashion, real estate, and fine jewellery brands. Lagos · London · New York.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-black: #000000;
-            --text-white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.15);
-        }
+  <style>
+    /* ─────────────────────────────────────────────
+       TOKENS
+    ───────────────────────────────────────────── */
+    :root {
+      --bg:          #10100E;
+      --bg-deep:     #0A0A08;
+      --bg-card:     #181816;
+      --ivory:       #EDEAD8;
+      --warm-grey:   #7C7B72;
+      --champagne:   #C4B99A;
+      --champagne-d: #9C9478;
+      --white:       #FAFAF7;
+    }
 
-        *, *::before, *::after { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-        }
-        
-        html { 
-            scroll-behavior: smooth; 
-            background-color: var(--bg-black);
-        }
-        
-        body { 
-            background-color: var(--bg-black); 
-            color: var(--text-white); 
-            font-family: 'DM Sans', sans-serif; 
-            overflow-x: hidden; 
-            -webkit-font-smoothing: antialiased;
-        }
+    /* ─────────────────────────────────────────────
+       RESET
+    ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ivory);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
 
-        .serif { font-family: 'Instrument Serif', serif; }
-        .italic { font-family: 'Instrument Serif', serif; font-style: italic; }
+    /* ─────────────────────────────────────────────
+       CUSTOM CURSOR
+    ───────────────────────────────────────────── */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 7px; height: 7px;
+      background: var(--champagne);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, opacity 0.2s;
+    }
+    .cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(196,185,154,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+    }
+    .cursor.hovered {
+      width: 14px; height: 14px;
+      background: transparent;
+      border: 1px solid var(--champagne);
+    }
 
-        /* THE LIQUID GLASS ENGINE */
-        .liquid-glass {
-            background: rgba(255, 255, 255, 0.01);
-            background-blend-mode: luminosity;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
-            border: none;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
-        }
+    /* ─────────────────────────────────────────────
+       FILM GRAIN
+    ───────────────────────────────────────────── */
+    .grain {
+      position: fixed;
+      inset: -100px;
+      pointer-events: none;
+      z-index: 8000;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      animation: grainAnim 0.4s steps(1) infinite;
+    }
+    @keyframes grainAnim {
+      0%   { transform: translate(0,   0); }
+      25%  { transform: translate(-4%, -8%); }
+      50%  { transform: translate(6%,  3%); }
+      75%  { transform: translate(-3%, 7%); }
+      100% { transform: translate(4%, -5%); }
+    }
 
-        .liquid-glass::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1.4px;
-            background: linear-gradient(
-                180deg,
-                rgba(255, 255, 255, 0.45) 0%,
-                rgba(255, 255, 255, 0.15) 20%,
-                rgba(255, 255, 255, 0) 40%,
-                rgba(255, 255, 255, 0) 60%,
-                rgba(255, 255, 255, 0.15) 80%,
-                rgba(255, 255, 255, 0.45) 100%
-            );
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
+    /* ─────────────────────────────────────────────
+       NAVIGATION
+    ───────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 52px;
+      transition: padding 0.5s ease, background 0.5s ease, backdrop-filter 0.5s, border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      padding: 20px 52px;
+      background: rgba(16,16,14,0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom-color: rgba(196,185,154,0.1);
+    }
+    .nav-logo {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.16em;
+      color: var(--ivory);
+      font-weight: 400;
+    }
+    .nav-links {
+      display: flex;
+      gap: 44px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--ivory); }
+    .nav-links .nav-cta a {
+      color: var(--champagne);
+      border-bottom: 1px solid rgba(196,185,154,0.35);
+      padding-bottom: 2px;
+    }
+    .nav-links .nav-cta a:hover {
+      color: var(--ivory);
+      border-bottom-color: var(--ivory);
+    }
 
-        /* SECTION 1: HERO VIEWPORT */
-        .hero-container {
-            position: relative;
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    /* ─────────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-        .hero-video-bg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-cover: cover;
-            object-fit: cover;
-            object-position: bottom;
-            z-index: 1;
-            opacity: 0; /* Managed smoothly via requestAnimationFrame script */
-        }
+    /* Background image with Ken Burns */
+    .hero-bg {
+      position: absolute;
+      inset: -6%;
+      /* REPLACE: swap this URL with your own hero image */
+      background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      animation: kenBurns 20s ease-in-out infinite alternate;
+    }
+    @keyframes kenBurns {
+      from { transform: scale(1)    translate(0,     0); }
+      to   { transform: scale(1.08) translate(-1.5%, -1%); }
+    }
 
-        /* Navigation Menu Pill Layout */
-        nav {
-            position: relative;
-            z-index: 20;
-            width: 100%;
-            padding: 24px;
-        }
+    /* Layered overlay — keeps image visible but cinematic */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(16,16,14,0.25) 0%,
+          rgba(16,16,14,0.48) 45%,
+          rgba(16,16,14,0.96) 100%
+        );
+    }
 
-        .nav-pill {
-            max-width: 1024px;
-            margin: 0 auto;
-            border-radius: 9999px;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      user-select: none;
+    }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
+    .hero-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.8s ease 2.6s forwards;
+    }
 
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            margin-left: 32px;
-        }
+    /* Wordmark — letters animated via JS */
+    .hero-wordmark {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(4.5rem, 12vw, 10.5rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: var(--ivory);
+      overflow: hidden;
+      display: block;
+    }
+    .hero-wordmark .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(70px) rotateX(30deg);
+      animation: letterDrop 0.75s cubic-bezier(.16,1,.3,1) forwards;
+    }
 
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
+    /* Self-drawing divider line */
+    .hero-line {
+      width: 0;
+      height: 1px;
+      background: var(--champagne);
+      margin: 36px auto 32px;
+      animation: drawLine 0.9s cubic-bezier(.16,1,.3,1) 2.3s forwards;
+    }
+    @keyframes drawLine {
+      to { width: 100px; }
+    }
 
-        .nav-links a:hover { color: var(--text-white); }
+    .hero-sub {
+      font-size: clamp(0.72rem, 1.2vw, 0.82rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.8s ease 2.9s forwards;
+    }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+    @keyframes letterDrop {
+      to { opacity: 1; transform: translateY(0) rotateX(0); }
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .btn-text {
-            color: var(--text-white);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 1s ease 3.6s forwards;
+    }
+    .hero-scroll span {
+      font-size: 0.58rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 52px;
+      background: linear-gradient(to bottom, var(--champagne), transparent);
+      animation: pulseScroll 2.5s ease-in-out 3.6s infinite;
+      transform-origin: top;
+    }
+    @keyframes pulseScroll {
+      0%, 100% { transform: scaleY(1); opacity: 0.5; }
+      50%       { transform: scaleY(1.25); opacity: 1; }
+    }
 
-        .btn-glass-pill {
-            border-radius: 9999px;
-            padding: 8px 24px;
-            text-decoration: none;
-            color: var(--text-white);
-            font-size: 14px;
-            font-weight: 500;
-        }
+    /* ─────────────────────────────────────────────
+       TICKER
+    ───────────────────────────────────────────── */
+    .ticker-wrap {
+      overflow: hidden;
+      border-top:    1px solid rgba(196,185,154,0.13);
+      border-bottom: 1px solid rgba(196,185,154,0.13);
+      padding: 17px 0;
+      background: var(--bg);
+    }
+    .ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: tickerMove 30s linear infinite;
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 30px;
+      padding: 0 30px;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      flex-shrink: 0;
+    }
+    .ticker-dot {
+      width: 3px; height: 3px;
+      background: var(--champagne);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    @keyframes tickerMove {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
 
-        /* Hero Text Alignments */
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 48px 24px;
-            text-align: center;
-            transform: translateY(-8%);
-        }
+    /* ─────────────────────────────────────────────
+       SHARED SECTION STYLES
+    ───────────────────────────────────────────── */
+    section { padding: 130px 0; }
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
 
-        .hero-headline {
-            font-size: clamp(48px, 8.5vw, 110px);
-            font-weight: 400;
-            letter-spacing: -0.02em;
-            line-height: 1;
-            margin-bottom: 32px;
-        }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.6rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 56px;
+    }
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background: rgba(196,185,154,0.25);
+    }
+    .section-label::before { width: 0; }
+    .section-label::after  { width: 56px; }
+    .section-label.centered::before { width: 56px; }
 
-        /* Intake Entry Box */
-        .intake-box {
-            max-width: 576px;
-            width: 100%;
-            border-radius: 9999px;
-            padding: 8px 8px 8px 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(44px);
+      transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
 
-        .intake-box input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--text-white);
-            flex: 1;
-            font-size: 15px;
-        }
+    /* ─────────────────────────────────────────────
+       WORK SECTION
+    ───────────────────────────────────────────── */
+    #work { background: var(--bg); }
 
-        .intake-box input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
+    .work-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 72px;
+    }
+    .work-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--ivory);
+    }
+    .work-title em {
+      font-style: italic;
+      color: var(--champagne);
+    }
+    .work-meta {
+      text-align: right;
+    }
+    .work-meta p {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      margin-bottom: 6px;
+    }
 
-        .btn-submit-circle {
-            background: var(--text-white);
-            color: #000000;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            text-decoration: none;
-        }
+    /* Asymmetric 2-column grid */
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 3px;
+    }
+    .work-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      cursor: none;
+    }
+    /* Tall card on left */
+    .work-card:nth-child(1) {
+      grid-row: span 2;
+      aspect-ratio: 3/4;
+    }
+    .work-card:nth-child(2),
+    .work-card:nth-child(3) {
+      aspect-ratio: 4/3;
+    }
 
-        .hero-subtitle {
-            font-size: 14px;
-            line-height: 1.6;
-            max-width: 460px;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-        }
+    .work-card-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.72) saturate(0.75);
+      transition: transform 0.9s cubic-bezier(.16,1,.3,1), filter 0.6s ease;
+    }
+    .work-card:hover .work-card-img {
+      transform: scale(1.06);
+      filter: brightness(0.6) saturate(0.65);
+    }
 
-        .btn-manifesto {
-            border-radius: 9999px;
-            padding: 12px 32px;
-            text-decoration: none;
-            color: var(--text-white);
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .btn-manifesto:hover { background: rgba(255,255,255,0.05); }
+    .work-card-info {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 36px 34px;
+      background: linear-gradient(to top, rgba(10,10,8,0.88) 0%, transparent 65%);
+    }
+    .work-card-vertical {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 10px;
+    }
+    .work-card-name {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.3rem, 2vw, 1.65rem);
+      font-weight: 400;
+      color: var(--ivory);
+      line-height: 1.1;
+    }
+    .work-card-tag {
+      margin-top: 10px;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--warm-grey);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .work-card:hover .work-card-tag {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* SECTION 2: ABOUT / MANIFESTO */
-        .about-section {
-            background-color: var(--bg-black);
-            padding: 140px 24px;
-            position: relative;
-            overflow: hidden;
-            background-image: radial-gradient(ellipse at top, rgba(255,255,255,0.03) 0%, transparent 70%);
-        }
+    /* Corner arrow */
+    .work-card-arrow {
+      position: absolute;
+      top: 28px; right: 28px;
+      width: 42px; height: 42px;
+      border: 1px solid rgba(196,185,154,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--champagne);
+      font-size: 0.9rem;
+      opacity: 0;
+      transform: scale(0.7) rotate(-45deg);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(.16,1,.3,1);
+    }
+    .work-card:hover .work-card-arrow {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
 
-        .wrapper-max {
-            max-width: 1152px;
-            margin: 0 auto;
-            width: 100%;
-        }
+    /* ─────────────────────────────────────────────
+       APPROACH
+    ───────────────────────────────────────────── */
+    #approach { background: #0D0D0B; }
 
-        .section-label {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 12px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 32px;
-            display: block;
-            font-weight: 500;
-        }
+    .approach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 100px;
+      align-items: start;
+    }
+    .approach-heading {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.2rem, 4.5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.12;
+      color: var(--ivory);
+      margin-bottom: 30px;
+    }
+    .approach-heading em {
+      font-style: italic;
+      color: var(--champagne);
+    }
+    .approach-body {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--warm-grey);
+      max-width: 400px;
+      margin-bottom: 52px;
+    }
+    .approach-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      border-bottom: 1px solid rgba(196,185,154,0.35);
+      padding-bottom: 10px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .approach-link svg {
+      transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    }
+    .approach-link:hover { color: var(--champagne); border-color: var(--champagne); }
+    .approach-link:hover svg { transform: translateX(8px); }
 
-        .about-heading {
-            font-size: clamp(32px, 5.5vw, 68px);
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            font-weight: 400;
-        }
+    /* Process list */
+    .process-list { border-top: 1px solid rgba(196,185,154,0.1); }
+    .process-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 20px;
+      padding: 30px 0;
+      border-bottom: 1px solid rgba(196,185,154,0.1);
+      transition: border-color 0.3s;
+    }
+    .process-item:hover { border-bottom-color: rgba(196,185,154,0.25); }
+    .process-num {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: var(--champagne);
+      padding-top: 3px;
+    }
+    .process-name {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ivory);
+      margin-bottom: 9px;
+    }
+    .process-desc {
+      font-size: 0.8rem;
+      line-height: 1.75;
+      color: var(--warm-grey);
+    }
 
-        /* SECTION 3: FEATURED VIDEO PANEL */
-        .featured-section {
-            background-color: var(--bg-black);
-            padding: 24px;
-        }
+    /* ─────────────────────────────────────────────
+       STUDIO
+    ───────────────────────────────────────────── */
+    #studio {
+      background: var(--bg);
+      text-align: center;
+      padding: 160px 0;
+    }
+    .studio-heading {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(3.5rem, 9vw, 8.5rem);
+      font-weight: 400;
+      line-height: 1;
+      color: var(--ivory);
+      margin-bottom: 20px;
+    }
+    /* Outlined italic on second line */
+    .studio-heading .outlined {
+      font-style: italic;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--champagne);
+      display: block;
+    }
+    .studio-cities {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      margin: 52px 0 44px;
+      font-size: 0.62rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+    }
+    .city-divider {
+      width: 3px; height: 3px;
+      background: var(--champagne);
+      border-radius: 50%;
+    }
+    .studio-tagline {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--warm-grey);
+    }
 
-        .video-card-container {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            aspect-ratio: 16 / 9;
-            width: 100%;
-        }
+    /* ─────────────────────────────────────────────
+       CONTACT / CTA
+    ───────────────────────────────────────────── */
+    #contact {
+      background: var(--bg-card);
+      padding: 180px 0;
+      text-align: center;
+      border-top: 1px solid rgba(196,185,154,0.09);
+    }
+    .cta-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 36px;
+    }
+    .cta-heading {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.8rem, 6.5vw, 6rem);
+      font-weight: 400;
+      line-height: 1.08;
+      color: var(--ivory);
+      margin: 0 auto 56px;
+      max-width: 760px;
+    }
+    .cta-heading em {
+      font-style: italic;
+      color: var(--champagne);
+    }
 
-        .featured-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    /* Button with fill-slide hover */
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 22px;
+      padding: 22px 56px;
+      border: 1px solid var(--champagne);
+      color: var(--ivory);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.5s;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--champagne);
+      transform: translateX(-100%);
+      transition: transform 0.5s cubic-bezier(.16,1,.3,1);
+    }
+    .cta-btn:hover::before { transform: translateX(0); }
+    .cta-btn:hover { color: var(--bg); }
+    .cta-btn span { position: relative; z-index: 1; }
 
-        .video-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            padding: 40px;
-        }
+    .cta-email {
+      display: block;
+      margin-top: 44px;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--warm-grey);
+      transition: color 0.3s;
+    }
+    .cta-email:hover { color: var(--champagne); }
 
-        .approach-card {
-            border-radius: 16px;
-            padding: 32px;
-            max-width: 448px;
-            width: 100%;
-        }
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
+    footer {
+      background: var(--bg-deep);
+      padding: 44px 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(196,185,154,0.07);
+    }
+    .footer-logo {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: var(--ivory);
+    }
+    .footer-copy {
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--warm-grey);
+    }
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+    .footer-links a {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--champagne); }
 
-        /* INDEX LIST PORTFOLIO */
-        .portfolio-list {
-            margin-top: 64px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .portfolio-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 28px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            text-decoration: none;
-            color: inherit;
-            transition: padding-left 0.3s ease;
-        }
-        .portfolio-row:hover {
-            padding-left: 16px;
-            color: var(--text-muted);
-        }
-
-        .port-title {
-            font-size: clamp(22px, 3vw, 36px);
-        }
-
-        /* SECTION 4: PHILOSOPHY ARCHITECTURE */
-        .philosophy-section {
-            background-color: var(--bg-black);
-            padding: 120px 24px;
-        }
-
-        .philosophy-heading {
-            font-size: clamp(40px, 7vw, 84px);
-            letter-spacing: -0.02em;
-            margin-bottom: 64px;
-        }
-
-        .split-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: start;
-        }
-
-        .grid-video-box {
-            border-radius: 24px;
-            overflow: hidden;
-            aspect-ratio: 4 / 3;
-            width: 100%;
-        }
-
-        .right-text-stack {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .text-block {
-            padding: 32px 0;
-        }
-        .text-block:first-child { padding-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-
-        .block-body {
-            font-size: 18px;
-            line-height: 1.6;
-            color: var(--text-muted);
-        }
-
-        /* SECTION 5: SERVICES */
-        .services-section {
-            background-color: var(--bg-black);
-            padding: 120px 24px;
-            background-image: radial-gradient(ellipse at center, rgba(255,255,255,0.02) 0%, transparent 60%);
-        }
-
-        .services-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 64px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-        }
-
-        .service-card {
-            border-radius: 24px;
-            overflow: hidden;
-        }
-
-        .card-video-area {
-            aspect-ratio: 16 / 9;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .card-video-area video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.7s ease;
-        }
-        .service-card:hover .card-video-area video {
-            transform: scale(1.05);
-        }
-
-        .service-card-body {
-            padding: 32px;
-            position: relative;
-        }
-
-        .service-card-title {
-            font-size: 24px;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        /* FOOTER CONVERSATION INTAKE */
-        .contact-section {
-            background-color: var(--bg-black);
-            padding: 140px 24px 40px;
-        }
-
-        .mail-link {
-            font-size: clamp(32px, 6vw, 76px);
-            color: var(--text-white);
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 48px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 8px;
-            transition: opacity 0.2s;
-        }
-        .mail-link:hover { opacity: 0.7; }
-
-        footer {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-        }
-
-        /* MOBILE OVERRIDES */
-        @media (max-width: 768px) {
-            .nav-links, .hide-mobile { display: none !important; }
-            .split-grid, .services-grid { grid-template-columns: 1fr; gap: 40px; }
-            .video-overlay { flex-direction: column; align-items: flex-start; gap: 24px; padding: 24px; }
-            nav { padding: 16px; }
-            .nav-pill { padding: 8px 16px; }
-            .hero-headline { font-size: 11vw; }
-        }
-    </style>
+    /* ─────────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .approach-grid { grid-template-columns: 1fr; gap: 64px; }
+      .approach-body { max-width: 100%; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 24px 28px; }
+      nav.scrolled { padding: 18px 28px; }
+      .nav-links { gap: 24px; }
+      .container { padding: 0 28px; }
+      section { padding: 90px 0; }
+      .work-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .work-grid { grid-template-columns: 1fr; gap: 3px; }
+      .work-card:nth-child(1) { grid-row: span 1; aspect-ratio: 4/3; }
+      footer { flex-direction: column; gap: 24px; text-align: center; padding: 40px 28px; }
+    }
+    @media (max-width: 480px) {
+      .nav-links li:not(:last-child) { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="hero-container">
-        <video id="bg-video" class="hero-video-bg" muted playsinline preload="auto"></video>
-        
-        <nav>
-            <div class="nav-pill liquid-glass">
-                <div class="nav-left">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-                    <span>ROVOCHÉ</span>
-                    <div class="nav-links">
-                        <a href="#work">Work</a>
-                        <a href="#method">Method</a>
-                        <a href="#studio">Studio</a>
-                    </div>
-                </div>
-                <div class="nav-right">
-                    <a href="#contact" class="btn-text hide-mobile">Contact Intake</a>
-                    <a href="mailto:hello@rovoche.com" class="btn-glass-pill liquid-glass">Begin a Project</a>
-                </div>
-            </div>
-        </nav>
+  <!-- Film grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
 
-        <div class="hero-content">
-            <h1 class="hero-headline">Digital presence,<br><span class="italic text-white/60">crafted on solid ground.</span></h1>
-            
-            <div class="intake-box liquid-glass">
-                <input type="text" placeholder="Tell us about your brand vision..." readonly onclick="window.location.href='mailto:hello@rovoche.com'">
-                <a href="mailto:hello@rovoche.com" class="btn-submit-circle">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </a>
-            </div>
+  <!-- Custom cursor -->
+  <div class="cursor"      id="cursor"      aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing"  aria-hidden="true"></div>
 
-            <p class="hero-subtitle">Bespoke web architecture for premium brands demanding unshakeable digital foundations. From Lagos to the world stage.</p>
-            <a href="#studio" class="btn-manifesto liquid-glass">Read Studio Manifesto</a>
-        </div>
+  <!-- ─── NAVIGATION ─────────────────────────── -->
+  <nav id="mainNav" role="navigation" aria-label="Main">
+    <a href="#" class="nav-logo" aria-label="ROVOCHÉ home">ROVOCHÉ</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li class="nav-cta"><a href="#contact">Start a Project</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ───────────────────────────────── -->
+  <section id="hero" aria-label="Hero">
+    <!-- REPLACE: swap the URL below with your own hero image or video poster -->
+    <div class="hero-bg" role="img" aria-label="Cinematic architectural interior"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Premium Digital Studio</p>
+      <h1 class="hero-wordmark" id="heroWordmark">ROVOCHÉ</h1>
+      <div class="hero-line" aria-hidden="true"></div>
+      <p class="hero-sub">Fashion &nbsp;·&nbsp; Real Estate &nbsp;·&nbsp; Fine Jewellery</p>
     </div>
 
-    <section class="about-section" id="studio">
-        <div class="wrapper-max">
-            <span class="section-label">01 / The Belief</span>
-            <h2 class="about-heading">
-                A decade spent building organisations across Nigeria embedded a singular truth: the difference between a brand people remember and one they scroll past lies entirely in <span class="italic" style="color: rgba(255,255,255,0.5);">how it is presented.</span> ROVOCHÉ exists because premium industries deserve an <span class="italic" style="color: rgba(255,255,255,0.5);">unshakeable presence.</span>
-            </h2>
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── TICKER ─────────────────────────────── -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ticker-item">Built on Rock<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Lagos<span class="ticker-dot"></span></span>
+      <span class="ticker-item">London<span class="ticker-dot"></span></span>
+      <span class="ticker-item">New York<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Fashion<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Real Estate<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Fine Jewellery<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Premium Web<span class="ticker-dot"></span></span>
+      <span class="ticker-item">No Templates<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Built on Rock<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Lagos<span class="ticker-dot"></span></span>
+      <span class="ticker-item">London<span class="ticker-dot"></span></span>
+      <span class="ticker-item">New York<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Fashion<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Real Estate<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Fine Jewellery<span class="ticker-dot"></span></span>
+      <span class="ticker-item">Premium Web<span class="ticker-dot"></span></span>
+      <span class="ticker-item">No Templates<span class="ticker-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- ─── WORK ───────────────────────────────── -->
+  <section id="work" aria-labelledby="work-heading">
+    <div class="container">
+
+      <div class="work-header reveal">
+        <div>
+          <div class="section-label" aria-hidden="true">Selected Work</div>
+          <h2 class="work-title" id="work-heading">
+            Craft that<br><em>endures.</em>
+          </h2>
         </div>
-    </section>
-
-    <section class="featured-section" id="work">
-        <div class="wrapper-max">
-            <span class="section-label">02 / Selected Portfolio</span>
-            
-            <div class="video-card-container">
-                <video class="featured-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260402_054547_9875cfc5-155a-4229-8ec8-b7ba7125cbf8.mp4" muted autoplay loop playsinline></video>
-                <div class="video-overlay">
-                    <div class="approach-card liquid-glass">
-                        <span class="section-label" style="margin-bottom: 12px; font-size: 11px;">Our Standard</span>
-                        <p style="font-size: 14px; line-height: 1.6; color: var(--text-white);">Every project begins with deep grid architecture and ends with micro-interactions tailored entirely to push the standard forward.</p>
-                    </div>
-                    <a href="mailto:hello@rovoche.com" class="btn-glass-pill liquid-glass" style="padding: 12px 32px;">Explore Ventures</a>
-                </div>
-            </div>
-
-            <div class="portfolio-list">
-                <a href="https://rovoche.github.io/luxuryfashion/" target="_blank" class="portfolio-row">
-                    <span class="serif port-title">Styledbylayo — <span class="italic" style="opacity: 0.5;">Luxury Fashion</span></span>
-                    <span>View Project &rarr;</span>
-                </a>
-                <a href="https://rovoche.github.io/Glam-and-Makeup/" target="_blank" class="portfolio-row">
-                    <span class="serif port-title">Glamsbykiki — <span class="italic" style="opacity: 0.5;">Beauty Atelier</span></span>
-                    <span>View Project &rarr;</span>
-                </a>
-                <a href="https://twaynesafehaven.org" target="_blank" class="portfolio-row">
-                    <span class="serif port-title">Twayne Safe Haven — <span class="italic" style="opacity: 0.5;">Mental Health NGO</span></span>
-                    <span>View Project &rarr;</span>
-                </a>
-                <a href="https://peasis.com" target="_blank" class="portfolio-row">
-                    <span class="serif port-title">Peasis — <span class="italic" style="opacity: 0.5;">Fashion & Couture</span></span>
-                    <span>View Project &rarr;</span>
-                </a>
-            </div>
+        <div class="work-meta">
+          <p>04 Verticals</p>
+          <p>All work under NDA</p>
         </div>
-    </section>
+      </div>
 
-    <section class="philosophy-section" id="method">
-        <div class="wrapper-max">
-            <h2 class="serif philosophy-heading">Architecture <span class="italic" style="opacity: 0.35;">x</span> Precision.</h2>
-            
-            <div class="split-grid">
-                <div class="grid-video-box">
-                    <video class="featured-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4" muted autoplay loop playsinline></video>
-                </div>
-                <div class="right-text-stack">
-                    <div class="text-block">
-                        <span class="section-label" style="margin-bottom: 16px;">01 / Strategy Hierarchy</span>
-                        <p class="block-body">We map information layouts and structural user behaviors completely before writing a line of code. Form stays locked behind execution strategy.</p>
-                    </div>
-                    <div class="text-block">
-                        <span class="section-label" style="margin-between: 16px; margin-top: 16px;">02 / Hand-Crafted Code</span>
-                        <p class="block-body">Pristine hand-coded environments optimize every layout line. Zero heavy template baggage. Completely fluid mobile presentation engines.</p>
-                    </div>
-                </div>
-            </div>
+      <div class="work-grid">
+
+        <!-- Card 1 — Tall (Fashion) -->
+        <!-- REPLACE: swap src with your fashion client image -->
+        <article class="work-card reveal reveal-delay-1" tabindex="0" role="article">
+          <img
+            class="work-card-img"
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=960&q=80"
+            alt="Fashion and couture project"
+            loading="lazy"
+            width="960"
+          >
+          <div class="work-card-info">
+            <span class="work-card-vertical">Fashion &amp; Couture</span>
+            <span class="work-card-name">House of Layo</span>
+            <span class="work-card-tag">Cinematic single-page · 2025</span>
+          </div>
+          <div class="work-card-arrow" aria-hidden="true">↗</div>
+        </article>
+
+        <!-- Card 2 — Real Estate -->
+        <!-- REPLACE: swap src with your real estate client image -->
+        <article class="work-card reveal reveal-delay-2" tabindex="0" role="article">
+          <img
+            class="work-card-img"
+            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80"
+            alt="Luxury real estate project"
+            loading="lazy"
+            width="800"
+          >
+          <div class="work-card-info">
+            <span class="work-card-vertical">Luxury Real Estate</span>
+            <span class="work-card-name">Arcadia Properties</span>
+            <span class="work-card-tag">Property showcase · 2025</span>
+          </div>
+          <div class="work-card-arrow" aria-hidden="true">↗</div>
+        </article>
+
+        <!-- Card 3 — Fine Jewellery -->
+        <!-- REPLACE: swap src with your jewellery client image -->
+        <article class="work-card reveal reveal-delay-3" tabindex="0" role="article">
+          <img
+            class="work-card-img"
+            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80"
+            alt="Fine jewellery project"
+            loading="lazy"
+            width="800"
+          >
+          <div class="work-card-info">
+            <span class="work-card-vertical">Fine Jewellery</span>
+            <span class="work-card-name">Maison Orlane</span>
+            <span class="work-card-tag">Editorial e-commerce · 2025</span>
+          </div>
+          <div class="work-card-arrow" aria-hidden="true">↗</div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── APPROACH ───────────────────────────── -->
+  <section id="approach" aria-labelledby="approach-heading">
+    <div class="container">
+      <div class="approach-grid">
+
+        <div class="reveal">
+          <div class="section-label">Our Approach</div>
+          <h2 class="approach-heading" id="approach-heading">
+            We don't follow<br>trends.<br><em>We set them.</em>
+          </h2>
+          <p class="approach-body">
+            ROVOCHÉ builds digital experiences for brands that refuse to be ordinary.
+            Every site is custom — never templated, never compromised. We move with
+            precision, craft, and a relentless eye for what makes a brand impossible
+            to ignore.
+          </p>
+          <a href="#contact" class="approach-link">
+            Begin a project
+            <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden="true">
+              <path d="M0 5H18M14 1L18 5L14 9" stroke="currentColor" stroke-width="1"/>
+            </svg>
+          </a>
         </div>
-    </section>
 
-    <section class="services-section">
-        <div class="wrapper-max">
-            <div class="services-header">
-                <h2 class="serif" style="font-size: clamp(36px, 5vw, 68px); font-weight: 400;">What We Build</h2>
-                <span class="section-label" style="margin-bottom: 0;">Bespoke Capabilities</span>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card liquid-glass">
-                    <div class="card-video-area">
-                        <video src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" muted autoplay loop playsinline></video>
-                    </div>
-                    <div class="service-card-body">
-                        <span class="section-label" style="margin-bottom: 12px; font-size: 11px;">Ecosystems</span>
-                        <h4 class="serif service-card-title">Corporate Architecture & Strategy</h4>
-                        <p style="font-size: 14px; opacity: 0.6; line-height: 1.6;">Premium digital infrastructures for corporate consultancies, real estate networks, and high-ticket startups globally.</p>
-                    </div>
-                </div>
-                <div class="service-card liquid-glass">
-                    <div class="card-video-area">
-                        <video src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_151826_c7218672-6e92-402c-9e45-f1e0f454bdc4.mp4" muted autoplay loop playsinline></video>
-                    </div>
-                    <div class="service-card-body">
-                        <span class="section-label" style="margin-bottom: 12px; font-size: 11px;">Curation</span>
-                        <h4 class="serif service-card-title">Luxury Retail & Brand Showcases</h4>
-                        <p style="font-size: 14px; opacity: 0.6; line-height: 1.6;">Editorial-grade environments explicitly designed for high-end fashion houses, beauty ateliers, jewellers, and luxury wellness hubs.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="contact-section" id="contact">
-        <div class="wrapper-max">
-            <span class="section-label" style="margin-bottom: 16px;">Project Intake</span>
+        <div class="process-list reveal reveal-delay-1" role="list">
+          <div class="process-item" role="listitem">
+            <span class="process-num">01</span>
             <div>
-                <a href="mailto:hello@rovoche.com" class="serif mail-link italic">hello@rovoche.com</a>
+              <p class="process-name">Discovery</p>
+              <p class="process-desc">We learn your world — brand, audience, and ambition. No briefs without depth, no output without direction.</p>
             </div>
-            <footer>
-                <span>&copy; 2026 ROVOCHÉ</span>
-                <span class="hide-mobile">Lagos · London · New York</span>
-                <span>Infrastructure Rooted on Rock</span>
-            </footer>
+          </div>
+          <div class="process-item" role="listitem">
+            <span class="process-num">02</span>
+            <div>
+              <p class="process-name">Strategy &amp; Direction</p>
+              <p class="process-desc">Visual language, positioning, and architecture decided before a single pixel is placed.</p>
+            </div>
+          </div>
+          <div class="process-item" role="listitem">
+            <span class="process-num">03</span>
+            <div>
+              <p class="process-name">Design &amp; Build</p>
+              <p class="process-desc">Custom-coded, mobile-first, cinematic. Built to perform as beautifully as it looks.</p>
+            </div>
+          </div>
+          <div class="process-item" role="listitem">
+            <span class="process-num">04</span>
+            <div>
+              <p class="process-name">Launch &amp; Refine</p>
+              <p class="process-desc">We don't disappear after handoff. We stay to iterate, elevate, and protect what we've built together.</p>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const video = document.getElementById("bg-video");
-            const videoUrl = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4";
-            
-            video.src = videoUrl;
-            video.load();
+      </div>
+    </div>
+  </section>
 
-            let targetOpacity = 0;
-            let currentOpacity = 0;
+  <!-- ─── STUDIO ─────────────────────────────── -->
+  <section id="studio" aria-labelledby="studio-heading">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label centered">The Studio</div>
+        <h2 class="studio-heading" id="studio-heading">
+          Built on
+          <span class="outlined">Rock.</span>
+        </h2>
+        <div class="studio-cities" aria-label="Studio locations: Lagos, London, New York">
+          <span>Lagos</span>
+          <span class="city-divider" aria-hidden="true"></span>
+          <span>London</span>
+          <span class="city-divider" aria-hidden="true"></span>
+          <span>New York</span>
+        </div>
+        <p class="studio-tagline">"A studio without compromise."</p>
+      </div>
+    </div>
+  </section>
 
-            // Fluid RequestAnimationFrame mathematical interpolation handler
-            function smoothFade() {
-                if (Math.abs(currentOpacity - targetOpacity) > 0.01) {
-                    currentOpacity += (targetOpacity - currentOpacity) * 0.1;
-                    video.style.opacity = currentOpacity;
-                }
-                
-                // Track video remaining length metrics for seamless loops
-                if (video.currentTime > 0 && (video.duration - video.currentTime) <= 0.55) {
-                    targetOpacity = 0; // Trigger internal crossfade before loop break
-                }
-                
-                requestAnimationFrame(smoothFade);
-            }
+  <!-- ─── CONTACT ─────────────────────────────── -->
+  <section id="contact" aria-labelledby="cta-heading">
+    <div class="container">
+      <p class="cta-eyebrow reveal">Ready when you are</p>
+      <h2 class="cta-heading reveal reveal-delay-1" id="cta-heading">
+        Let's build something<br><em>permanent.</em>
+      </h2>
+      <!-- REPLACE: update href with your real email -->
+      <a href="mailto:hello@rovoche.com" class="cta-btn reveal reveal-delay-2" aria-label="Email ROVOCHÉ to begin a project">
+        <span>Begin a Project</span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <!-- REPLACE: update with your real email -->
+      <a href="mailto:hello@rovoche.com" class="cta-email reveal reveal-delay-3">
+        hello@rovoche.com
+      </a>
+    </div>
+  </section>
 
-            video.addEventListener("canplay", () => {
-                video.play().catch(err => console.log("Autoplay context pending active tap interaction"));
-                targetOpacity = 1;
-            });
+  <!-- ─── FOOTER ─────────────────────────────── -->
+  <footer role="contentinfo">
+    <span class="footer-logo">ROVOCHÉ</span>
+    <span class="footer-copy">© 2026 ROVOCHÉ Studio. All rights reserved.</span>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="#work">Work</a>
+      <a href="#approach">Approach</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </footer>
 
-            video.addEventListener("ended", () => {
-                video.style.opacity = 0;
-                currentOpacity = 0;
-                setTimeout(() => {
-                    video.currentTime = 0;
-                    video.play().catch(e => {});
-                    targetOpacity = 1;
-                }, 100);
-            });
+  <script>
+    /* ─────────────────────────────────────────────
+       CUSTOM CURSOR
+    ───────────────────────────────────────────── */
+    const cursor     = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-            requestAnimationFrame(smoothFade);
-        });
-    </script>
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top  = mouseY + 'px';
+    });
+
+    // Ring follows with lerp lag for luxury feel
+    (function animateRing() {
+      ringX += (mouseX - ringX) * 0.1;
+      ringY += (mouseY - ringY) * 0.1;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    document.querySelectorAll('a, button, .work-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+    });
+
+    /* ─────────────────────────────────────────────
+       NAV — SCROLL BEHAVIOUR
+    ───────────────────────────────────────────── */
+    const nav = document.getElementById('mainNav');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 60);
+      lastScroll = y;
+    }, { passive: true });
+
+    /* ─────────────────────────────────────────────
+       HERO WORDMARK — LETTER STAGGER
+    ───────────────────────────────────────────── */
+    const wordmark = document.getElementById('heroWordmark');
+    const chars    = wordmark.textContent.trim();
+    wordmark.innerHTML = '';
+
+    [...chars].forEach((char, i) => {
+      const span = document.createElement('span');
+      span.className   = 'letter';
+      span.textContent = char === ' ' ? '\u00a0' : char;
+      // Each letter animates in with staggered delay after a short pause
+      span.style.animationDelay = `${0.5 + i * 0.09}s`;
+      wordmark.appendChild(span);
+    });
+
+    /* ─────────────────────────────────────────────
+       SCROLL REVEAL — INTERSECTION OBSERVER
+    ───────────────────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealIO  = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => revealIO.observe(el));
+
+    /* ─────────────────────────────────────────────
+       SMOOTH ANCHOR SCROLL
+    ───────────────────────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
