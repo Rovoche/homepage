@@ -449,45 +449,75 @@
       .services-list { grid-column: 1 / 13; }
     }
 
-    /* Architectural Testimonials Blueprint Section */
+    /* Architectural Testimonials Carousel Section with ROV-1.mp4 in Background */
     #testimonials {
+      position: relative;
       padding: 140px 0;
-      background: var(--panel-dark);
+      background: var(--bg-dark);
+      overflow: hidden;
       border-top: 1px solid var(--line-color);
     }
-    .testimonials-heading {
-      grid-column: 1 / 4;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 400;
-      position: sticky;
-      top: 60px;
-      height: fit-content;
+    .testimonials-bg-container {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
     }
-    .testimonials-grid {
-      grid-column: 5 / 13;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px;
+    .testimonials-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.28; /* Clear, deep atmospheric overlay presence */
+      will-change: transform;
+    }
+    .testimonials-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(21,22,22,0.5) 50%, var(--bg-dark) 100%);
+    }
+    .testimonials-header-block {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 56px;
+    }
+    .testimonials-viewport {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      cursor: grab;
+      overflow: hidden;
+      padding: 20px 0;
+    }
+    .testimonials-viewport:active {
+      cursor: grabbing;
+    }
+    .testimonials-track {
+      display: flex;
+      gap: 48px;
+      width: max-content;
+      will-change: transform;
+      transition: transform 0.1s ease-out;
     }
     .testimonial-card {
+      width: 460px;
       border-left: 1px solid var(--line-color);
-      padding: 0 0 32px 24px;
+      background: rgba(28, 29, 29, 0.4); /* Glass architecture grounding */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 40px 32px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-    /* Dynamic asymmetrical spanning to match museum design aesthetics */
-    .testimonial-card:nth-child(3n+1) {
-      grid-column: span 2;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .testimonial-quote {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.2rem, 2vw, 1.6rem);
-      line-height: 1.4;
+      font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+      line-height: 1.45;
       font-weight: 400;
       color: var(--stone-white);
-      margin-bottom: 32px;
+      margin-bottom: 40px;
     }
     .testimonial-meta {
       display: flex;
@@ -508,10 +538,12 @@
       margin-top: 4px;
     }
 
-    @media (max-width: 850px) {
-      .testimonials-heading { grid-column: 1 / 13; position: static; margin-bottom: 48px; }
-      .testimonials-grid { grid-column: 1 / 13; grid-template-columns: 1fr; gap: 32px; }
-      .testimonial-card:nth-child(3n+1) { grid-column: span 1; }
+    @media (max-width: 768px) {
+      #testimonials { padding: 100px 0; }
+      .testimonial-card { width: 300px; padding: 32px 24px; gap: 24px; }
+      .testimonials-viewport { overflow-x: auto; cursor: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+      .testimonials-track { gap: 24px; padding: 0 20px; transition: none !important; transform: none !important; }
+      .testimonial-card { scroll-snap-align: start; }
     }
 
     /* Call to Action Framework */
@@ -759,16 +791,25 @@
     </div>
   </section>
 
-  <!-- Architectural Testimonials Blueprint Section -->
+  <!-- Architectural Testimonials Carousel Section (ROV-1.mp4 Canvas Variant) -->
   <section id="testimonials">
-    <div class="grid-container">
-      <div class="section-label">Verifiable Proof / Alignment Records</div>
-      
-      <h2 class="testimonials-heading">Verified Foundations</h2>
-      
-      <div class="testimonials-grid">
+    <div class="testimonials-bg-container">
+      <video class="testimonials-video" id="testimonials-parallax-bg" autoplay muted loop playsinline preload="auto">
+        <source src="ROV-1.mp4" type="video/mp4">
+      </video>
+      <div class="testimonials-overlay"></div>
+    </div>
+
+    <div class="grid-container testimonials-header-block">
+      <div class="section-label" style="border-bottom-color: rgba(226, 225, 218, 0.15);">Verifiable Proof / Alignment Records</div>
+      <h2 class="grid-column: 1 / 6;" style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400;">Verified Foundations</h2>
+    </div>
+
+    <!-- Wide Axis Drag Stream -->
+    <div class="testimonials-viewport" id="carousel-viewport">
+      <div class="testimonials-track" id="carousel-track">
         
-        <div class="testimonial-card reveal-item">
+        <div class="testimonial-card">
           <blockquote class="testimonial-quote">
             "Sammie helped us turn our fashion story into a website that feels elegant, clear, and ready for serious customers. The structure made our offer easier to understand."
           </blockquote>
@@ -778,7 +819,7 @@
           </div>
         </div>
 
-        <div class="testimonial-card reveal-item">
+        <div class="testimonial-card">
           <blockquote class="testimonial-quote">
             "The final page felt sharper than what we had in mind. Built by Sammie understood the goal quickly and shaped the website around trust, clarity, and action."
           </blockquote>
@@ -788,7 +829,7 @@
           </div>
         </div>
 
-        <div class="testimonial-card reveal-item">
+        <div class="testimonial-card">
           <blockquote class="testimonial-quote">
             "The work made our brand feel more credible online. The layout and mobile experience were cleaner than expected, and the page was easy to share with anyone."
           </blockquote>
@@ -798,7 +839,7 @@
           </div>
         </div>
 
-        <div class="testimonial-card reveal-item">
+        <div class="testimonial-card">
           <blockquote class="testimonial-quote">
             "What stood out was how practical the process felt. The website wasn't just pretty — it made the business easier to explain and easier to contact."
           </blockquote>
@@ -808,7 +849,7 @@
           </div>
         </div>
 
-        <div class="testimonial-card reveal-item">
+        <div class="testimonial-card">
           <blockquote class="testimonial-quote">
             "The redesign gave us a more polished first impression. It finally felt like our online presence matched the quality of the work we already do offline."
           </blockquote>
@@ -822,7 +863,7 @@
     </div>
   </section>
 
-  <!-- Call to Action Framework -->
+  <!-- Clean Final Action Node -->
   <section id="action">
     <div class="grid-container">
       <div class="action-wrap reveal-item">
@@ -933,6 +974,7 @@
       // ── SYSTEM 4: SCROLL COMPOSITION PARALLAX TRANSFORMS ──
       const bgVideo = document.getElementById('parallax-bg');
       const servicesBgVideo = document.getElementById('services-parallax-bg');
+      const testimonialsBgVideo = document.getElementById('testimonials-parallax-bg');
       
       window.addEventListener('scroll', function() {
         let scrollOffset = window.pageYOffset;
@@ -940,6 +982,7 @@
         if (window.innerWidth > 768) {
           bgVideo.style.transform = 'translate3d(0, ' + (scrollOffset * 0.35) + 'px, 0) scale(1.02)';
           servicesBgVideo.style.transform = 'translate3d(0, ' + ((scrollOffset - servicesBgVideo.offsetTop) * 0.15) + 'px, 0) scale(1.05)';
+          testimonialsBgVideo.style.transform = 'translate3d(0, ' + ((scrollOffset - testimonialsBgVideo.offsetTop) * 0.1) + 'px, 0) scale(1.03)';
         } else {
           const mobileItems = document.querySelectorAll('.work-item');
           mobileItems.forEach(item => {
@@ -956,7 +999,43 @@
       }, { passive: true });
 
 
-      // ── SYSTEM 5: VIEWPORT REVEAL OBSERVER ──
+      // ── SYSTEM 5: ARCHITECTURAL KINETIC GRAB SLIDER (DESKTOP) ──
+      if (window.innerWidth > 768) {
+        const viewport = document.getElementById('carousel-viewport');
+        const track = document.getElementById('carousel-track');
+        let isDown = false;
+        let startX, scrollLeft;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        viewport.addEventListener('mousedown', (e) => {
+          isDown = true;
+          startX = e.pageX - viewport.offsetLeft;
+          prevTranslate = currentTranslate;
+        });
+
+        viewport.addEventListener('mouseleave', () => { isDown = false; });
+        viewport.addEventListener('mouseup', () => { isDown = false; });
+
+        viewport.addEventListener('mousemove', (e) => {
+          if(!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - viewport.offsetLeft;
+          const walk = (x - startX) * 1.5; // Friction coefficient factor
+          currentTranslate = prevTranslate + walk;
+
+          // Setting hard boundary bounds
+          const maxLeft = 0;
+          const maxRight = -(track.offsetWidth - viewport.offsetWidth + 64);
+          if (currentTranslate > maxLeft) currentTranslate = maxLeft;
+          if (currentTranslate < maxRight) currentTranslate = maxRight;
+
+          track.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+        });
+      }
+
+
+      // ── SYSTEM 6: VIEWPORT REVEAL OBSERVER ──
       const observerSettings = { threshold: 0.05, rootMargin: "0px 0px -20px 0px" };
       const viewportObserver = new IntersectionObserver(function(elements, observer) {
         elements.forEach(el => {
