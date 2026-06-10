@@ -3,745 +3,651 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ROVOCHÉ — Digital Studio</title>
-  <meta name="description" content="Built on rock. Digital foundations for brands that intend to last. Lagos · London · New York.">
+  <title>ROVOCHÉ Studio</title>
+  <meta name="description" content="Digital foundations for brands that intend to last.">
+  
+  <!-- Favicon & Social Share Images -->
+  <link rel="icon" type="image/png" href="ROVOCHE-FAVICON.png">
+  <meta property="og:title" content="ROVOCHÉ Studio">
+  <meta property="og:description" content="Digital foundations for brands that intend to last.">
+  <meta property="og:image" content="ROVOCHE-SOCIAL-IMAGE.png">
+  <meta name="twitter:image" content="ROVOCHE-SOCIAL-IMAGE.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Rovoche/homepage/main/ROVOCHE-FAVICON.png">
-  <link rel="shortcut icon" href="https://raw.githubusercontent.com/Rovoche/homepage/main/ROVOCHE-FAVICON.png">
-
-  <!-- Social / OG -->
-  <meta property="og:title" content="ROVOCHÉ — Digital Studio">
-  <meta property="og:description" content="Built on rock. Digital foundations for brands that intend to last.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/Rovoche/homepage/main/ROVOCHE-SOCIAL-IMAGE.png">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/Rovoche/homepage/main/ROVOCHE-SOCIAL-IMAGE.png">
-
+  <!-- Minimalist Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg:        #0E0E0C;
-      --stone:     #E8E4D4;
-      --limestone: #C8C2AD;
-      --bronze:    #A08C6E;
-      --charcoal:  #2A2A26;
-      --grey:      #6B6A63;
-      --scrim:     rgba(14,14,12,0.72);
+      --stone-white: #F5F4F0;
+      --limestone: #EBEAE4;
+      --charcoal: #151616;
+      --slate-grey: #6E706E;
+      --bronze: #A39379;
+      --line-color: rgba(21, 22, 22, 0.08);
     }
 
+    /* Architectural Layout Grid Settings */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; background: var(--bg); }
+    html { scroll-behavior: smooth; font-size: 16px; background: var(--stone-white); color: var(--charcoal); }
     body {
-      background: var(--bg);
-      color: var(--stone);
       font-family: 'Jost', sans-serif;
       font-weight: 300;
-      overflow-x: hidden;
-      cursor: none;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    a { color: inherit; text-decoration: none; cursor: none; }
-    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+    
+    /* Layout Framework */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      padding: 0 64px;
+    }
+    
+    @media (max-width: 1024px) {
+      .grid-container { padding: 0 32px; gap: 16px; }
+    }
+    @media (max-width: 768px) {
+      .grid-container { padding: 0 20px; }
+    }
 
-    /* ── CURSOR ── */
-    #dot {
-      position: fixed; top: 0; left: 0;
-      width: 4px; height: 4px;
-      background: var(--stone);
-      border-radius: 50%;
-      pointer-events: none; z-index: 9999;
-      transform: translate(-50%,-50%);
-      will-change: transform;
+    /* Navigation */
+    header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      padding: 40px 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
-    #ring {
-      position: fixed; top: 0; left: 0;
-      width: 32px; height: 32px;
-      border: 1px solid rgba(232,228,212,0.25);
-      border-radius: 50%;
-      pointer-events: none; z-index: 9998;
-      transform: translate(-50%,-50%);
-      transition: width .4s, height .4s, border-color .3s;
-      will-change: transform;
-    }
-    body.hovered #ring { width: 52px; height: 52px; border-color: var(--bronze); }
-    body.hovered #dot  { background: var(--bronze); }
-    @media (max-width: 768px) { #dot, #ring { display: none; } body { cursor: auto; } }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 40px 60px;
-      transition: padding .5s ease, background .5s ease;
-    }
-    nav.stuck {
-      padding: 20px 60px;
-      background: rgba(14,14,12,0.92);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(232,228,212,0.05);
-    }
-    .nav-logo {
-      font-family: 'Bodoni Moda', serif;
-      font-size: .95rem; letter-spacing: .44em; font-weight: 400;
-      color: var(--stone);
+    .studio-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 400;
     }
     .nav-links {
-      display: flex; gap: 48px; list-style: none; align-items: center;
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
     }
     .nav-links a {
-      font-size: .55rem; letter-spacing: .26em; text-transform: uppercase;
-      color: var(--grey); transition: color .3s;
+      color: var(--slate-grey);
+      transition: color 0.4s ease;
     }
-    .nav-links a:hover { color: var(--stone); }
-    .nav-cta {
-      font-size: .55rem; letter-spacing: .24em; text-transform: uppercase;
-      color: var(--stone); border: 1px solid rgba(232,228,212,0.22);
-      padding: 10px 22px; border-radius: 999px;
-      transition: background .3s, border-color .3s;
+    .nav-links a:hover {
+      color: var(--charcoal);
     }
-    .nav-cta:hover { background: var(--stone); color: var(--bg); border-color: var(--stone); }
     @media (max-width: 768px) {
-      nav { padding: 24px 28px; }
-      nav.stuck { padding: 16px 28px; }
-      .nav-links { gap: 20px; }
-      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+      header { padding: 32px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links li:not(:last-child) { display: none; }
     }
 
-    /* ── HERO ── */
+    /* Hero Canvas Section */
     #hero {
-      position: relative; height: 100vh; min-height: 640px;
-      display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 140px 0 64px 0;
       overflow: hidden;
     }
-    #hero-video {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: 1;
-      transform-origin: center center;
+    .hero-bg-container {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: var(--limestone);
+      overflow: hidden;
+    }
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
       will-change: transform;
     }
-    .hero-scrim {
-      position: absolute; inset: 0; z-index: 2;
-      background:
-        linear-gradient(to right, rgba(14,14,12,.9) 0%, rgba(14,14,12,.1) 60%),
-        linear-gradient(to top, rgba(14,14,12,1) 0%, rgba(14,14,12,.0) 55%);
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(245,244,240,0.4) 0%, rgba(245,244,240,0.0) 50%, rgba(245,244,240,0.85) 100%);
     }
-    .hero-content {
-      position: relative; z-index: 3;
-      padding: 0 60px 100px;
+    .hero-headline {
+      grid-column: 1 / 10;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      align-self: end;
     }
-    .hero-eyebrow {
-      font-size: .52rem; letter-spacing: .38em; text-transform: uppercase;
-      color: var(--bronze); margin-bottom: 24px; display: block;
+    .hero-headline em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--slate-grey);
     }
-    .hero-h1 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(3rem, 8.5vw, 8rem);
-      font-weight: 300; letter-spacing: -.01em; line-height: .93;
-      color: var(--stone); max-width: 780px;
+    .hero-footer {
+      grid-column: 1 / 13;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid var(--line-color);
+      padding-top: 24px;
     }
-    .hero-h1 em { font-style: italic; color: rgba(232,228,212,.35); }
-
-    .hero-line { display: block; overflow: hidden; }
-    .hero-line-inner {
-      display: block;
-      transform: translateY(100%);
-      animation: rise 1.2s cubic-bezier(.16,1,.3,1) forwards;
+    .enter-trigger {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--charcoal);
     }
-    .hero-line:nth-child(2) .hero-line-inner { animation-delay: .15s; }
-    .hero-line:nth-child(3) .hero-line-inner { animation-delay: .28s; }
-    @keyframes rise { to { transform: translateY(0); } }
-
-    .hero-sub {
-      margin-top: 44px; display: flex; align-items: center; gap: 60px;
-    }
-    .hero-sub-text {
-      font-size: .68rem; line-height: 1.8; color: var(--grey); max-width: 280px;
-    }
-    .hero-enter {
-      font-size: .55rem; letter-spacing: .28em; text-transform: uppercase;
-      color: var(--stone); border-bottom: 1px solid rgba(232,228,212,.18);
-      padding-bottom: 4px; transition: border-color .3s, color .3s;
-      white-space: nowrap;
-    }
-    .hero-enter:hover { border-color: var(--bronze); color: var(--bronze); }
-
     @media (max-width: 768px) {
-      .hero-content { padding: 0 28px 72px; }
-      .hero-sub { flex-direction: column; gap: 20px; align-items: flex-start; }
-      .hero-h1 { font-size: clamp(2.8rem, 10vw, 4.8rem); }
+      #hero { padding: 120px 0 40px 0; }
+      .hero-headline { grid-column: 1 / 13; }
+      .hero-footer { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
 
-    /* ── RULE ── */
-    .rule { width: 100%; height: 1px; background: rgba(232,228,212,.06); }
-
-    /* ── WORK ── */
-    #work { padding: 120px 0 100px; background: var(--bg); }
-
-    .work-header {
-      padding: 0 60px; margin-bottom: 64px;
-      display: flex; align-items: flex-end; justify-content: space-between;
-    }
-    .work-label {
-      font-size: .52rem; letter-spacing: .36em; text-transform: uppercase;
-      color: var(--bronze); display: block; margin-bottom: 16px;
-    }
-    .work-h2 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      font-weight: 300; color: var(--stone); line-height: 1.1;
-    }
-    .work-h2 em { font-style: italic; color: var(--grey); }
-    .work-count {
-      font-size: .52rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--grey); padding-bottom: 6px;
+    /* Structural Section Breaks */
+    .section-label {
+      grid-column: 1 / 13;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--slate-grey);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line-color);
+      margin-bottom: 48px;
     }
 
-    .work-rows { padding: 0 60px; }
-    .work-row {
+    /* Selected Work Section */
+    #work {
+      padding: 140px 0;
+      background: var(--stone-white);
+    }
+    .work-list {
+      grid-column: 1 / 13;
+      display: flex;
+      flex-direction: column;
+    }
+    .work-item {
       display: grid;
-      grid-template-columns: 52px 1fr auto;
-      gap: 24px; align-items: center;
-      padding: 30px 0;
-      border-top: 1px solid rgba(232,228,212,.06);
-      position: relative; transition: border-color .3s;
-      text-decoration: none; overflow: visible;
+      grid-template-columns: repeat(12, 1fr);
+      padding: 40px 0;
+      border-bottom: 1px solid var(--line-color);
+      align-items: center;
+      position: relative;
     }
-    .work-row:last-child { border-bottom: 1px solid rgba(232,228,212,.06); }
-    .work-row::before {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(232,228,212,.025);
-      transform: scaleY(0); transform-origin: bottom;
-      transition: transform .55s cubic-bezier(.16,1,.3,1); z-index: 0;
+    .work-index {
+      grid-column: 1 / 2;
+      font-size: 0.65rem;
+      color: var(--slate-grey);
     }
-    .work-row:hover::before { transform: scaleY(1); }
-    .work-row > * { position: relative; z-index: 1; }
-
-    .row-num { font-size: .52rem; letter-spacing: .2em; color: rgba(232,228,212,.22); }
-    .row-main { display: flex; flex-direction: column; gap: 8px; }
-    .row-title {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(1.6rem, 3vw, 2.8rem);
-      font-weight: 300; color: var(--stone); line-height: 1;
-      transition: transform .4s cubic-bezier(.16,1,.3,1), color .3s;
+    .work-meta {
+      grid-column: 2 / 6;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--slate-grey);
     }
-    .work-row:hover .row-title { transform: translateX(8px); color: var(--limestone); }
-    .row-tags { display: flex; gap: 16px; }
-    .row-tag {
-      font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--grey);
-    }
-
-    /* Image peek */
-    .row-peek {
-      position: absolute; right: 110px; top: 50%;
-      width: 240px; height: 155px;
-      transform: translateY(-50%) scale(.9); opacity: 0;
-      transition: opacity .4s ease, transform .45s cubic-bezier(.16,1,.3,1);
-      z-index: 20; overflow: hidden; pointer-events: none;
-      border-radius: 4px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.55);
-    }
-    .work-row:hover .row-peek { opacity: 1; transform: translateY(-50%) scale(1); }
-
-    .row-arrow {
-      width: 40px; height: 40px;
-      border: 1px solid rgba(232,228,212,.1); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--stone); font-size: .8rem;
-      transform: rotate(-45deg);
-      transition: all .35s cubic-bezier(.16,1,.3,1);
-    }
-    .work-row:hover .row-arrow { transform: rotate(0deg); border-color: var(--bronze); color: var(--bronze); }
-
-    @media (max-width: 768px) {
-      .work-header { padding: 0 28px; flex-direction: column; align-items: flex-start; gap: 12px; }
-      .work-rows { padding: 0 28px; }
-      .work-row {
-        grid-template-columns: 36px 1fr 32px;
-        grid-template-rows: auto auto;
-        padding: 24px 0 0;
-      }
-      .row-num { grid-column: 1; grid-row: 1; align-self: center; }
-      .row-main { grid-column: 2; grid-row: 1; }
-      .row-arrow { grid-column: 3; grid-row: 1; align-self: center; width: 32px; height: 32px; font-size: .7rem; }
-      .row-peek {
-        position: relative; right: auto; top: auto;
-        transform: none; opacity: 1;
-        width: 100%; height: 54vw; max-height: 220px;
-        display: block; pointer-events: none;
-        grid-column: 1 / -1; grid-row: 2;
-        margin-top: 20px; margin-bottom: 0;
-        border-radius: 6px;
-        box-shadow: 0 8px 32px rgba(0,0,0,.4);
-        transition: none;
-      }
-      .work-row:last-child { border-bottom: 1px solid rgba(232,228,212,.06); }
-      .work-row:last-child .row-peek { margin-bottom: 24px; }
-      /* Add bottom spacing after image */
-      .work-row::after {
-        content: '';
-        display: block;
-        grid-column: 1 / -1;
-        height: 24px;
-      }
-    }
-
-    /* ── STUDIO ── */
-    #studio {
-      display: grid; grid-template-columns: 1fr 1fr;
-      min-height: 75vh; overflow: hidden; background: var(--bg);
-    }
-    .studio-visual { position: relative; overflow: hidden; }
-    .studio-visual video {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: brightness(.6);
-      transition: transform 2s cubic-bezier(.16,1,.3,1);
-    }
-    #studio:hover .studio-visual video { transform: scale(1.025); }
-    .studio-visual-fade {
-      position: absolute; inset: 0;
-      background: linear-gradient(to right, transparent 55%, var(--bg) 100%);
-    }
-    .studio-text {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 80px 72px 80px 56px;
-      border-left: 1px solid rgba(232,228,212,.05);
-    }
-    .studio-eyebrow {
-      font-size: .52rem; letter-spacing: .36em; text-transform: uppercase;
-      color: var(--bronze); margin-bottom: 40px; display: block;
-    }
-    .studio-quote {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(1.7rem, 2.8vw, 2.8rem);
-      font-weight: 300; line-height: 1.38;
-      color: var(--stone); margin-bottom: 48px;
-    }
-    .studio-quote em { font-style: italic; color: var(--bronze); }
-    .studio-byline {
-      font-size: .52rem; letter-spacing: .26em; text-transform: uppercase;
-      color: var(--grey);
-    }
-
-    @media (max-width: 768px) {
-      #studio { grid-template-columns: 1fr; min-height: auto; }
-      .studio-visual { height: 60vw; }
-      .studio-visual-fade { background: linear-gradient(to bottom, transparent 50%, var(--bg) 100%); }
-      .studio-text { padding: 48px 28px 64px; border-left: none; border-top: 1px solid rgba(232,228,212,.05); }
-    }
-
-    /* ── SERVICES ── */
-    #services { padding: 130px 60px; background: var(--bg); }
-    .services-header { margin-bottom: 72px; }
-    .services-eyebrow {
-      font-size: .52rem; letter-spacing: .36em; text-transform: uppercase;
-      color: var(--bronze); margin-bottom: 16px; display: block;
-    }
-    .services-h2 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      font-weight: 300; color: var(--stone); line-height: 1.1;
-    }
-    .services-h2 em { font-style: italic; color: var(--grey); }
-
-    .services-list { list-style: none; }
-    .service-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 0;
-      border-top: 1px solid rgba(232,228,212,.06);
-      transition: padding-left .4s cubic-bezier(.16,1,.3,1);
-    }
-    .service-item:last-child { border-bottom: 1px solid rgba(232,228,212,.06); }
-    .service-item:hover { padding-left: 10px; }
-    .service-name {
-      font-family: 'Bodoni Moda', serif;
+    .work-title {
+      grid-column: 6 / 12;
+      font-family: 'Playfair Display', serif;
       font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-      font-weight: 300; color: var(--stone);
-      transition: color .3s;
+      font-weight: 400;
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .service-item:hover .service-name { color: var(--limestone); }
-    .service-tag {
-      font-size: .5rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--grey);
+    .work-item:hover .work-title {
+      transform: translateX(16px);
+      color: var(--bronze);
+    }
+    
+    /* Architectural Inline Preview Window Container */
+    .peek-container {
+      position: absolute;
+      right: 8%;
+      top: 50%;
+      transform: translateY(-50%) scale(0.9);
+      width: 220px;
+      height: 140px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--limestone);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 16px 32px rgba(21, 22, 22, 0.06);
+    }
+    .peek-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .work-item:hover .peek-container {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
     }
 
-    @media (max-width: 768px) {
-      #services { padding: 90px 28px; }
-      .service-tag { display: none; }
+    @media (max-width: 900px) {
+      .work-item { padding: 24px 0; }
+      .work-meta { grid-column: 3 / 6; }
+      .work-title { grid-column: 6 / 13; }
+      .peek-container { display: none; }
+    }
+    @media (max-width: 600px) {
+      .work-meta { display: none; }
+      .work-title { grid-column: 3 / 13; }
     }
 
-    /* ── STATEMENT BAND ── */
-    .statement {
-      padding: 120px 60px; text-align: center;
+    /* Minimalist Studio Profile */
+    #studio {
+      padding: 140px 0;
+      background: var(--limestone);
+    }
+    .studio-statement {
+      grid-column: 1 / 7;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      line-height: 1.3;
+      font-weight: 400;
+      color: var(--charcoal);
+      padding-right: 40px;
+    }
+    .studio-details {
+      grid-column: 8 / 13;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .studio-manifesto {
+      font-size: 0.9rem;
+      color: var(--slate-grey);
+      max-width: 380px;
+      margin-bottom: 48px;
+    }
+    .founder-sign {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+    }
+    .studio-media {
+      grid-column: 1 / 13;
+      height: 50vh;
+      margin-top: 64px;
+      overflow: hidden;
+      background: var(--stone-white);
+    }
+    .studio-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 850px) {
+      .studio-statement { grid-column: 1 / 13; padding-right: 0; margin-bottom: 40px; }
+      .studio-details { grid-column: 1 / 13; }
+      .studio-media { height: 35vh; margin-top: 40px; }
+    }
+
+    /* Core Architectural Capabilities Block */
+    #services {
+      padding: 140px 0;
+      background: var(--stone-white);
+    }
+    .services-intro {
+      grid-column: 1 / 5;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      position: sticky;
+      top: 60px;
+      height: fit-content;
+    }
+    .services-list {
+      grid-column: 6 / 13;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-node {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--line-color);
+    }
+    .service-node:first-child { border-top: 1px solid var(--line-color); }
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .service-annotation {
+      font-size: 0.8rem;
+      color: var(--slate-grey);
+      max-width: 480px;
+    }
+
+    @media (max-width: 850px) {
+      .services-intro { grid-column: 1 / 13; position: static; margin-bottom: 40px; }
+      .services-list { grid-column: 1 / 13; }
+    }
+
+    /* Call to Action Framework */
+    #action {
+      padding: 160px 0;
       background: var(--charcoal);
-      border-top: 1px solid rgba(232,228,212,.05);
-      border-bottom: 1px solid rgba(232,228,212,.05);
+      color: var(--stone-white);
+      text-align: center;
     }
-    .statement-line {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(1.5rem, 3.5vw, 3rem);
-      font-weight: 300; color: rgba(232,228,212,.5);
-      letter-spacing: .02em; line-height: 1.6;
+    .action-wrap {
+      grid-column: 3 / 11;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .statement-line em { font-style: italic; color: var(--stone); }
-    @media (max-width: 768px) { .statement { padding: 80px 28px; } }
+    .action-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      line-height: 1.1;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+    .action-btn {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      border: 1px solid rgba(245, 244, 240, 0.25);
+      border-radius: 0px;
+      transition: border-color 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+    }
+    .action-btn:hover {
+      border-color: var(--stone-white);
+      background: var(--stone-white);
+      color: var(--charcoal);
+    }
+    .action-mail {
+      margin-top: 48px;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: rgba(245, 244, 240, 0.4);
+      transition: color 0.3s ease;
+    }
+    .action-mail:hover {
+      color: var(--stone-white);
+    }
 
-    /* ── CTA ── */
-    #cta {
-      padding: 160px 60px 130px; text-align: center; background: var(--bg);
-      border-top: 1px solid rgba(232,228,212,.05);
-    }
-    .cta-eyebrow {
-      font-size: .52rem; letter-spacing: .36em; text-transform: uppercase;
-      color: var(--bronze); margin-bottom: 28px; display: block;
-    }
-    .cta-h2 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(2.8rem, 7vw, 7rem);
-      font-weight: 300; line-height: .96; color: var(--stone);
-      margin: 0 auto 20px; max-width: 900px;
-    }
-    .cta-h2 .hollow {
-      font-style: italic; color: transparent;
-      -webkit-text-stroke: 1px rgba(232,228,212,.3);
-    }
-    .cta-sub {
-      font-size: .7rem; line-height: 1.9; color: var(--grey);
-      max-width: 360px; margin: 0 auto 52px;
-    }
-    .btn-begin {
-      display: inline-flex; align-items: center; gap: 12px;
-      background: var(--stone); color: var(--bg);
-      padding: 15px 40px; border-radius: 999px;
-      font-size: .55rem; letter-spacing: .24em; text-transform: uppercase;
-      font-weight: 500; transition: background .3s;
-    }
-    .btn-begin:hover { background: var(--limestone); }
-    .cta-email {
-      display: block; margin-top: 40px;
-      font-size: .6rem; letter-spacing: .16em;
-      color: rgba(232,228,212,.28);
-    }
-    .cta-email:hover { color: var(--bronze); }
-    @media (max-width: 768px) { #cta { padding: 100px 28px 90px; } }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 48px 60px;
-      display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; gap: 24px;
-      border-top: 1px solid rgba(232,228,212,.05);
-    }
-    .footer-logo {
-      font-family: 'Bodoni Moda', serif;
-      font-size: .88rem; letter-spacing: .38em;
-      color: rgba(232,228,212,.5);
-    }
-    .footer-copy {
-      font-size: .48rem; letter-spacing: .14em;
-      color: rgba(232,228,212,.22); text-align: center;
-    }
-    .footer-links { display: flex; gap: 28px; justify-content: flex-end; }
-    .footer-links a {
-      font-size: .48rem; letter-spacing: .2em; text-transform: uppercase;
-      color: rgba(232,228,212,.3); transition: color .3s;
-    }
-    .footer-links a:hover { color: var(--bronze); }
     @media (max-width: 768px) {
-      footer { grid-template-columns: 1fr; text-align: center; padding: 40px 28px; gap: 18px; }
-      .footer-links { justify-content: center; }
+      .action-wrap { grid-column: 1 / 13; }
     }
 
-    /* ── REVEAL ── */
-    .rx { opacity: 0; transform: translateY(18px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
-    .rx.in { opacity: 1; transform: none; }
-    .rx-d1 { transition-delay: .12s; }
-    .rx-d2 { transition-delay: .24s; }
-    .rx-d3 { transition-delay: .36s; }
+    /* Editorial Footer Layout */
+    footer {
+      background: var(--charcoal);
+      color: rgba(245, 244, 240, 0.4);
+      padding: 64px 0;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(245, 244, 240, 0.05);
+    }
+    .footer-left {
+      grid-column: 1 / 6;
+    }
+    .footer-right {
+      grid-column: 7 / 13;
+      text-align: right;
+    }
 
-    /* ── MAG ── */
-    .mag { display: inline-flex; }
+    @media (max-width: 768px) {
+      .footer-left { grid-column: 1 / 13; text-align: center; }
+      .footer-right { grid-column: 1 / 13; text-align: center; margin-top: 16px; }
+    }
+
+    /* Clean Parallax Fade Engine definitions */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .reveal-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
 
-<div id="dot"></div>
-<div id="ring"></div>
+  <!-- Navigation Grid Element -->
+  <header>
+    <a href="#" class="studio-logo">ROVOCHÉ</a>
+    <ul class="nav-menu nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="#action">Begin Project</a></li>
+    </ul>
+  </header>
 
-<!-- Nav -->
-<nav id="nav">
-  <a href="#" class="nav-logo">ROVOCHÉ</a>
-  <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#studio">Studio</a></li>
-    <li><a href="#cta" class="nav-cta mag">Begin Project</a></li>
-  </ul>
-</nav>
-
-<!-- Hero -->
-<section id="hero">
-  <video id="hero-video" autoplay muted loop playsinline preload="auto">
-    <source src="https://github.com/Rovoche/homepage/raw/main/rov-2.mp4" type="video/mp4">
-  </video>
-  <div class="hero-scrim"></div>
-
-  <div class="hero-content">
-    <span class="hero-eyebrow">Digital Studio</span>
-    <h1 class="hero-h1">
-      <span class="hero-line"><span class="hero-line-inner">Built on rock.</span></span>
-      <span class="hero-line"><span class="hero-line-inner"><em>Foundations</em></span></span>
-      <span class="hero-line"><span class="hero-line-inner">that last.</span></span>
-    </h1>
-    <div class="hero-sub">
-      <p class="hero-sub-text">Digital presence for brands that intend to be taken seriously.</p>
-      <a href="#work" class="hero-enter mag">Enter Work ↓</a>
+  <!-- Hero Platform -->
+  <section id="hero">
+    <div class="hero-bg-container">
+      <video class="hero-video" id="parallax-bg" autoplay muted loop playsinline preload="auto">
+        <source src="rov-2.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay"></div>
     </div>
-  </div>
-</section>
-
-<div class="rule"></div>
-
-<!-- Work -->
-<section id="work">
-  <div class="work-header rx">
-    <div>
-      <span class="work-label">Selected Work</span>
-      <h2 class="work-h2">Work that<br><em>holds.</em></h2>
+    
+    <div class="grid-container" style="height: 100%; align-content: flex-end;">
+      <h1 class="hero-headline">
+        Built on rock.<br>Digital foundations for brands that intend to <em>last</em>.
+      </h1>
+      
+      <div class="hero-footer">
+        <a href="#work" class="enter-trigger">Enter Work ↓</a>
+        <div style="font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-grey);">
+          Lagos · London · New York
+        </div>
+      </div>
     </div>
-    <span class="work-count">04 Projects</span>
-  </div>
+  </section>
 
-  <div class="work-rows">
-    <a href="https://rovoche.github.io/luxuryfashion/" target="_blank" rel="noopener" class="work-row rx rx-d1">
-      <span class="row-num">01</span>
-      <div class="row-main">
-        <span class="row-title">Fashion</span>
-        <div class="row-tags">
-          <span class="row-tag">Couture</span>
-          <span class="row-tag">2026</span>
+  <!-- Portfolio Matrix Block -->
+  <section id="work">
+    <div class="grid-container">
+      <div class="section-label">Selected Work / Canvas Overview</div>
+      
+      <div class="work-list">
+        
+        <div class="work-item reveal-item">
+          <span class="work-index">01</span>
+          <span class="work-meta">Fashion / Couture / 2026</span>
+          <a href="#" class="work-title">Bespoke Couture Architecture</a>
+          <div class="peek-container depth-element">
+            <img src="SBL-SCC.png" alt="Couture Preview">
+          </div>
         </div>
-      </div>
-      <div class="row-peek">
-        <img src="https://raw.githubusercontent.com/Rovoche/homepage/main/SBL-SCC.png" alt="Fashion — Couture">
-      </div>
-      <div class="row-arrow">↗</div>
-    </a>
 
-    <a href="https://rovoche.github.io/Glam-and-Makeup/" target="_blank" rel="noopener" class="work-row rx rx-d2">
-      <span class="row-num">02</span>
-      <div class="row-main">
-        <span class="row-title">Beauty</span>
-        <div class="row-tags">
-          <span class="row-tag">Identity</span>
-          <span class="row-tag">2026</span>
+        <div class="work-item reveal-item">
+          <span class="work-index">02</span>
+          <span class="work-meta">Beauty / Identity / 2026</span>
+          <a href="#" class="work-title">Aesthetic Identity Frame</a>
+          <div class="peek-container depth-element">
+            <img src="KIKI-SCC.png" alt="Identity Preview">
+          </div>
         </div>
-      </div>
-      <div class="row-peek">
-        <img src="https://raw.githubusercontent.com/Rovoche/homepage/main/KIKI-SCC.png" alt="Beauty — Identity">
-      </div>
-      <div class="row-arrow">↗</div>
-    </a>
 
-    <a href="https://twaynesafehaven.org" target="_blank" rel="noopener" class="work-row rx rx-d1">
-      <span class="row-num">03</span>
-      <div class="row-main">
-        <span class="row-title">NGO Community</span>
-        <div class="row-tags">
-          <span class="row-tag">Platform</span>
-          <span class="row-tag">2025</span>
+        <div class="work-item reveal-item">
+          <span class="work-index">03</span>
+          <span class="work-meta">NGO Community / Platform / 2025</span>
+          <a href="#" class="work-title">Social Infrastructure Space</a>
+          <div class="peek-container depth-element">
+            <img src="TSH-SCC.png" alt="Platform Preview">
+          </div>
         </div>
-      </div>
-      <div class="row-peek">
-        <img src="https://raw.githubusercontent.com/Rovoche/homepage/main/TSH-SCC.png" alt="NGO Community — Platform">
-      </div>
-      <div class="row-arrow">↗</div>
-    </a>
 
-    <a href="https://peasis.com" target="_blank" rel="noopener" class="work-row rx rx-d2">
-      <span class="row-num">04</span>
-      <div class="row-main">
-        <span class="row-title">Commerce</span>
-        <div class="row-tags">
-          <span class="row-tag">Fashion</span>
-          <span class="row-tag">2025</span>
+        <div class="work-item reveal-item">
+          <span class="work-index">04</span>
+          <span class="work-meta">Commerce / Fashion / 2025</span>
+          <a href="#" class="work-title">Structured Digital Commerce</a>
+          <div class="peek-container depth-element">
+            <img src="PEASIS-SCC.png" alt="Commerce Preview">
+          </div>
         </div>
-      </div>
-      <div class="row-peek">
-        <img src="https://raw.githubusercontent.com/Rovoche/homepage/main/PEASIS-SCC.png" alt="Commerce — Fashion">
-      </div>
-      <div class="row-arrow">↗</div>
-    </a>
-  </div>
-</section>
 
-<div class="rule"></div>
-
-<!-- Studio -->
-<section id="studio">
-  <div class="studio-visual">
-    <video autoplay muted loop playsinline>
-      <source src="https://github.com/Rovoche/homepage/raw/main/ROV-1.mp4" type="video/mp4">
-    </video>
-    <div class="studio-visual-fade"></div>
-  </div>
-  <div class="studio-text">
-    <div class="rx">
-      <span class="studio-eyebrow">The Studio</span>
-      <blockquote class="studio-quote">
-        Strong brands are rarely<br>accidental. Every decision.<br>Every detail. Every surface.<br><em>Deliberate.</em>
-      </blockquote>
-      <p class="studio-byline">Sammie Friday — Founder</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="rule"></div>
+  <!-- Studio Formulation Panel -->
+  <section id="studio">
+    <div class="grid-container">
+      <div class="section-label" style="border-bottom-color: rgba(21, 22, 22, 0.15);">The Studio Profile</div>
+      
+      <h2 class="studio-statement reveal-item">
+        Strong brands are rarely accidental. Every decision. Every detail. Every surface. Deliberate.
+      </h2>
+      
+      <div class="studio-details reveal-item">
+        <p class="studio-manifesto">
+          Not louder. Clearer.<br>
+          Not bigger. Stronger.
+        </p>
+        <span class="founder-sign">Sammie Friday — Founder</span>
+      </div>
 
-<!-- Services -->
-<section id="services">
-  <div class="services-header rx">
-    <span class="services-eyebrow">What We Build</span>
-    <h2 class="services-h2">Built for<br><em>your world.</em></h2>
-  </div>
-  <ul class="services-list">
-    <li class="service-item rx rx-d1">
-      <span class="service-name">Brand Websites</span>
-      <span class="service-tag">Custom · Deliberate</span>
-    </li>
-    <li class="service-item rx rx-d2">
-      <span class="service-name">E-Commerce Systems</span>
-      <span class="service-tag">High-End Retail</span>
-    </li>
-    <li class="service-item rx rx-d1">
-      <span class="service-name">Digital Infrastructure</span>
-      <span class="service-tag">SEO · Architecture · Speed</span>
-    </li>
-    <li class="service-item rx rx-d2">
-      <span class="service-name">Editorial Platforms</span>
-      <span class="service-tag">Photography · Fine Art</span>
-    </li>
-    <li class="service-item rx rx-d1">
-      <span class="service-name">NGO Systems</span>
-      <span class="service-tag">Community · Foundations</span>
-    </li>
-  </ul>
-</section>
+      <div class="studio-media reveal-item">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="ROV-1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
 
-<!-- Statement -->
-<div class="statement">
-  <p class="statement-line rx">
-    Not louder. <em>Clearer.</em><br>Not bigger. <em>Stronger.</em>
-  </p>
-</div>
+  <!-- Capability Specifications List -->
+  <section id="services">
+    <div class="grid-container">
+      <div class="section-label">Capabilities Blueprint</div>
+      
+      <h2 class="services-intro">Systems of Precision</h2>
+      
+      <div class="services-list">
+        <div class="service-node reveal-item">
+          <h3 class="service-title">Brand Websites</h3>
+          <p class="service-annotation">Architectural digital flagships meticulously planned to command industrial authority.</p>
+        </div>
+        <div class="service-node reveal-item">
+          <h3 class="service-title">E-Commerce Systems</h3>
+          <p class="service-annotation">High-performance custom transactional spaces designed without reliance on structural templates.</p>
+        </div>
+        <div class="service-node reveal-item">
+          <h3 class="service-title">Digital Infrastructure</h3>
+          <p class="service-annotation">Clean logic systems, core speed execution, and unshakeable foundations for complex operational growth.</p>
+        </div>
+        <div class="service-node reveal-item">
+          <h3 class="service-title">Editorial Platforms</h3>
+          <p class="service-annotation">High-end editorial compositions engineered specifically for fine art houses and premium luxury spaces.</p>
+        </div>
+        <div class="service-node reveal-item">
+          <h3 class="service-title">NGO Systems</h3>
+          <p class="service-annotation">Bespoke functional frameworks delivering undisputed structural institutional legitimacy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- CTA -->
-<section id="cta">
-  <span class="cta-eyebrow rx">Ready when you are</span>
-  <h2 class="cta-h2 rx rx-d1">For brands ready<br>to be <span class="hollow">taken seriously.</span></h2>
-  <p class="cta-sub rx rx-d2">We work with a select number of brands at a time.</p>
-  <div class="rx rx-d3">
-    <a href="mailto:rovochestudio@gmail.com" class="btn-begin mag">Begin Project &nbsp;↗</a>
-  </div>
-  <a href="mailto:rovochestudio@gmail.com" class="cta-email rx">rovochestudio@gmail.com</a>
-</section>
+  <!-- Clean Final Action Node -->
+  <section id="action">
+    <div class="grid-container">
+      <div class="action-wrap reveal-item">
+        <h2 class="action-title">For brands ready to be taken seriously.</h2>
+        <a href="mailto:rovoche@gmail.com" class="action-btn">Begin Project</a>
+        <a href="mailto:rovoche@gmail.com" class="action-mail">rovoche@gmail.com</a>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  <span class="footer-logo">ROVOCHÉ</span>
-  <span class="footer-copy">© 2026 ROVOCHÉ Studio · Lagos · London · New York</span>
-  <div class="footer-links">
-    <a href="#work">Work</a>
-    <a href="#services">Services</a>
-    <a href="#studio">Studio</a>
-    <a href="mailto:rovochestudio@gmail.com">Contact</a>
-  </div>
-</footer>
+  <!-- Monospaced Data Grid Footer -->
+  <footer>
+    <div class="grid-container">
+      <div class="footer-left">
+        © 2026 ROVOCHÉ STUDIO · LAGOS · LONDON · NEW YORK
+      </div>
+      <div class="footer-right">
+        Deliberate Digital Artistry
+      </div>
+    </div>
+  </footer>
 
-<script>
-(function () {
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      // ── SYSTEM 1: HARDWARE-ACCELERATED HERO SCROLL PARALLAX ──
+      const bgVideo = document.getElementById('parallax-bg');
+      window.addEventListener('scroll', function() {
+        if (window.innerWidth > 768) {
+          let scrollOffset = window.pageYOffset;
+          // Clean subtle matrix scaling calculation
+          bgVideo.style.transform = 'translate3d(0, ' + (scrollOffset * 0.35) + 'px, 0) scale(1.02)';
+        }
+      }, { passive: true });
 
-  // CURSOR
-  const dot  = document.getElementById('dot');
-  const ring = document.getElementById('ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  if (window.innerWidth > 768 && dot && ring) {
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate3d(calc(${mx}px - 50%), calc(${my}px - 50%), 0)`;
+      // ── SYSTEM 2: INTERACTIVE NATURAL DEPTH ENGINE (DESKTOP) ──
+      if (window.innerWidth > 1024) {
+        document.querySelectorAll('.work-item').forEach(item => {
+          item.addEventListener('mousemove', function(e) {
+            const peek = item.querySelector('.depth-element');
+            if(peek) {
+              const bounds = item.getBoundingClientRect();
+              const relativeX = e.clientX - bounds.left;
+              const normalizedMove = (relativeX / bounds.width - 0.5) * 35;
+              // Clean natural slide translation values based on horizontal hover behavior
+              peek.style.transform = 'translate3d(' + normalizedMove + 'px, -50%, 0) scale(1)';
+            }
+          });
+          item.addEventListener('mouseleave', function() {
+            const peek = item.querySelector('.depth-element');
+            if(peek) peek.style.transform = 'translate3d(0px, -50%, 0) scale(0.9)';
+          });
+        });
+      }
+
+      // ── SYSTEM 3: RESPONSIVE MOTION HANDLING FOR MOBILE DEVICES ──
+      if (window.innerWidth <= 768) {
+        window.addEventListener('scroll', function() {
+          const depthElements = document.querySelectorAll('.reveal-item');
+          depthElements.forEach(el => {
+            const elBounds = el.getBoundingClientRect();
+            if (elBounds.top < window.innerHeight && elBounds.bottom > 0) {
+              const centerDelta = (window.innerHeight / 2) - (elBounds.top + elBounds.height / 2);
+              const dynamicShift = centerDelta * 0.05;
+              if (el.classList.contains('visible')) {
+                el.style.transform = 'translate3d(0, ' + dynamicShift + 'px, 0)';
+              }
+            }
+          });
+        }, { passive: true });
+      }
+
+      // ── SYSTEM 4: CACHED HIGH-PERFORMANCE INTERSECTION OBSERVER ──
+      const observerSettings = { threshold: 0.1, rootMargin: "0px 0px -40px 0px" };
+      const viewportObserver = new IntersectionObserver(function(elements, observer) {
+        elements.forEach(el => {
+          if (el.isIntersecting) {
+            el.target.classList.add('visible');
+            observer.unobserve(el.target);
+          }
+        });
+      }, observerSettings);
+
+      document.querySelectorAll('.reveal-item').forEach(node => viewportObserver.observe(node));
     });
-    (function animRing() {
-      rx += (mx - rx) * 0.13;
-      ry += (my - ry) * 0.13;
-      ring.style.transform = `translate3d(calc(${rx}px - 50%), calc(${ry}px - 50%), 0)`;
-      requestAnimationFrame(animRing);
-    })();
-    document.querySelectorAll('a, button, .work-row, .service-item').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
-    });
-  }
-
-  // NAV STUCK
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('stuck', window.scrollY > 60);
-  }, { passive: true });
-
-  // HERO PARALLAX
-  const heroVid = document.getElementById('hero-video');
-  if (heroVid) {
-    window.addEventListener('scroll', () => {
-      const p = Math.min(window.scrollY / window.innerHeight, 1);
-      heroVid.style.transform = `scale(${1 + p * 0.07}) translateY(${p * 20}%)`;
-    }, { passive: true });
-    document.addEventListener('mousemove', e => {
-      const dx = (e.clientX / window.innerWidth  - 0.5) * 14;
-      const dy = (e.clientY / window.innerHeight - 0.5) * 10;
-      heroVid.style.marginLeft = dx + 'px';
-      heroVid.style.marginTop  = dy + 'px';
-    });
-  }
-
-  // WORK ROW PEEK PARALLAX
-  document.querySelectorAll('.work-row').forEach(row => {
-    row.addEventListener('mousemove', e => {
-      const peek = row.querySelector('.row-peek');
-      if (!peek) return;
-      const rect = row.getBoundingClientRect();
-      const dy = (e.clientY - rect.top - rect.height / 2) * 0.18;
-      peek.style.transform = `translateY(calc(-50% + ${dy}px)) scale(1)`;
-    });
-    row.addEventListener('mouseleave', () => {
-      const peek = row.querySelector('.row-peek');
-      if (peek) peek.style.transform = 'translateY(-50%) scale(0.9)';
-    });
-  });
-
-  // MAGNETIC
-  document.querySelectorAll('.mag').forEach(el => {
-    el.addEventListener('mousemove', e => {
-      const r = el.getBoundingClientRect();
-      const dx = (e.clientX - r.left - r.width  / 2) * 0.2;
-      const dy = (e.clientY - r.top  - r.height / 2) * 0.2;
-      el.style.transform = `translate3d(${dx}px,${dy}px,0)`;
-    });
-    el.addEventListener('mouseleave', () => el.style.transform = '');
-  });
-
-  // REVEAL
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
-  document.querySelectorAll('.rx').forEach(el => io.observe(el));
-
-})();
-</script>
-</body> 
+  </script>
+</body>
 </html>
