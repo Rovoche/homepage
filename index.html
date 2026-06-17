@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.378.0/umd/lucide.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -297,6 +296,12 @@
       -webkit-tap-highlight-color: transparent;
     }
     .work-row::before { content: ''; position: absolute; inset: 0; background: rgba(28,29,29,0); transition: background 0.5s; z-index: -1; }
+    .work-row::after {
+      content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0;
+      background: radial-gradient(circle 220px at var(--mx,50%) var(--my,50%), rgba(196,181,157,0.10), transparent 70%);
+      transition: opacity 0.4s;
+    }
+    .work-row:hover::after { opacity: 1; }
     .work-row:hover::before { background: rgba(28,29,29,0.45); }
     .work-row-grid { display: grid; grid-template-columns: 1fr; gap: 16px; position: relative; z-index: 10; }
     @media (min-width: 1024px) { .work-row-grid { grid-template-columns: 4fr 6fr 2fr; align-items: center; gap: 32px; } }
@@ -431,7 +436,8 @@
       padding: 16px 40px; background: var(--accent); color: var(--bg);
       font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em;
       font-weight: 500; border-radius: 4px; text-decoration: none;
-      display: block; transition: transform 0.3s; user-select: none;
+      display: block; transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); user-select: none;
+      will-change: transform;
     }
     .btn-primary:hover { transform: scale(1.03); }
     .cta-email { font-size: 13px; letter-spacing: 0.1em; color: var(--muted); text-decoration: underline; text-decoration-color: rgba(196,181,157,0.3); text-underline-offset: 4px; transition: color 0.3s; }
@@ -817,7 +823,7 @@
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
       <video autoplay muted loop playsinline style="opacity:0.45;" data-parallax>
-        <source src="ROV-1.mp4" type="video/mp4" />
+        <source src="rov-2.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
     </div>
@@ -904,7 +910,7 @@
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
       <video autoplay muted loop playsinline style="opacity:0.4;" data-parallax>
-        <source src="ROV-rock.mp4" type="video/mp4" />
+        <source src="ROV-1.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
     </div>
@@ -1195,6 +1201,11 @@
 
     document.querySelectorAll('.work-row').forEach(row => {
       row.addEventListener('click', () => openCaseStudy(row.dataset.case));
+      row.addEventListener('mousemove', (e) => {
+        const rect = row.getBoundingClientRect();
+        row.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+        row.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+      });
     });
 
     document.getElementById('case-close').addEventListener('click', closeCaseStudy);
@@ -1225,6 +1236,19 @@
     function scrollCarousel(dir) {
       carousel.scrollBy({ left: dir === 'left' ? -350 : 350, behavior: 'smooth' });
     }
+
+    // ── Magnetic button effect ──
+    document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.18}px, ${y * 0.25}px) scale(1.03)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
   </script>
 </body>
 </html>
