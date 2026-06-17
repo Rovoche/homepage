@@ -12,12 +12,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #151616;
-      --panel: #1C1D1D;
-      --text: #E2E1DA;
-      --muted: #8A8C8A;
-      --accent: #C4B59D;
-      --divider: rgba(226,225,218,0.08);
+      --bg: #FAF5EC;
+      --panel: #F3ECDF;
+      --text: #2B2521;
+      --muted: #756A5D;
+      --accent: #C9A876;
+      --beige: #E4D8C3;
+      --divider: rgba(43,37,33,0.10);
       --font-serif: 'Playfair Display', Georgia, serif;
       --font-sans: 'Jost', 'Helvetica Neue', Arial, sans-serif;
     }
@@ -32,7 +33,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: rgba(196,181,157,0.3); color: #fff; }
+    ::selection { background: rgba(201,168,118,0.3); color: #fff; }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -63,7 +64,7 @@
 
     /* ── Glass ── */
     .glass {
-      background: rgba(28,29,29,0.65);
+      background: rgba(243,236,223,0.65);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--divider);
@@ -76,7 +77,7 @@
     }
     .vid-bg-fallback {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, #151616, #1C1D1D, #151616);
+      background: linear-gradient(to bottom, #FAF5EC, #F3ECDF, #FAF5EC);
     }
     .vid-bg video {
       position: absolute;
@@ -88,7 +89,7 @@
     }
     .vid-bg-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, #151616, transparent, rgba(21,22,22,0.3));
+      background: linear-gradient(to top, #FAF5EC, transparent, rgba(250,245,236,0.3));
       pointer-events: none;
     }
 
@@ -100,7 +101,7 @@
       letter-spacing: 0.35em;
       color: var(--accent);
     }
-    .rule { height: 1px; width: 48px; background: rgba(196,181,157,0.6); }
+    .rule { height: 1px; width: 48px; background: rgba(201,168,118,0.6); }
     .serif { font-family: var(--font-serif); }
     .italic { font-style: italic; }
 
@@ -110,38 +111,37 @@
     #preloader {
       position: fixed; inset: 0; z-index: 100;
       background: var(--bg);
-      display: flex; flex-direction: column; justify-content: space-between;
-      padding: 24px 48px;
-      transition: transform 1s cubic-bezier(0.85,0,0.15,1);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.9s cubic-bezier(0.85,0,0.15,1);
     }
     #preloader.done { transform: translateY(-100%); }
 
-    .pre-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 10; }
-    .pre-brand span { font-family: var(--font-serif); font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--accent); display: block; }
-    .pre-brand p { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-top: 4px; }
-
-    #skip-btn {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;
-      border: 1px solid rgba(226,225,218,0.2); border-radius: 999px;
-      padding: 6px 16px; background: none; color: var(--muted); cursor: pointer;
-      transition: border-color 0.3s, color 0.3s;
+    .pre-signature { position: relative; z-index: 10; text-align: center; user-select: none; padding: 0 24px; }
+    .sig-svg { width: min(560px, 90vw); height: auto; overflow: visible; }
+    .sig-text {
+      font-family: var(--font-serif);
+      font-size: 86px;
+      letter-spacing: 0.04em;
+      fill: none;
+      stroke: var(--text);
+      stroke-width: 1.1;
+      stroke-dasharray: 1400;
+      stroke-dashoffset: 1400;
+      animation: signatureDraw 2.6s cubic-bezier(0.65,0,0.35,1) forwards;
     }
-    #skip-btn:hover { border-color: var(--accent); color: var(--text); }
-
-    .pre-center { text-align: center; position: relative; z-index: 10; margin: auto 0; user-select: none; }
-    .pre-center h1 {
-      font-family: var(--font-serif); font-weight: 400;
-      font-size: clamp(2.5rem, 10vw, 7rem);
-      letter-spacing: 0.18em; text-transform: uppercase; color: var(--text);
+    @media (max-width: 640px) { .sig-text { font-size: 64px; } }
+    @keyframes signatureDraw {
+      to { stroke-dashoffset: 0; }
     }
-    .pre-center p { font-family: var(--font-serif); font-style: italic; font-size: clamp(1rem, 2vw, 1.25rem); color: var(--accent); margin-top: 16px; letter-spacing: 0.1em; }
-
-    .pre-bottom { position: relative; z-index: 10; }
-    .pre-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px; }
-    .pre-bottom-row span:first-child { font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--muted); }
-    .pre-bottom-row span:last-child { font-family: monospace; font-size: 12px; color: var(--accent); }
-    .progress-bar { height: 2px; width: 100%; background: rgba(226,225,218,0.1); position: relative; overflow: hidden; }
-    .progress-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); transition: width 0.3s ease-out; width: 0%; }
+    .sig-tagline {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: clamp(0.95rem, 2vw, 1.2rem); color: var(--accent);
+      letter-spacing: 0.12em; margin-top: 8px;
+      opacity: 0; transform: translateY(8px);
+      animation: tagFadeIn 0.8s ease forwards;
+      animation-delay: 2.5s;
+    }
+    @keyframes tagFadeIn { to { opacity: 1; transform: translateY(0); } }
 
     /* ─────────────────────────────────────────
        2. NAV
@@ -153,7 +153,7 @@
       border-bottom: 1px solid transparent;
     }
     #navbar.scrolled {
-      background: rgba(28,29,29,0.65);
+      background: rgba(243,236,223,0.65);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom-color: var(--divider);
@@ -176,7 +176,7 @@
     .nav-links a:hover { color: var(--text); }
     .nav-cta {
       font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
-      padding: 10px 24px; border: 1px solid rgba(196,181,157,0.3);
+      padding: 10px 24px; border: 1px solid rgba(201,168,118,0.3);
       color: var(--accent); text-decoration: none; border-radius: 2px;
       transition: all 0.5s;
     }
@@ -209,7 +209,7 @@
       padding: 16px; background: var(--accent); color: var(--bg);
       text-decoration: none; border-radius: 4px; font-weight: 500;
     }
-    .mobile-footer { border-top: 1px solid rgba(226,225,218,0.1); padding-top: 24px; }
+    .mobile-footer { border-top: 1px solid rgba(43,37,33,0.1); padding-top: 24px; }
     .mobile-footer p { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: var(--accent); }
     .mobile-footer-row { display: flex; justify-content: space-between; margin-top: 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); }
 
@@ -241,12 +241,13 @@
     @media (min-width: 640px) { .hero-btns { flex-direction: row; justify-content: center; gap: 32px; } }
     .btn-outline {
       font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em;
-      padding: 14px 32px; border: 1px solid rgba(226,225,218,0.4);
+      padding: 14px 32px; border: 1px solid rgba(43,37,33,0.4);
       color: var(--text); text-decoration: none; border-radius: 2px;
       transition: all 0.3s; width: 100%; text-align: center;
     }
     @media (min-width: 640px) { .btn-outline { width: auto; } }
-    .btn-outline:hover { border-color: var(--accent); background: rgba(196,181,157,0.1); }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(201,168,118,0.1); }
+    .btn-small { padding: 10px 22px; font-size: 10px; letter-spacing: 0.18em; width: auto; }
     .btn-text {
       display: flex; align-items: center; gap: 8px;
       font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em;
@@ -259,12 +260,12 @@
     .hero-coords {
       position: absolute; bottom: 40px; left: 0; right: 0; z-index: 10;
       padding: 0 48px; display: none; justify-content: space-between; align-items: center;
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(138,140,138,0.8);
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(117,106,93,0.8);
     }
     @media (min-width: 640px) { .hero-coords { display: flex; } }
     .hero-coords-left { display: flex; align-items: center; gap: 16px; }
-    .dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(196,181,157,0.6); }
-    .ping { width: 6px; height: 6px; border-radius: 50%; background: rgba(196,181,157,0.8); animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite; }
+    .dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(201,168,118,0.6); }
+    .ping { width: 6px; height: 6px; border-radius: 50%; background: rgba(201,168,118,0.8); animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite; }
     @keyframes ping { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
 
     /* ─────────────────────────────────────────
@@ -278,8 +279,8 @@
     .industry-track span:not(.ind-dot) { font-family: var(--font-serif); font-size: clamp(1.1rem,2.5vw,1.6rem); color: var(--text); letter-spacing: 0.02em; }
     .industry-track .ind-dot { color: var(--accent); font-size: 1.2rem; }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .trust-quote { margin-top: 48px; text-align: center; padding: 32px 24px 0; border-top: 1px solid rgba(226,225,218,0.05); }
-    .trust-quote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(0.875rem,2vw,1rem); color: rgba(226,225,218,0.9); max-width: 500px; margin: 0 auto; }
+    .trust-quote { margin-top: 48px; text-align: center; padding: 32px 24px 0; border-top: 1px solid rgba(43,37,33,0.05); }
+    .trust-quote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(0.875rem,2vw,1rem); color: rgba(43,37,33,0.9); max-width: 500px; margin: 0 auto; }
 
     /* ─────────────────────────────────────────
        5. SELECTED WORK
@@ -295,14 +296,14 @@
       transition: all 0.5s; overflow: hidden; text-align: left;
       -webkit-tap-highlight-color: transparent;
     }
-    .work-row::before { content: ''; position: absolute; inset: 0; background: rgba(28,29,29,0); transition: background 0.5s; z-index: -1; }
+    .work-row::before { content: ''; position: absolute; inset: 0; background: rgba(243,236,223,0); transition: background 0.5s; z-index: -1; }
     .work-row::after {
       content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0;
-      background: radial-gradient(circle 220px at var(--mx,50%) var(--my,50%), rgba(196,181,157,0.10), transparent 70%);
+      background: radial-gradient(circle 220px at var(--mx,50%) var(--my,50%), rgba(201,168,118,0.10), transparent 70%);
       transition: opacity 0.4s;
     }
     .work-row:hover::after { opacity: 1; }
-    .work-row:hover::before { background: rgba(28,29,29,0.45); }
+    .work-row:hover::before { background: rgba(243,236,223,0.45); }
     .work-row-grid { display: grid; grid-template-columns: 1fr; gap: 16px; position: relative; z-index: 10; }
     @media (min-width: 1024px) { .work-row-grid { grid-template-columns: 4fr 6fr 2fr; align-items: center; gap: 32px; } }
     .work-meta { display: flex; align-items: center; gap: 32px; }
@@ -327,7 +328,7 @@
     }
     @media (min-width: 1024px) { .work-img-hover { display: block; } }
     .work-row:hover .work-img-hover { opacity: 1; transform: translateY(-50%) translateX(0); }
-    .work-img-hover img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%); transition: filter 1s; border: 1px solid rgba(196,181,157,0.2); }
+    .work-img-hover img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%); transition: filter 1s; border: 1px solid rgba(201,168,118,0.2); }
     .work-row:hover .work-img-hover img { filter: grayscale(0); }
 
     /* (mobile peek removed — replaced by full case study overlay) */
@@ -339,22 +340,54 @@
        6. PROCESS
     ───────────────────────────────────────── */
     #process { padding: 96px 24px; background: var(--panel); border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
-    .process-header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 80px; }
+    .process-header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 72px; }
     .process-header h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.75rem,5vw,3rem); color: var(--text); letter-spacing: -0.01em; }
-    .process-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
-    @media (min-width: 768px) { .process-grid { grid-template-columns: repeat(3,1fr); } }
-    .process-card {
-      border: 1px solid rgba(196,181,157,0.2); background: rgba(21,22,22,0.5);
-      border-radius: 2px; padding: 32px; min-height: 280px;
-      display: flex; flex-direction: column; justify-content: space-between;
-      transition: border-color 0.5s;
+    .process-intro { font-size: clamp(0.8rem,1.6vw,0.95rem); color: var(--muted); max-width: 480px; line-height: 1.7; letter-spacing: 0.02em; margin-top: 4px; }
+
+    .process-timeline { position: relative; max-width: 760px; margin: 0 auto; }
+    .timeline-line { position: absolute; left: 23px; top: 8px; bottom: 8px; width: 1px; background: rgba(43,37,33,0.12); }
+    @media (min-width: 640px) { .timeline-line { left: 27px; } }
+    .timeline-fill { position: absolute; left: 0; top: 0; width: 100%; height: 0%; background: var(--accent); transition: height 0.3s ease-out; }
+
+    .timeline-step { position: relative; padding-left: 64px; margin-bottom: 28px; }
+    @media (min-width: 640px) { .timeline-step { padding-left: 76px; } }
+    .timeline-marker {
+      position: absolute; left: 0; top: 0;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--bg); border: 1px solid rgba(201,168,118,0.4);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.4s;
     }
-    .process-card:hover { border-color: rgba(196,181,157,0.6); }
-    .process-card.highlight { border-color: var(--accent); background: rgba(196,181,157,0.05); border-style: dashed; }
-    .process-step { font-family: monospace; font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 32px; display: block; }
-    .process-card h3 { font-family: var(--font-serif); font-size: 1.25rem; color: var(--text); margin-bottom: 12px; transition: color 0.3s; }
-    .process-card:hover h3 { color: var(--accent); }
-    .process-card p { font-size: clamp(0.75rem,1.5vw,0.875rem); color: var(--muted); line-height: 1.7; letter-spacing: 0.05em; }
+    @media (min-width: 640px) { .timeline-marker { width: 56px; height: 56px; } }
+    .timeline-marker span { font-family: monospace; font-size: 13px; color: var(--accent); letter-spacing: 0.05em; }
+    .timeline-step.highlight .timeline-marker { background: var(--accent); border-color: var(--accent); }
+    .timeline-step.highlight .timeline-marker span { color: var(--bg); }
+
+    .timeline-content {
+      border: 1px solid rgba(201,168,118,0.2); background: rgba(250,245,236,0.6);
+      border-radius: 4px; padding: 24px 28px; cursor: pointer;
+      transition: border-color 0.4s, background 0.4s;
+    }
+    .timeline-content:hover { border-color: rgba(201,168,118,0.55); }
+    .timeline-step.highlight .timeline-content { border-color: rgba(201,168,118,0.5); background: rgba(201,168,118,0.08); }
+
+    .timeline-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .timeline-head h3 { font-family: var(--font-serif); font-size: clamp(1.05rem,2vw,1.3rem); color: var(--text); transition: color 0.3s; }
+    .timeline-content:hover .timeline-head h3 { color: var(--accent); }
+    .chevron { width: 18px; height: 18px; color: var(--muted); flex-shrink: 0; transition: transform 0.4s, color 0.3s; }
+    .timeline-step.open .chevron { transform: rotate(180deg); color: var(--accent); }
+
+    .timeline-summary { font-size: clamp(0.8rem,1.5vw,0.9rem); color: var(--muted); line-height: 1.65; letter-spacing: 0.02em; margin-top: 10px; }
+
+    .timeline-detail {
+      max-height: 0; opacity: 0; overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+    }
+    .timeline-step.open .timeline-detail { max-height: 600px; opacity: 1; }
+    .timeline-detail p { font-size: clamp(0.8rem,1.5vw,0.9rem); color: var(--text); line-height: 1.75; letter-spacing: 0.02em; margin-top: 18px; }
+    .timeline-points { margin-top: 16px; padding-bottom: 4px; display: flex; flex-direction: column; gap: 10px; }
+    .timeline-points li { font-size: clamp(0.78rem,1.4vw,0.85rem); color: var(--muted); line-height: 1.6; padding-left: 20px; position: relative; }
+    .timeline-points li::before { content: ''; position: absolute; left: 0; top: 7px; width: 7px; height: 1px; background: var(--accent); }
 
     /* ─────────────────────────────────────────
        7. SERVICES
@@ -373,7 +406,7 @@
       margin: 0 -16px; padding-left: 16px; padding-right: 16px;
       transition: background 0.3s;
     }
-    .service-item:hover { background: rgba(28,29,29,0.3); }
+    .service-item:hover { background: rgba(243,236,223,0.3); }
     .service-item h3 { font-family: var(--font-serif); font-size: clamp(1rem,2vw,1.25rem); color: var(--text); margin-bottom: 8px; transition: color 0.3s; }
     .service-item:hover h3 { color: var(--accent); }
     .service-item p { font-size: clamp(0.75rem,1.5vw,0.875rem); color: var(--muted); max-width: 500px; }
@@ -391,7 +424,7 @@
     @media (min-width: 640px) { .carousel-nav { display: flex; } }
     .carousel-btn {
       width: 40px; height: 40px; border-radius: 50%;
-      border: 1px solid rgba(226,225,218,0.2); background: none; cursor: pointer;
+      border: 1px solid rgba(43,37,33,0.2); background: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       color: var(--muted); transition: all 0.3s;
     }
@@ -420,7 +453,7 @@
     .t-card-foot svg { width: 14px; height: 14px; color: var(--accent); }
     .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
     @media (min-width: 640px) { .carousel-dots { display: none; } }
-    .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(196,181,157,0.4); }
+    .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(201,168,118,0.4); }
 
     /* ─────────────────────────────────────────
        9. CTA
@@ -440,16 +473,16 @@
       will-change: transform;
     }
     .btn-primary:hover { transform: scale(1.03); }
-    .cta-email { font-size: 13px; letter-spacing: 0.1em; color: var(--muted); text-decoration: underline; text-decoration-color: rgba(196,181,157,0.3); text-underline-offset: 4px; transition: color 0.3s; }
+    .cta-email { font-size: 13px; letter-spacing: 0.1em; color: var(--muted); text-decoration: underline; text-decoration-color: rgba(201,168,118,0.3); text-underline-offset: 4px; transition: color 0.3s; }
     .cta-email:hover { color: var(--accent); }
 
     /* ─────────────────────────────────────────
        10. FOOTER
     ───────────────────────────────────────── */
-    footer { position: relative; padding: 56px 24px; background: var(--bg); border-top: 1px solid rgba(226,225,218,0.05); overflow: hidden; }
+    footer { position: relative; padding: 56px 24px; background: var(--bg); border-top: 1px solid rgba(43,37,33,0.05); overflow: hidden; }
     .footer-inner { position: relative; z-index: 10; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; text-align: center; align-items: center; }
     @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; } }
-    footer p { font-size: 9px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(226,225,218,0.3); }
+    footer p { font-size: 9px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(43,37,33,0.3); }
 
     /* ─────────────────────────────────────────
        11. CASE STUDY OVERLAY
@@ -467,7 +500,7 @@
     #case-close {
       position: fixed; top: 24px; right: 24px; z-index: 20;
       width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(28,29,29,0.7); backdrop-filter: blur(8px);
+      background: rgba(243,236,223,0.7); backdrop-filter: blur(8px);
       border: 1px solid var(--divider); color: var(--text);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: all 0.3s;
@@ -483,7 +516,7 @@
     }
     #case-overlay.open .case-hero { opacity: 1; transform: scale(1); }
     .case-hero img { width: 100%; height: 100%; object-fit: cover; }
-    .case-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 5%, rgba(21,22,22,0.2) 60%, rgba(21,22,22,0.5)); }
+    .case-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 5%, rgba(250,245,236,0.2) 60%, rgba(250,245,236,0.5)); }
     .case-hero-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 24px 40px; max-width: 1280px; margin: 0 auto; }
     @media (min-width: 768px) { .case-hero-text { padding: 24px 48px 56px; } }
     .case-id { font-family: monospace; font-size: 13px; color: var(--accent); letter-spacing: 0.1em; display: block; margin-bottom: 8px; }
@@ -522,30 +555,16 @@
   <div id="preloader">
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
-      <video autoplay muted playsinline id="intro-video" style="opacity:0.4;">
-        <source src="Rov-Intro.mp4" type="video/mp4" />
+      <video autoplay muted playsinline id="intro-video" style="opacity:0.10;">
+        <source src="rov-2.mp4" type="video/mp4" />
       </video>
-      <div style="position:absolute;inset:0;background:rgba(21,22,22,0.4);"></div>
+      <div style="position:absolute;inset:0;background:rgba(250,245,236,0.55);"></div>
     </div>
-    <div class="pre-top">
-      <div class="pre-brand">
-        <span>ROVOCHÉ STUDIO</span>
-        <p>Lagos, Nigeria</p>
-      </div>
-      <button id="skip-btn">Skip Intro</button>
-    </div>
-    <div class="pre-center">
-      <h1>ROVOCHÉ</h1>
-      <p>Built on Rock.</p>
-    </div>
-    <div class="pre-bottom">
-      <div class="pre-bottom-row">
-        <span>CREATIVE ARCHISTRY & STRATEGIC LUXURY</span>
-        <span id="pre-pct">0%</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
+    <div class="pre-signature">
+      <svg viewBox="0 0 600 140" class="sig-svg" id="sig-svg">
+        <text x="300" y="95" text-anchor="middle" class="sig-text" id="sig-text">ROVOCHÉ</text>
+      </svg>
+      <p class="sig-tagline" id="sig-tagline">Built on Rock.</p>
     </div>
   </div>
 
@@ -588,17 +607,17 @@
   <section id="hero">
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
-      <video autoplay muted loop playsinline style="opacity:0.55;" data-parallax>
+      <video autoplay muted loop playsinline style="opacity:0.14;" data-parallax>
         <source src="rov-2.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
     </div>
     <div class="hero-content">
       <span class="label hero-anim" style="animation-delay:0.2s;">LAGOS, NIGERIA</span>
-      <h1 class="hero-anim" style="animation-delay:0.4s;">Your business deserves to be taken <em>seriously online.</em></h1>
-      <p class="hero-anim" style="animation-delay:0.6s;">We build premium websites for Nigerian businesses ready to grow. No code shortcuts, just pure digital luxury.</p>
+      <h1 class="hero-anim" style="animation-delay:0.4s;">Websites built <em>to be taken seriously.</em></h1>
+      <p class="hero-anim" style="animation-delay:0.6s;">Premium design. No shortcuts.</p>
       <div class="hero-btns hero-anim" style="animation-delay:0.8s;">
-        <a href="#work" class="btn-outline" onclick="smoothScroll(event,'work')">See Our Work</a>
+        <a href="#work" class="btn-outline btn-small" onclick="smoothScroll(event,'work')">See Our Work</a>
         <a href="#cta" class="btn-text" onclick="smoothScroll(event,'cta')">
           Start a Project
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
@@ -734,28 +753,86 @@
       <div class="process-header sr">
         <span class="label">THE PROCESS</span>
         <div class="rule"></div>
-        <h2>Simple. Clear. Delivered.</h2>
+        <h2>How We Build With You</h2>
+        <p class="process-intro">Every project starts with understanding your business, not a template. Here's exactly how we work, step by step — tap any stage to see what it actually involves.</p>
       </div>
-      <div class="process-grid" data-stagger>
-        <div class="process-card sr">
-          <span class="process-step">Step 01</span>
-          <div>
-            <h3>We Listen</h3>
-            <p>You tell us about your business, your customers, and what you want your website to do. No jargon.</p>
+
+      <div class="process-timeline" id="process-timeline">
+        <div class="timeline-line"><div class="timeline-fill" id="timeline-fill"></div></div>
+
+        <div class="timeline-step sr" data-step="1">
+          <div class="timeline-marker"><span>01</span></div>
+          <div class="timeline-content" onclick="toggleStep(this)">
+            <div class="timeline-head">
+              <h3>We Listen First</h3>
+              <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <p class="timeline-summary">A real conversation about your business, your customers, and what's actually holding you back online — no jargon, no rushing you into a package.</p>
+            <div class="timeline-detail">
+              <p>We start with a call or chat, not a form. We want to know who your customers actually are, what makes someone choose you over a competitor, and what you've tried before that didn't work. If you don't know your audience precisely yet, we help you figure that out first — building a beautiful site for the wrong customer wastes everyone's time and money.</p>
+              <ul class="timeline-points">
+                <li>We ask about your business goals, not just "what pages do you want"</li>
+                <li>We look at what your competitors are doing right and wrong</li>
+                <li>You get a clear written summary of what we heard before any design starts</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="process-card sr">
-          <span class="process-step">Step 02</span>
-          <div>
-            <h3>We Build</h3>
-            <p>We design and develop your full custom website. You see progress, give feedback, we refine.</p>
+
+        <div class="timeline-step sr" data-step="2">
+          <div class="timeline-marker"><span>02</span></div>
+          <div class="timeline-content" onclick="toggleStep(this)">
+            <div class="timeline-head">
+              <h3>We Design With Intent</h3>
+              <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <p class="timeline-summary">Every layout, color, and word choice is decided to move your specific customer toward contacting you — not picked because it looked nice on a template site.</p>
+            <div class="timeline-detail">
+              <p>We design around what will make your specific customer trust you faster. A fashion brand and a law firm need completely different visual languages, pacing, and tone — what works for one would actively hurt the other. You see real drafts early, not a final reveal at the end, so there are no surprises and no wasted rounds of guessing what you meant.</p>
+              <ul class="timeline-points">
+                <li>You see and react to real design drafts, not vague mockups</li>
+                <li>Every section has a stated purpose — if it doesn't earn its place, it's cut</li>
+                <li>We design mobile-first, since most of your customers will visit on a phone</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="process-card highlight sr">
-          <span class="process-step">Step 03</span>
-          <div>
-            <h3>You Launch</h3>
-            <p>Your site goes live. You get a website that makes your business look serious and attracts customers.</p>
+
+        <div class="timeline-step sr" data-step="3">
+          <div class="timeline-marker"><span>03</span></div>
+          <div class="timeline-content" onclick="toggleStep(this)">
+            <div class="timeline-head">
+              <h3>We Build &amp; Refine Together</h3>
+              <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <p class="timeline-summary">Your full site gets built in the open. You give feedback as it takes shape, and we refine until it actually feels right to you — not just to us.</p>
+            <div class="timeline-detail">
+              <p>We don't disappear for three weeks and resurface with a finished product you might hate. You get checkpoints to review and request changes throughout, so the final site reflects what you actually wanted, refined through real feedback rather than guesswork. Performance and mobile responsiveness are checked at every stage, not bolted on at the end.</p>
+              <ul class="timeline-points">
+                <li>Scheduled check-ins so you always know what stage we're at</li>
+                <li>Revisions are expected and built into the process, not an extra fight</li>
+                <li>Every page is tested across phones, tablets, and desktops before launch</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-step sr highlight" data-step="4">
+          <div class="timeline-marker"><span>04</span></div>
+          <div class="timeline-content" onclick="toggleStep(this)">
+            <div class="timeline-head">
+              <h3>You Launch — And We Stay Invested</h3>
+              <svg class="chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <p class="timeline-summary">Your site goes live, and we don't vanish. We make sure it's actually working for your business, and we're available as your business grows beyond it.</p>
+            <div class="timeline-detail">
+              <p>A website that launches and gets forgotten isn't a finished job — it's an unfinished one. We walk you through how to use everything, what to track, and what your next move should be as your business grows: a new collection page, a booking system, a second location. We see ourselves as invested in your business actually growing, not just in delivering a file and disappearing.</p>
+              <ul class="timeline-points">
+                <li>A short handover walkthrough so you're confident running the site</li>
+                <li>Direct access to us for fixes or questions after launch</li>
+                <li>Honest advice on what to add next as your business grows — not upsells for the sake of it</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -766,7 +843,7 @@
   <section id="services">
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
-      <video autoplay muted loop playsinline style="opacity:0.35;" data-parallax>
+      <video autoplay muted loop playsinline style="opacity:0.16;" data-parallax>
         <source src="rov-2.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
@@ -822,7 +899,7 @@
   <section id="testimonials">
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
-      <video autoplay muted loop playsinline style="opacity:0.45;" data-parallax>
+      <video autoplay muted loop playsinline style="opacity:0.18;" data-parallax>
         <source src="rov-2.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
@@ -909,7 +986,7 @@
   <section id="cta">
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
-      <video autoplay muted loop playsinline style="opacity:0.4;" data-parallax>
+      <video autoplay muted loop playsinline style="opacity:0.18;" data-parallax>
         <source src="ROV-1.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
@@ -930,7 +1007,7 @@
   <footer>
     <div class="vid-bg">
       <div class="vid-bg-fallback"></div>
-      <video autoplay muted loop playsinline style="opacity:0.22;" data-parallax>
+      <video autoplay muted loop playsinline style="opacity:0.20;" data-parallax class="footer-video">
         <source src="ROV-rock.mp4" type="video/mp4" />
       </video>
       <div class="vid-bg-overlay"></div>
@@ -1008,26 +1085,10 @@
         : '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>';
     }
 
-    // ── Preloader ──
+    // ── Preloader (5s signature-draw intro) ──
     (function() {
-      const fill = document.getElementById('progress-fill');
-      const pct = document.getElementById('pre-pct');
       const pre = document.getElementById('preloader');
-      const introVideo = document.getElementById('intro-video');
-      let percent = 0;
       document.body.style.overflow = 'hidden';
-
-      const duration = 4600, interval = 40, steps = duration / interval;
-      let step = 0;
-      const timer = setInterval(() => {
-        step++;
-        percent = Math.min(Math.round((step / steps) * 100), 100);
-        fill.style.width = percent + '%';
-        pct.textContent = percent + '%';
-        if (percent >= 100) { clearInterval(timer); completeIntro(); }
-      }, interval);
-
-      setTimeout(completeIntro, 5000);
 
       function completeIntro() {
         pre.classList.add('done');
@@ -1035,14 +1096,7 @@
         document.body.style.overflow = '';
       }
 
-      document.getElementById('skip-btn').addEventListener('click', () => {
-        clearInterval(timer);
-        completeIntro();
-      });
-
-      if (introVideo) {
-        introVideo.addEventListener('ended', completeIntro);
-      }
+      setTimeout(completeIntro, 5000);
     })();
 
     // ── Nav scroll ──
@@ -1070,13 +1124,29 @@
 
     document.querySelectorAll('.sr').forEach(el => srObserver.observe(el));
 
-    // ── Parallax videos ──
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
+    // ── Parallax videos (viewport-relative, prevents drift on tall sections) ──
+    function updateParallax() {
       document.querySelectorAll('[data-parallax]').forEach(v => {
-        v.style.transform = `translate(-50%, calc(-50% + ${scrollY * 0.14}px))`;
+        const rect = v.parentElement.getBoundingClientRect();
+        const centerOffset = rect.top + rect.height / 2 - window.innerHeight / 2;
+        const shift = centerOffset * 0.10;
+        v.style.transform = `translate(-50%, calc(-50% + ${shift}px))`;
       });
-    }, { passive: true });
+    }
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    window.addEventListener('resize', updateParallax);
+    updateParallax();
+
+    // ── Force-play below-the-fold videos once visible (fixes autoplay being silently blocked) ──
+    const lazyVideoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const vid = entry.target;
+        if (entry.isIntersecting) {
+          vid.play().catch(() => {});
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.vid-bg video').forEach(v => lazyVideoObserver.observe(v));
 
     // ── Case Study Data ──
     const CASE_STUDIES = {
@@ -1094,7 +1164,7 @@
           'Ghost navigation keeps the opening visual moment uncluttered',
           'A dedicated academy section turns the brand into an authority, not just a shop'
         ],
-        palette: ['#151616', '#C4B59D', '#E2E1DA'],
+        palette: ['#FAF5EC', '#C9A876', '#2B2521'],
         type: 'Playfair Display for headlines, paired with a restrained sans for body copy — editorial, not decorative.',
         signature: 'The signature-collection accordion: each garment expands to full focus on interaction, echoing a private fitting rather than a product grid.'
       },
@@ -1111,7 +1181,7 @@
           'Minimal framing keeps focus on the transformations, not the template',
           'Fast load and mobile-first layout match how clients actually browse — on their phones, mid-scroll'
         ],
-        palette: ['#1C1D1D', '#C4B59D', '#8A8C8A'],
+        palette: ['#F3ECDF', '#C9A876', '#756A5D'],
         type: 'Jost throughout — clean, modern, lets the visual content carry the personality.',
         signature: 'Direct Instagram reel embedding, giving the site living proof instead of static screenshots.'
       },
@@ -1129,7 +1199,7 @@
           'Animated timeline turns a decade of history into something scannable, not a text dump',
           'Staff profile pages humanize the organization for first-time visitors'
         ],
-        palette: ['#3A6EA5', '#1C1D1D', '#E2E1DA'],
+        palette: ['#3A6EA5', '#F3ECDF', '#2B2521'],
         type: 'DM Serif Display for headings, DM Sans for body — formal enough for funders, warm enough for teenagers.',
         signature: 'A hand-animated castle SVG logo with a waving tri-colour flag, built specifically for this brand.'
       },
