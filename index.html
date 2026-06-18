@@ -18,7 +18,7 @@
       --text: #2B2521;
       --muted: #6E6357;
       --accent: #C9A876;
-      --divider: rgba(43,37,33,0.10);
+      --divider: rgba(43,37,33,0.14);
       --font-serif: 'Playfair Display', Georgia, serif;
       --font-sans: 'Jost', 'Helvetica Neue', Arial, sans-serif;
 
@@ -111,7 +111,7 @@
     .mobile-links { display: flex; flex-direction: column; gap: var(--s-32); margin: auto 0; }
     .mobile-links a { font-family: var(--font-serif); font-size: clamp(1.6rem, 6vw, 2.2rem); color: var(--text); text-decoration: none; transition: color 0.3s; }
     .mobile-links a:hover { color: var(--accent); }
-    .mobile-cta { display: block; text-align: center; margin-top: var(--s-16); font-size: 12px; text-transform: uppercase; letter-spacing: 0.22em; padding: var(--s-16); background: var(--accent); color: var(--bg); text-decoration: none; border-radius: 4px; font-weight: 500; }
+    .mobile-cta { display: inline-block; text-align: center; margin-top: var(--s-16); font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; padding: 12px 28px; background: var(--accent); color: var(--bg); text-decoration: none; border-radius: 4px; font-weight: 500; }
     .mobile-footer { border-top: 1px solid var(--divider); padding-top: var(--s-24); }
     .mobile-footer p { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: var(--accent); }
     .mobile-footer-row { display: flex; justify-content: space-between; margin-top: var(--s-8); font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); }
@@ -137,16 +137,14 @@
     .btn-primary { padding: 16px 36px; background: var(--accent); color: var(--bg); font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; font-weight: 500; border-radius: 4px; text-decoration: none; display: inline-block; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
     .btn-primary:hover { transform: scale(1.03); }
 
-    /* 4. BUILT ON ROCK */
-    #built-on-rock { min-height: 90vh; display: flex; align-items: center; overflow: hidden; }
-    #built-on-rock .cine-video video { opacity: 0.9; }
-    #built-on-rock .cine-fade-top { height: 45%; }
-    #built-on-rock .cine-fade-bottom { height: 55%; }
-    .rock-content { position: relative; z-index: 10; max-width: 620px; padding: var(--s-160) var(--pad-mobile); margin: 0 auto; text-align: center; }
-    @media (max-width: 640px) { .rock-content { padding: var(--s-120) var(--pad-mobile); } }
-    .rock-content h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.9rem, 4.5vw, 3rem); line-height: 1.3; color: var(--text); text-shadow: 0 2px 20px rgba(250,245,236,0.5); }
-    .rock-content h2 em { font-style: italic; color: var(--accent); }
-    .rock-content p { font-size: clamp(0.9rem, 1.6vw, 1.05rem); color: var(--text); margin-top: var(--s-24); line-height: 1.75; max-width: 460px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 16px rgba(250,245,236,0.4); }
+    /* 4. INDUSTRIES MARQUEE */
+    .industries-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--s-16); margin-bottom: var(--s-64); }
+    .industries-head h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.6rem, 3.5vw, 2.4rem); color: var(--text); }
+    .marquee-wrap { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .marquee-track { display: flex; align-items: center; white-space: nowrap; gap: var(--s-24); animation: marqueeScroll 30s linear infinite; width: max-content; }
+    .marquee-item { font-family: var(--font-serif); font-size: clamp(1.1rem, 2.5vw, 1.6rem); color: var(--text); letter-spacing: 0.01em; }
+    .marquee-dot { color: var(--accent); font-size: 1.2rem; }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     /* 5. SELECTED WORK */
     .work-list { border-top: 1px solid var(--divider); }
@@ -174,7 +172,7 @@
     .work-footer-quote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(0.9rem,1.8vw,1.05rem); color: var(--muted); max-width: 480px; margin: 0 auto; }
 
     /* 6. PROCESS */
-    #process { background: var(--panel); border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); }
+    #process { background: var(--panel); border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); overflow: hidden; }
     .process-journey { display: flex; flex-direction: column; }
     .process-stage { display: grid; grid-template-columns: 1fr; gap: var(--s-24); padding: var(--s-64) 0; border-bottom: 1px solid var(--divider); }
     .process-stage:last-child { border-bottom: none; }
@@ -187,7 +185,7 @@
     .stage-body .stage-emphasis { color: var(--text); }
 
     /* 7. SERVICES */
-    #services { background: var(--bg); }
+    #services { background: var(--panel); overflow: hidden; }
     .services-grid { display: grid; grid-template-columns: 1fr; gap: var(--s-48); }
     @media (min-width: 1024px) { .services-grid { grid-template-columns: 4fr 8fr; gap: var(--s-80); } }
     .services-sticky { position: static; }
@@ -204,7 +202,7 @@
     .service-item:hover svg { color: var(--accent); }
 
     /* 8. TESTIMONIALS */
-    #testimonials { background: var(--panel); border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); overflow: hidden; }
+    #testimonials { background: var(--bg); border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); overflow: hidden; }
     .testimonials-head { display: flex; flex-direction: column; gap: var(--s-16); margin-bottom: var(--s-48); }
     @media (min-width: 640px) { .testimonials-head { flex-direction: row; justify-content: space-between; align-items: flex-end; } }
     .testimonials-head h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.7rem,4vw,2.4rem); color: var(--text); }
@@ -224,6 +222,18 @@
     .t-foot { border-top: 1px solid var(--divider); padding-top: var(--s-16); display: flex; justify-content: space-between; align-items: center; }
     .t-foot h4 { font-family: var(--font-serif); font-size: 14px; color: var(--text); }
     .t-foot span { font-size: 10px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; display: block; margin-top: var(--s-8); }
+
+    /* FAQ */
+    .faq-list { border-top: 1px solid var(--divider); max-width: 760px; }
+    .faq-item { border-bottom: 1px solid var(--divider); padding: var(--s-24) 0; cursor: pointer; }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; gap: var(--s-24); }
+    .faq-q h3 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text); transition: color 0.3s; }
+    .faq-item:hover .faq-q h3 { color: var(--accent); }
+    .faq-icon { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; transition: transform 0.4s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; }
+    .faq-item.open .faq-a { max-height: 240px; opacity: 1; }
+    .faq-a p { font-size: clamp(0.85rem, 1.5vw, 0.95rem); color: var(--muted); line-height: 1.75; margin-top: var(--s-16); max-width: 620px; }
 
     /* 9. CTA */
     #cta { min-height: 85vh; display: flex; align-items: center; overflow: hidden; }
@@ -344,7 +354,6 @@
     <div class="hero-content">
       <span class="label">LAGOS, NIGERIA</span>
       <h1>Websites <em>built to last.</em></h1>
-      <p>We design and build websites with the same care you put into your business — structured, considered, and made to grow with you.</p>
       <div class="hero-btns">
         <a href="#work" class="btn-outline" onclick="smoothScroll(event,'work')">See Our Work</a>
         <a href="#cta" class="btn-text" onclick="smoothScroll(event,'cta')">
@@ -355,18 +364,50 @@
     </div>
   </section>
 
-  <!-- 4. BUILT ON ROCK -->
-  <section id="built-on-rock">
-    <div class="cine-video">
-      <video autoplay muted loop playsinline>
-        <source src="ROV-1.mp4" type="video/mp4" />
-      </video>
-      <div class="cine-fade-top"></div>
-      <div class="cine-fade-bottom"></div>
+  <!-- 4. INDUSTRIES MARQUEE -->
+  <section id="industries" class="section-pad" style="background: var(--beige);">
+    <div class="wrap">
+      <div class="industries-head sr">
+        <span class="label">WHO WE WORK WITH</span>
+        <div class="rule"></div>
+        <h2>Built For Businesses Like Yours</h2>
+      </div>
     </div>
-    <div class="rock-content">
-      <h2>Every business needs a <em>foundation</em> before it needs a website.</h2>
-      <p>We start with structure, not decoration. The layout, the words, the pace of the page — each one is decided on purpose, so the site holds up as your business grows.</p>
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span class="marquee-item">Fashion &amp; Couture</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Beauty &amp; Identity</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">NGOs &amp; Nonprofits</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Real Estate</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Law Firms</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Clinics &amp; Healthcare</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Salons &amp; Spas</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Restaurants</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Fashion &amp; Couture</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Beauty &amp; Identity</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">NGOs &amp; Nonprofits</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Real Estate</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Law Firms</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Clinics &amp; Healthcare</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Salons &amp; Spas</span>
+        <span class="marquee-dot">·</span>
+        <span class="marquee-item">Restaurants</span>
+        <span class="marquee-dot">·</span>
+      </div>
     </div>
   </section>
 
@@ -442,19 +483,26 @@
 
       </div>
       <div class="work-footer-quote sr">
-        <p>Each site is built around what the business actually needs — not a template stretched to fit.</p>
+        <p>Every site is shaped around the business it's built for.</p>
       </div>
     </div>
   </section>
 
   <!-- 6. PROCESS -->
   <section id="process" class="section-major">
-    <div class="wrap">
+    <div class="cine-video">
+      <video autoplay muted loop playsinline style="opacity:0.22;">
+        <source src="rov-24.mp4" type="video/mp4" />
+      </video>
+      <div class="cine-fade-top"></div>
+      <div class="cine-fade-bottom"></div>
+    </div>
+    <div class="wrap" style="position: relative; z-index: 10;">
       <div class="section-head sr">
         <span class="label">HOW WE WORK</span>
         <div class="rule"></div>
         <h2>A Process Built in Stages</h2>
-        <p>Four stages, each one earning the next. Nothing is rushed, and nothing is skipped.</p>
+        <p>Four stages, each one earning the next. From strategy to launch, every step is considered.</p>
       </div>
 
       <div class="process-journey">
@@ -464,8 +512,8 @@
             <h3 class="stage-name">Discovery</h3>
           </div>
           <div class="stage-body">
-            <p>We begin with your business, not your website. <span class="stage-emphasis">Who you serve, what makes them choose you, and what's been missing online.</span> This stage shapes everything that follows.</p>
-            <p>No templates are opened until we understand what we're actually building toward.</p>
+            <p>We begin with your business, not your website. <span class="stage-emphasis">Who you serve, what makes them choose you, and what your site needs to communicate.</span> This stage shapes everything that follows.</p>
+            <p>It's where the real work starts, long before any design is touched.</p>
           </div>
         </div>
 
@@ -476,7 +524,7 @@
           </div>
           <div class="stage-body">
             <p>Before any visual design begins, we map the structure — <span class="stage-emphasis">what each page needs to do, and in what order your customer needs to see it.</span></p>
-            <p>A site that looks good but is built on a weak structure rarely performs. We build the foundation first.</p>
+            <p>This is the foundation everything else is built on.</p>
           </div>
         </div>
 
@@ -487,7 +535,7 @@
           </div>
           <div class="stage-body">
             <p>This is where the site takes its final form — <span class="stage-emphasis">typography, imagery, motion, and detail, each considered against the structure already in place.</span></p>
-            <p>You see the work as it develops. Nothing arrives finished and unexplained.</p>
+            <p>You see the work as it develops, shaped by your feedback at every stage.</p>
           </div>
         </div>
 
@@ -497,8 +545,8 @@
             <h3 class="stage-name">Growth</h3>
           </div>
           <div class="stage-body">
-            <p>Launch isn't the end of the relationship. <span class="stage-emphasis">As your business changes, the site should change with it.</span></p>
-            <p>We stay available — for fixes, for additions, and for honest advice on what to build next.</p>
+            <p>Launch is the beginning, not the end. <span class="stage-emphasis">As your business changes, the site should change with it.</span></p>
+            <p>We stay close — for fixes, for additions, and for advice on what to build next.</p>
           </div>
         </div>
       </div>
@@ -507,7 +555,14 @@
 
   <!-- 7. SERVICES -->
   <section id="services" class="section-pad">
-    <div class="wrap">
+    <div class="cine-video">
+      <video autoplay muted loop playsinline style="opacity:0.18;">
+        <source src="ROV-1.mp4" type="video/mp4" />
+      </video>
+      <div class="cine-fade-top"></div>
+      <div class="cine-fade-bottom"></div>
+    </div>
+    <div class="wrap" style="position: relative; z-index: 10;">
       <div class="services-grid">
         <div class="services-sticky sr">
           <span class="label">SERVICES</span>
@@ -521,7 +576,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <div class="service-item">
-            <div><h3>E-Commerce Sites</h3><p>Built for browsing and buying, without unnecessary friction between the two.</p></div>
+            <div><h3>E-Commerce Sites</h3><p>Built for browsing and buying, with a clear path between the two.</p></div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
           <div class="service-item">
@@ -584,6 +639,61 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq" class="section-pad" style="background: var(--beige);">
+    <div class="wrap">
+      <div class="section-head sr">
+        <span class="label">QUESTIONS</span>
+        <div class="rule"></div>
+        <h2>What People Ask Us</h2>
+      </div>
+      <div class="faq-list" data-stagger>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h3>How long does a project take?</h3>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="faq-a"><p>Most projects take two to four weeks from our first conversation to launch, depending on the size and complexity of the site. We'll give you a clear timeline once we understand what you need.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h3>Do I need to have everything ready before we start?</h3>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="faq-a"><p>No. A rough idea of your business and what you'd like the site to do is enough to begin. We help shape the rest during discovery — content, structure, and direction included.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h3>Can you redesign an existing website?</h3>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="faq-a"><p>Yes. Whether you need a full rebuild or a refresh of what's already there, we start by understanding what's working, what isn't, and what your business needs going forward.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h3>What happens after the site launches?</h3>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="faq-a"><p>We walk you through how to use the site, and stay available for fixes, updates, or advice as your business grows. The relationship doesn't end at launch.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h3>What industries do you work with?</h3>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="faq-a"><p>Fashion, beauty, nonprofits, real estate, legal, healthcare, and hospitality, among others. Every business is different, and we build around what your specific customers need to see.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h3>How much does a website cost?</h3>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="faq-a"><p>It depends on the scope — a brand site, an e-commerce build, and a full identity package are priced differently. Reach out and we'll give you a clear quote after understanding your needs.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 9. CTA — Begin to Build (ROV-rock, emotional climax) -->
   <section id="cta">
     <div class="cine-video">
@@ -595,7 +705,7 @@
     </div>
     <div class="cta-content">
       <h2>Begin with a <em>strong foundation.</em></h2>
-      <p>Let's build something that's made to grow with your business, not something you'll need to replace in a year.</p>
+      <p>Let's build something made to grow with your business, for years to come.</p>
       <div class="cta-btns">
         <a href="mailto:rovoche@gmail.com" class="btn-primary">Begin Your Project</a>
         <a href="mailto:rovoche@gmail.com" class="cta-email">rovoche@gmail.com</a>
@@ -672,6 +782,12 @@
       icon.innerHTML = menuOpen
         ? '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>'
         : '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>';
+    }
+
+    function toggleFaq(el) {
+      const wasOpen = el.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(item => item.classList.remove('open'));
+      if (!wasOpen) el.classList.add('open');
     }
 
     (function() {
