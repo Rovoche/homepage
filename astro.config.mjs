@@ -3,7 +3,11 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
+const isGithubActions = !!process.env.GITHUB_ACTIONS;
+
 export default defineConfig({
+  site: 'https://rovoche.github.io',
+  base: isGithubActions ? '/homepage/' : '/',
   integrations: [react()],
   server: {
     host: '0.0.0.0',
