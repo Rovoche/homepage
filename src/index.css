@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Jost", "Helvetica Neue", Arial, sans-serif;
+  --color-bg: #FAF5EC;
+  --color-panel: #F3ECDF;
+  --color-beige: #E4D8C3;
+  --color-text: #2B2521;
+  --color-muted: #6E6357;
+  --color-accent: #C9A876;
+}
+
+body {
+  background-color: #FAF5EC;
+  color: #2B2521;
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar matching aesthetics */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF5EC;
+}
+::-webkit-scrollbar-thumb {
+  background: #C9A876;
+  border-radius: 3px;
+}
+
+/* Infinite Scrolling Marquee Logic */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes carveReveal {
+  0% {
+    letter-spacing: -0.05em;
+    filter: blur(12px);
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  25% {
+    filter: blur(6px);
+    opacity: 0.55;
+    transform: scale(0.98);
+  }
+  65% {
+    letter-spacing: 0.22em;
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 35px rgba(201, 168, 118, 0.45);
+  }
+  100% {
+    letter-spacing: 0.22em;
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(201, 168, 118, 0.25);
+  }
+}
+
+@keyframes fadeInIntro {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+.intro-carve-reveal {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  background: linear-gradient(135deg, #FAF5EC 0%, #C9A876 50%, #8A6F44 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: carveReveal 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.intro-paths-group path {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+}
+
+.mask-linear {
+  mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+}
