@@ -491,7 +491,7 @@ export default function App() {
             </h1>
 
             <p className="text-stone-200 text-base sm:text-lg md:text-xl leading-relaxed font-sans font-light tracking-wide max-w-xl mx-auto mt-7 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
-              Built on strategy. Designed for trust. Engineered for growth.
+              Built on strategy. Designed for trust.<br className="lg:hidden" />Engineered for growth.
             </p>
 
             <div className="flex flex-row items-center justify-center gap-3 mt-9">
@@ -824,7 +824,7 @@ export default function App() {
 
           <div className="mt-24 pt-12 border-t border-white/10 text-center">
             <p className="font-serif italic text-base md:text-lg text-stone-400 max-w-lg mx-auto">
-              “Every digital foundation is shaped specifically around the unique business it represents.”
+              "Every digital foundation is shaped specifically around the unique business it represents."
             </p>
           </div>
 
@@ -1008,7 +1008,7 @@ export default function App() {
                   </h3>
 
                   <p className="font-serif italic text-base text-stone-300 font-light max-w-md">
-                    “{PROCESS_STAGES[activeProcessIndex].oneLiner}”
+                    "{PROCESS_STAGES[activeProcessIndex].oneLiner}"
                   </p>
 
                   <div className="h-[1px] w-full bg-white/5 my-4" />
@@ -1093,7 +1093,7 @@ export default function App() {
                   }`}>
                     <div className="space-y-4 font-sans font-light text-stone-300/90">
                       <p className="font-serif italic text-sm text-accent max-w-xs">
-                        “{stage.oneLiner}”
+                        "{stage.oneLiner}"
                       </p>
                       <p className="text-xs leading-relaxed">
                         {stage.description}
@@ -1369,16 +1369,16 @@ export default function App() {
             </p>
             <div className="mt-8 flex flex-col items-center gap-4">
               <a
-                href="mailto:rovoche@gmail.com"
+                href="mailto:studio@rovoche.com"
                 className="w-full sm:w-auto inline-block text-center text-xs font-sans uppercase tracking-[0.2em] py-4 px-8 bg-accent text-stone-950 hover:brightness-115 active:scale-95 transition-all font-semibold rounded-sm shadow-lg cursor-pointer"
               >
                 Begin Your Project
               </a>
               <a
-                href="mailto:rovoche@gmail.com"
+                href="mailto:studio@rovoche.com"
                 className="text-stone-300 hover:text-accent font-sans text-xs tracking-wider underline underline-offset-4 decoration-stone-550 transition-colors mt-2"
               >
-                rovoche@gmail.com
+                studio@rovoche.com
               </a>
             </div>
           </div>
