@@ -342,7 +342,7 @@ export default function App() {
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <a
+          
             href="#hero"
             onClick={(e) => smoothScroll(e, "hero")}
             className="font-serif text-lg md:text-xl font-bold tracking-[0.22em] uppercase transition-colors duration-300 hover:text-accent flex items-center space-x-1.5 md:space-x-2"
@@ -355,35 +355,35 @@ export default function App() {
 
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-12">
-            <a
+            
               href="#work"
               onClick={(e) => smoothScroll(e, "work")}
               className="text-[11px] uppercase tracking-[0.22em] text-inherit hover:text-accent transition-colors duration-300"
             >
               Work
             </a>
-            <a
+            
               href="#identity"
               onClick={(e) => smoothScroll(e, "identity")}
               className="text-[11px] uppercase tracking-[0.22em] text-inherit hover:text-accent transition-colors duration-300"
             >
               Identity
             </a>
-            <a
+            
               href="#services"
               onClick={(e) => smoothScroll(e, "services")}
               className="text-[11px] uppercase tracking-[0.22em] text-inherit hover:text-accent transition-colors duration-300"
             >
               Services
             </a>
-            <a
+            
               href="#process"
               onClick={(e) => smoothScroll(e, "process")}
               className="text-[11px] uppercase tracking-[0.22em] text-inherit hover:text-accent transition-colors duration-300"
             >
               Process
             </a>
-            <a
+            
               href="#cta"
               onClick={(e) => smoothScroll(e, "cta")}
               className="text-[10px] uppercase tracking-[0.18em] px-4 py-2 border border-accent/40 text-accent hover:bg-accent hover:text-stone-950 transition-all duration-300 rounded-sm font-medium"
@@ -410,28 +410,28 @@ export default function App() {
         }`}
       >
         <div className="flex flex-col space-y-8 my-auto text-left">
-          <a
+          
             href="#work"
             onClick={(e) => smoothScroll(e, "work")}
             className="font-serif text-3xl text-stone-100 hover:text-accent transition-all duration-300"
           >
             Selected Work
           </a>
-          <a
+          
             href="#identity"
             onClick={(e) => smoothScroll(e, "identity")}
             className="font-serif text-3xl text-stone-100 hover:text-accent transition-all duration-300"
           >
             Identity
           </a>
-          <a
+          
             href="#services"
             onClick={(e) => smoothScroll(e, "services")}
             className="font-serif text-3xl text-stone-100 hover:text-accent transition-all duration-300"
           >
             Services
           </a>
-          <a
+          
             href="#process"
             onClick={(e) => smoothScroll(e, "process")}
             className="font-serif text-3xl text-stone-100 hover:text-accent transition-all duration-300"
@@ -439,7 +439,7 @@ export default function App() {
             Our Process
           </a>
           {/* REDUCED SIZE DESIGN TO ELIMINATE CHEAP OVERSIZING */}
-          <a
+          
             href="#cta"
             onClick={(e) => smoothScroll(e, "cta")}
             className="inline-block self-start text-[10px] font-sans font-semibold uppercase tracking-[0.2em] py-2.5 px-4.5 bg-accent text-[#FAF5EC] hover:brightness-110 transition-all duration-300 rounded-sm"
@@ -495,14 +495,14 @@ export default function App() {
             </p>
 
             <div className="flex flex-row items-center justify-center gap-3 mt-9">
-              <a
+              
                 href="#work"
                 onClick={(e) => smoothScroll(e, "work")}
                 className="text-[10px] font-sans uppercase tracking-[0.2em] py-3.5 px-6 bg-accent text-stone-950 hover:brightness-110 transition-all font-semibold rounded-sm shadow-md"
               >
                 See Our Work
               </a>
-              <a
+              
                 href="#cta"
                 onClick={(e) => smoothScroll(e, "cta")}
                 className="text-[10px] font-sans uppercase tracking-[0.2em] py-3.5 px-6 border border-white/30 text-white hover:bg-white/10 transition-all rounded-sm backdrop-blur-[2px]"
@@ -1368,13 +1368,13 @@ export default function App() {
               Let's construct a deliberate digital platform prepared to represent. Start a prompt inquiry with us today.
             </p>
             <div className="mt-8 flex flex-col items-center gap-4">
-              <a
+              
                 href="mailto:studio@rovoche.com"
                 className="w-full sm:w-auto inline-block text-center text-xs font-sans uppercase tracking-[0.2em] py-4 px-8 bg-accent text-stone-950 hover:brightness-115 active:scale-95 transition-all font-semibold rounded-sm shadow-lg cursor-pointer"
               >
                 Begin Your Project
               </a>
-              <a
+              
                 href="mailto:studio@rovoche.com"
                 className="text-stone-300 hover:text-accent font-sans text-xs tracking-wider underline underline-offset-4 decoration-stone-550 transition-colors mt-2"
               >
@@ -1528,7 +1528,7 @@ export default function App() {
                     </p>
                   </div>
 
-                  <a
+                  
                     href={CASE_STUDIES[activeCaseKey].url}
                     target="_blank"
                     rel="noopener noreferrer"
