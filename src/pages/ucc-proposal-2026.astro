@@ -1,0 +1,355 @@
+---
+export const prerender = true;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>ROVOCHÉ — Proposal for Up-Cycled Cloth Collective</title>
+  <link rel="icon" href="https://rovoche.com/ROVOCHE-FAVICON1.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200..700;1,300..500&family=Playfair+Display:ital,wght@0,400..900;1,400..700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --espresso:#2A1B14;
+    --espresso-soft:#4A3528;
+    --ivory:#FAF5EC;
+    --ivory-deep:#F1E9DA;
+    --gold:#C9A876;
+    --gold-deep:#A98750;
+    --line:#E3D8C4;
+    --ink:#3A2E22;
+    --serif:"Playfair Display", Georgia, serif;
+    --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);
+    background:var(--ivory);
+    color:var(--ink);
+    line-height:1.65;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:var(--serif);}
+  .wrap{max-width:880px; margin:0 auto; padding:0 clamp(20px,5vw,32px);}
+  img,video{max-width:100%; display:block;}
+
+  /* progress bar */
+  #progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:var(--gold); z-index:999; transition:width .1s linear;
+  }
+
+  /* reveal animation */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.7,.3,1), transform .8s cubic-bezier(.2,.7,.3,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-delay-1{transition-delay:.08s;}
+  .reveal-delay-2{transition-delay:.16s;}
+  .reveal-delay-3{transition-delay:.24s;}
+  .reveal-delay-4{transition-delay:.32s;}
+  .reveal-delay-5{transition-delay:.4s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* HERO */
+  .hero{
+    background:var(--espresso);
+    color:var(--ivory);
+    padding:clamp(64px,12vw,100px) 0 clamp(80px,14vw,120px);
+    position:relative;
+    overflow:hidden;
+  }
+  .orbit{
+    position:absolute; border:1px solid rgba(201,168,118,0.16);
+    border-radius:50%; pointer-events:none;
+    animation:spin 60s linear infinite;
+  }
+  .orbit.o1{width:460px; height:460px; right:-160px; top:-160px;}
+  .orbit.o2{width:300px; height:300px; right:-60px; top:-60px; animation-duration:80s; animation-direction:reverse;}
+  @keyframes spin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+  @media(max-width:640px){.orbit{display:none;}}
+
+  .mark{
+    width:46px; height:46px;
+    background:var(--ivory); color:var(--espresso);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-weight:700; font-size:24px;
+    margin-bottom:28px;
+    animation:markIn .7s cubic-bezier(.2,.7,.3,1) both;
+  }
+  @keyframes markIn{from{opacity:0; transform:scale(.7) rotate(-8deg);} to{opacity:1; transform:scale(1) rotate(0);}}
+
+  .brandline{font-size:12px; letter-spacing:4px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; font-weight:500;}
+  .hero h1{font-size:clamp(30px,6vw,48px); font-weight:600; line-height:1.18; max-width:640px; letter-spacing:-0.5px;}
+  .hero .sub{margin-top:20px; font-size:clamp(15px,2.4vw,17px); color:#D9CBB8; max-width:520px; font-weight:300;}
+
+  .hero .meta{
+    margin-top:44px; padding-top:24px; border-top:1px solid rgba(250,245,236,0.18);
+    display:flex; gap:clamp(24px,6vw,48px); flex-wrap:wrap;
+  }
+  .hero .meta div span{display:block; font-size:11px; letter-spacing:2px; color:var(--gold); text-transform:uppercase; margin-bottom:5px;}
+  .hero .meta div strong{font-weight:400; font-size:16px;}
+
+  .scroll-cue{
+    margin-top:54px; display:flex; align-items:center; gap:10px; color:#B8A88F; font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  }
+  .scroll-cue .line{width:28px; height:1px; background:var(--gold); animation:pulseLine 2s ease-in-out infinite;}
+  @keyframes pulseLine{0%,100%{opacity:.4;} 50%{opacity:1;}}
+
+  /* SECTIONS */
+  section{padding:clamp(48px,9vw,72px) 0;}
+  section.shade{background:var(--ivory-deep);}
+  .eyebrow{font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--gold-deep); margin-bottom:14px; font-weight:500;}
+  h2.title{font-size:clamp(24px,4.4vw,30px); font-weight:600; color:var(--espresso); margin-bottom:20px; line-height:1.28;}
+  p.lead{font-size:clamp(15.5px,2.6vw,17px); max-width:640px; color:var(--espresso-soft); font-weight:300;}
+  p.body-text{font-size:clamp(15px,2.4vw,16px); max-width:680px; color:var(--ink); margin-bottom:16px;}
+
+  /* CALLOUT */
+  .callout{
+    background:var(--espresso); color:var(--ivory);
+    padding:clamp(28px,6vw,40px) clamp(24px,6vw,44px); margin:36px 0; position:relative; overflow:hidden;
+  }
+  .callout::before{
+    content:"\201C"; font-family:var(--serif); font-size:80px; color:var(--gold);
+    position:absolute; top:-6px; left:18px; line-height:1; opacity:0.85;
+  }
+  .callout p{font-family:var(--serif); font-size:clamp(18px,3.2vw,22px); font-style:italic; font-weight:500; line-height:1.5; max-width:600px; padding-left:18px;}
+
+  /* PATHS */
+  .path-grid{display:grid; gap:18px; margin-top:32px;}
+  .path{
+    background:#fff; border:1px solid var(--line); padding:clamp(24px,5vw,30px) clamp(22px,5vw,32px);
+    position:relative; transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s ease, border-color .35s ease;
+  }
+  .path:hover{transform:translateY(-4px); box-shadow:0 14px 32px rgba(42,27,20,0.08); border-color:var(--gold);}
+  .path.recommended{border:1px solid var(--gold); box-shadow:0 4px 24px rgba(42,27,20,0.06);}
+  .path-tag{display:inline-block; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:5px 12px; margin-bottom:14px; font-weight:500;}
+  .path-tag.gold{background:var(--gold); color:var(--espresso);}
+  .path-tag.muted{background:var(--ivory-deep); color:var(--espresso-soft);}
+  .path h3{font-size:clamp(18px,3.2vw,21px); color:var(--espresso); font-weight:600; margin-bottom:10px;}
+  .path p{font-size:clamp(14.5px,2.4vw,15.5px); color:var(--ink); font-weight:300; margin-bottom:8px;}
+  .path .path-price{font-size:15px; color:var(--espresso); font-weight:500; margin-top:6px;}
+  .path .path-price strong{font-family:var(--serif); font-weight:700;}
+  .path .verdict{font-size:14.5px; font-style:italic; color:var(--gold-deep); margin-top:12px; font-family:var(--serif);}
+
+  /* INCLUDES */
+  .includes{margin-top:30px;}
+  .item{display:flex; gap:20px; padding:20px 0; border-bottom:1px solid var(--line); transition:padding-left .3s ease;}
+  .item:hover{padding-left:6px;}
+  .item:last-child{border-bottom:none;}
+  .item .num{font-family:var(--serif); font-size:15px; color:var(--gold-deep); font-weight:700; min-width:28px; padding-top:2px;}
+  .item h4{font-size:clamp(15.5px,2.8vw,17px); color:var(--espresso); font-weight:600; margin-bottom:6px;}
+  .item p{font-size:clamp(14px,2.4vw,15px); color:var(--ink); font-weight:300;}
+
+  .preview-note{
+    display:flex; align-items:center; gap:18px;
+    background:var(--ivory-deep); border-left:3px solid var(--gold);
+    padding:22px clamp(18px,4vw,26px); margin-top:30px;
+  }
+  .preview-note p{font-size:clamp(14.5px,2.4vw,15.5px); color:var(--espresso-soft); font-weight:300;}
+  .preview-note strong{color:var(--espresso); font-weight:600;}
+
+  /* INVESTMENT */
+  .invest-box{background:var(--espresso); color:var(--ivory); padding:clamp(32px,6vw,48px) clamp(24px,6vw,44px); margin-top:30px;}
+  .invest-row{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:16px 0; border-bottom:1px solid rgba(250,245,236,0.14);
+    opacity:0; transform:translateX(-12px); transition:opacity .6s ease, transform .6s ease;
+  }
+  .invest-row.in{opacity:1; transform:translateX(0);}
+  .invest-row:last-of-type{border-bottom:none;}
+  .invest-row .label{font-size:clamp(14px,2.4vw,15.5px); color:#D9CBB8; font-weight:300; max-width:430px;}
+  .invest-row .amt{font-family:var(--serif); font-size:clamp(17px,3vw,20px); color:var(--gold); font-weight:600; white-space:nowrap;}
+  .invest-total{margin-top:18px; padding-top:22px; border-top:1px solid var(--gold);}
+  .invest-total .label{color:var(--ivory); font-size:16px; font-weight:600;}
+  .invest-total .amt{font-size:clamp(24px,4.4vw,30px);}
+  .equiv{font-size:13.5px; color:#B8A88F; margin-top:8px; font-style:italic;}
+
+  .terms{margin-top:34px;}
+  .terms h4{font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--gold-deep); margin-bottom:16px;}
+  .term-row{display:flex; gap:14px; align-items:flex-start; margin-bottom:12px;}
+  .term-row .dot{width:6px; height:6px; border-radius:50%; background:var(--gold); margin-top:8px; flex-shrink:0;}
+  .term-row p{font-size:clamp(14.5px,2.4vw,15.5px); color:var(--ink); font-weight:300;}
+
+  .not-included{background:#fff; border:1px solid var(--line); padding:24px clamp(20px,4vw,32px); margin-top:24px;}
+  .not-included p{font-size:clamp(14px,2.4vw,15px); color:var(--espresso-soft); font-weight:300;}
+
+  /* CLOSING */
+  .closing{background:var(--espresso); color:var(--ivory); padding:clamp(56px,10vw,80px) 0; text-align:center; position:relative; overflow:hidden;}
+  .closing .wrap{max-width:600px; position:relative; z-index:1;}
+  .closing p.statement{font-family:var(--serif); font-style:italic; font-size:clamp(19px,4vw,25px); line-height:1.5; font-weight:500; color:var(--ivory); margin-bottom:36px;}
+  .closing .signoff{font-size:13px; letter-spacing:3px; color:var(--gold); text-transform:uppercase;}
+
+  footer{padding:30px 0; text-align:center;}
+  footer p{font-size:12.5px; color:#9C8E7A; letter-spacing:1px;}
+</style>
+</head>
+<body>
+  <div id="progress"></div>
+
+  <div class="hero">
+    <div class="orbit o1"></div>
+    <div class="orbit o2"></div>
+    <div class="wrap">
+      <div class="mark">R</div>
+      <div class="brandline">ROVOCHÉ — Web Design Studio</div>
+      <h1>A first impression worthy of the community you've built.</h1>
+      <p class="sub">A proposal prepared for Melanie Brummer and the Up-Cycled Cloth Collective.</p>
+      <div class="meta">
+        <div><span>Prepared For</span><strong>Up-Cycled Cloth Collective</strong></div>
+        <div><span>Date</span><strong>June 2026</strong></div>
+        <div><span>Prepared By</span><strong>ROVOCHÉ</strong></div>
+      </div>
+      <div class="scroll-cue"><span class="line"></span>Scroll to read</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow reveal">Where things stand</div>
+      <h2 class="title reveal reveal-delay-1">You've built something real. It deserves to look like it.</h2>
+      <p class="body-text reveal reveal-delay-2">Up-Cycled Cloth Collective is a global community — magazines, learning resources, and thousands of members who care about the same thing you do. The part that already works, your memberships, your payments, your magazine archive, keeps working. That's not what this proposal touches.</p>
+      <p class="body-text reveal reveal-delay-3">What this proposal is about is the moment a new visitor first lands on your site. Right now, the experience doesn't yet reflect the quality of what's inside it — and that's worth fixing, because it's often the first thing standing between someone discovering you and someone deciding to join.</p>
+
+      <div class="callout reveal reveal-delay-4">
+        <p>The current presentation may be making it harder for new visitors to feel the value of everything the Collective offers, before they ever get the chance to look closer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shade">
+    <div class="wrap">
+      <div class="eyebrow reveal">Three ways forward</div>
+      <h2 class="title reveal reveal-delay-1">We looked at every option. Here's what we found.</h2>
+      <p class="lead reveal reveal-delay-2">We want you to see the full picture, not just the option we're proposing — so you know exactly why we're recommending what we're recommending.</p>
+
+      <div class="path-grid">
+        <div class="path reveal reveal-delay-3">
+          <span class="path-tag muted">For later, not now</span>
+          <h3>Build you something entirely new</h3>
+          <p>We design and build a brand-new system from the ground up — your own logins, your own payments, everything custom to you.</p>
+          <p>This gives the most freedom in the long run, but it means building the kind of secure systems that handle people's money and personal details — work that takes real time to get right, and isn't something to rush on a community you already trust.</p>
+          <p class="path-price">Estimated from <strong>R 20,000</strong>, with a longer build timeline.</p>
+          <p class="verdict">Worth exploring once there's more time and budget to do it carefully — not the right starting point today.</p>
+        </div>
+
+        <div class="path reveal reveal-delay-4">
+          <span class="path-tag muted">Worth knowing about</span>
+          <h3>Move to a ready-made membership service</h3>
+          <p>There are established platforms built specifically for memberships like yours, that handle logins and payments for you.</p>
+          <p>This is the fastest way to get a fully modern system end-to-end — but it comes with a small ongoing monthly fee, on top of what you already pay today.</p>
+          <p class="path-price">Roughly <strong>R 450 – R 1,800 per month</strong>, ongoing, in addition to the design and setup cost.</p>
+          <p class="verdict">A real option, but adds a new monthly cost — not the right fit while you're watching spend closely.</p>
+        </div>
+
+        <div class="path recommended reveal reveal-delay-5">
+          <span class="path-tag gold">Our recommendation</span>
+          <h3>Give your site a new face, keep everything that already works</h3>
+          <p>We design and build a beautiful new public website — the part every visitor sees first — while everything behind the scenes (your memberships, your payments, your email list) keeps running exactly as it does today, completely undisturbed.</p>
+          <p>Visitors get a warmer, more confident first impression. Nothing about how you already run things changes. No new monthly cost is added.</p>
+          <p class="verdict">The lowest-risk, fastest, most affordable path to the outcome you actually need right now.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow reveal">What you're actually getting</div>
+      <h2 class="title reveal reveal-delay-1">Not a website. A better first impression.</h2>
+      <p class="lead reveal reveal-delay-2">Think of this less as "a new website" and more as: clearer storytelling, stronger trust at first glance, and an easier path for a visitor to become a member.</p>
+
+      <div class="includes">
+        <div class="item reveal"><div class="num">01</div><div><h4>A homepage designed to do one job — turn visitors into members</h4><p>The first thing people see, rebuilt to immediately communicate who you are and why the Collective is worth joining.</p></div></div>
+        <div class="item reveal reveal-delay-1"><div class="num">02</div><div><h4>A magazine showcase that feels premium, not like a download folder</h4><p>Your magazine archive presented the way a published, valuable resource should be — not buried in a plain list.</p></div></div>
+        <div class="item reveal reveal-delay-2"><div class="num">03</div><div><h4>About, Contact, and a brand-new blog space</h4><p>Easy for you to write and publish to, simpler than what you use today, and matching the new design throughout.</p></div></div>
+        <div class="item reveal reveal-delay-3"><div class="num">04</div><div><h4>A seamless connection to your existing membership area</h4><p>When someone clicks "Join" or "Login," they're carried into your current system exactly as it works today — visually matched, so it never feels like two different sites.</p></div></div>
+        <div class="item reveal reveal-delay-4"><div class="num">05</div><div><h4>Full handover, start to finish</h4><p>We move your existing content into the new site, test everything thoroughly, connect it to your membership system, and walk you through how everything works before we call it done.</p></div></div>
+      </div>
+
+      <div class="preview-note reveal reveal-delay-5">
+        <p><strong>You've already seen the direction.</strong> The concept site we shared on our call reflects the visual style this proposal will bring to life — refined, modern, and true to who the Collective is.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shade">
+    <div class="wrap">
+      <div class="eyebrow reveal">Investment</div>
+      <h2 class="title reveal reveal-delay-1">One project fee. Nothing new added monthly.</h2>
+      <p class="lead reveal reveal-delay-2">Your existing hosting cost for your membership system continues exactly as it does today — this proposal doesn't add anything on top of it.</p>
+
+      <div class="invest-box reveal reveal-delay-3">
+        <div class="invest-row" data-row><div class="label">A new public website — home, about, magazine showcase, contact, and blog</div><div class="amt">R 4,200</div></div>
+        <div class="invest-row" data-row><div class="label">Moving your content across, fully tested</div><div class="amt">R 2,500</div></div>
+        <div class="invest-row" data-row><div class="label">Connecting it seamlessly to your existing membership system</div><div class="amt">R 1,700</div></div>
+        <div class="invest-row invest-total" data-row><div class="label">Total Investment</div><div class="amt">R 8,400</div></div>
+        <div class="equiv">Approximately ₦700,000 — exact amount confirmed at the exchange rate on the day of payment.</div>
+      </div>
+
+      <div class="terms reveal reveal-delay-4">
+        <h4>How payment works</h4>
+        <div class="term-row"><div class="dot"></div><p><strong>₦500,000</strong> to begin — this confirms the project and lets us start building.</p></div>
+        <div class="term-row"><div class="dot"></div><p><strong>₦200,000</strong> once everything is complete, tested, and ready to go live.</p></div>
+        <div class="term-row"><div class="dot"></div><p>No work begins before the first payment — this protects the project for both of us.</p></div>
+      </div>
+
+      <div class="not-included reveal reveal-delay-5">
+        <p><strong>For full clarity:</strong> this does not change your membership tiers, your payments, your accounts, or your email list — those keep working exactly as they do now. If you'd like to explore a bigger system in the future, we're happy to talk through that separately, once the time is right.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <div class="wrap">
+      <p class="statement reveal">The Up-Cycled Cloth Collective has already built something remarkable. This isn't about changing that — it's about presenting it with the clarity, confidence, and warmth it deserves.</p>
+      <div class="signoff reveal reveal-delay-1">ROVOCHÉ — Web Design Studio</div>
+    </div>
+  </div>
+
+  <footer><p>ROVOCHÉ · rovoche.com</p></footer>
+
+  <script>
+    // scroll progress bar
+    const progress = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      progress.style.width = scrolled + '%';
+    });
+
+    // reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+
+    // investment rows stagger
+    const rows = document.querySelectorAll('[data-row]');
+    const rowIo = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('in'), i * 90);
+          rowIo.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    rows.forEach(r => rowIo.observe(r));
+  </script>
+</body>
+</html>
