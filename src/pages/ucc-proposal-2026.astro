@@ -183,6 +183,19 @@ export const prerender = true;
   .not-included{background:#fff; border:1px solid var(--line); padding:24px clamp(20px,4vw,32px); margin-top:24px;}
   .not-included p{font-size:clamp(14px,2.4vw,15px); color:var(--espresso-soft); font-weight:300;}
 
+  /* CONCEPT CARD */
+  .concept-card{margin-top:36px; background:var(--espresso); padding:clamp(32px,6vw,52px) clamp(24px,6vw,52px); position:relative; overflow:hidden;}
+  .concept-card::after{content:""; position:absolute; right:-80px; top:-80px; width:280px; height:280px; border:1px solid rgba(201,168,118,0.15); border-radius:50%; pointer-events:none;}
+  .concept-inner{display:flex; flex-direction:column; gap:28px;}
+  @media(min-width:640px){.concept-inner{flex-direction:row; align-items:flex-end; justify-content:space-between; gap:40px;}}
+  .concept-label{font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; font-weight:500;}
+  .concept-text h3{font-family:var(--serif); font-size:clamp(19px,3.2vw,24px); color:var(--ivory); font-weight:500; margin-bottom:12px;}
+  .concept-text p{font-size:clamp(14px,2.2vw,15.5px); color:#D9CBB8; font-weight:300; max-width:500px; line-height:1.65;}
+  .concept-btn{display:inline-flex; align-items:center; gap:10px; flex-shrink:0; background:var(--gold); color:var(--espresso); padding:14px 26px; font-size:14px; font-weight:600; text-decoration:none; white-space:nowrap; transition:background .25s ease, transform .25s ease;}
+  .concept-btn:hover{background:#d4b484; transform:translateY(-2px);}
+  .concept-btn svg{transition:transform .25s ease;}
+  .concept-btn:hover svg{transform:translate(2px,-2px);}
+
   /* CLOSING */
   .closing{background:var(--espresso); color:var(--ivory); padding:clamp(56px,10vw,80px) 0; text-align:center; position:relative; overflow:hidden;}
   .closing .wrap{max-width:600px; position:relative; z-index:1;}
@@ -278,6 +291,28 @@ export const prerender = true;
 
       <div class="preview-note reveal reveal-delay-5">
         <p><strong>You've already seen the direction.</strong> The concept site we shared on our call reflects the visual style this proposal will bring to life — refined, modern, and true to who the Collective is.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow reveal">See it before you decide</div>
+      <h2 class="title reveal reveal-delay-1">We've already built the concept.</h2>
+      <p class="lead reveal reveal-delay-2">Before committing to anything, you can see exactly what the Up-Cycled Cloth Collective could look like — live, on a real screen, right now.</p>
+
+      <div class="concept-card reveal reveal-delay-3">
+        <div class="concept-inner">
+          <div class="concept-text">
+            <p class="concept-label">Live concept demo</p>
+            <h3>The Up-Cycled Cloth Collective — Reimagined</h3>
+            <p>A working preview of the new site design, built to show you how your community, your magazine, and your story could be presented to the world. Click through, explore every page, and see how it feels.</p>
+          </div>
+          <a href="https://rovoche.github.io/cloth-collective-remade/" target="_blank" rel="noopener" class="concept-btn">
+            View the Concept Site
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
