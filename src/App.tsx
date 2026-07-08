@@ -35,7 +35,7 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     tag: "Fashion / Couture",
     title: "Bespoke Couture Site",
     img: "SBL-SCC.png",
-    url: "https://rovoche.github.io/luxuryfashion/",
+    url: "https://styledbylayo.rovoche.com/",
     brief: "A bespoke couture house needed a site that matched the weight of their garments — hand-finished, made-to-order, not mass production.",
     rationale: "The hero opens on the work itself before any text loads, because the craft sells faster than the copy. The signature collection is presented one piece at a time rather than as a grid, so each garment gets full attention.",
     why: [
