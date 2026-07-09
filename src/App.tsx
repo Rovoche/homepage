@@ -52,7 +52,7 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     tag: "Beauty / Identity",
     title: "Makeup Artist Portfolio",
     img: "KIKI-SCC.png",
-    url: "https://rovoche.github.io/Glam-and-Makeup/",
+    url: "https://kikiglam.rovoche.com/",
     brief: "A working makeup artist needed her real proof of skill — her Instagram presence — brought into a proper site without losing its immediacy.",
     rationale: "We embedded her actual reels directly rather than re-hosting curated images, so visitors see current, unedited proof of her work. The layout stays minimal so nothing competes with the content.",
     why: [
