@@ -122,45 +122,62 @@ body {
 .group:hover .scroll-shot {
   animation-play-state: running;
 }
+/* Always-running variant for the full case-study preview banner */
+.scroll-shot-auto {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: scrollThroughShot 18s ease-in-out infinite;
+}
 
-/* Portfolio card: quiet traveling gold light around the card border.
-   Slow ambient rotation at rest, speeds up and brightens when active. */
-@keyframes travelGlow {
-  to { transform: rotate(360deg); }
+/* Portfolio card: a thin gold outline that continuously sweeps
+   around the OUTSIDE of the whole card, speeding up and brightening
+   when the card is active/centered. Built as a padding-ring so the
+   light genuinely travels around the border, not inside it. */
+@property --glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes glowSweep {
+  to {
+    --glow-angle: 360deg;
+  }
 }
 .glow-ring {
+  --glow-angle: 0deg;
   position: relative;
-  isolation: isolate;
-}
-.glow-ring::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
+  padding: 1.5px;
+  border-radius: 0.125rem;
   background: conic-gradient(
-    from 0deg,
+    from var(--glow-angle),
     transparent 0%,
-    transparent 78%,
-    #c9a876 87%,
-    #f3d9a6 91%,
-    #c9a876 95%,
+    transparent 80%,
+    #8a6f44 88%,
+    #f3d9a6 92%,
+    #8a6f44 96%,
     transparent 100%
   );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.4;
-  animation: travelGlow 7s linear infinite;
-  transition: opacity 0.5s ease, animation-duration 0.5s ease;
-  pointer-events: none;
-  z-index: 5;
+  animation: glowSweep 9s linear infinite;
+  transition: filter 0.4s ease;
 }
-.glow-ring.is-active::before {
-  opacity: 1;
-  animation-duration: 2.6s;
+.glow-ring-inner {
+  background: #0c0a09;
+  border-radius: inherit;
+  overflow: hidden;
+  height: 100%;
 }
-.group:hover .glow-ring::before {
-  opacity: 1;
+.glow-ring.is-active,
+.group:hover .glow-ring {
   animation-duration: 2.6s;
+  filter: brightness(1.4);
+}
+
+/* Hide scrollbar on the work carousel while keeping native scroll/snap */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
