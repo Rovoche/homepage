@@ -136,13 +136,12 @@ body {
    attention has somewhere clear to land. */
 /* Portfolio card: gold corner brackets draw in on focus (hover on
    desktop, touch on mobile) — like a viewfinder locking on, rather
-   than a decorative glow. Invisible at rest. */
+   than a decorative glow. Invisible at rest. Uses real elements
+   (not ::before/::after) since we need all four corners. */
 .corner-frame {
   position: relative;
 }
-.corner-frame::before,
-.corner-frame::after {
-  content: "";
+.corner-bracket {
   position: absolute;
   width: 18px;
   height: 18px;
@@ -154,22 +153,32 @@ body {
   pointer-events: none;
   z-index: 6;
 }
-.corner-frame::before {
+.corner-bracket.tl {
   top: -2px;
   left: -2px;
   border-top-width: 2px;
   border-left-width: 2px;
 }
-.corner-frame::after {
+.corner-bracket.tr {
+  top: -2px;
+  right: -2px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+.corner-bracket.bl {
+  bottom: -2px;
+  left: -2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+.corner-bracket.br {
   bottom: -2px;
   right: -2px;
   border-bottom-width: 2px;
   border-right-width: 2px;
 }
-.corner-frame.is-active::before,
-.corner-frame.is-active::after,
-.group:hover .corner-frame::before,
-.group:hover .corner-frame::after {
+.corner-frame.is-active .corner-bracket,
+.group:hover .corner-bracket {
   opacity: 1;
   width: 26px;
   height: 26px;
