@@ -107,7 +107,7 @@ export function TestimonialSlider() {
           setTimeout(() => setIsInteracting(false), 1500);
         }}
         onScroll={handleScroll}
-        className="w-full overflow-x-auto scrollbar-none flex gap-6 pb-6 select-none cursor-grab active:cursor-grabbing snap-x md:snap-none"
+        className="w-full overflow-x-auto scrollbar-none flex gap-6 pb-6 select-none cursor-grab active:cursor-grabbing snap-x md:snap-none [touch-action:pan-x]"
         style={{
           scrollBehavior: isInteracting ? "smooth" : "auto",
         }}
