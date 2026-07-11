@@ -563,7 +563,7 @@ export default function App() {
             onClick={(e) => smoothScroll(e, "work")}
             className="font-serif text-3xl text-stone-100 hover:text-accent transition-all duration-300"
           >
-            Selected Work
+            Studio Projects
           </a>
           <a
             href="#identity"
@@ -629,20 +629,22 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-stone-950/65 to-stone-950/75 pointer-events-none" />
         </div>
 
-        {/* HERO CONTENT - SLEEK AND TIGHT TO PRESERVE MAXIMUM VIDEO SPACE */}
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center mt-12 md:mt-16">
-          <div className="p-0 bg-transparent text-center">
+        {/* HERO CONTENT - Left-aligned on desktop so the headline doesn't sit
+            directly over the subject's face; stays centered on mobile where
+            there's no room to offset it meaningfully. */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center md:text-left mt-12 md:mt-16">
+          <div className="p-0 bg-transparent md:max-w-2xl">
             
-            <h1 className="font-serif font-light text-4xl sm:text-5.5xl md:text-[4rem] lg:text-[4.75rem] xl:text-[5.5rem] text-[#FAF5EC] leading-[1.08] tracking-tight [text-shadow:_0_2px_12px_rgb(0_0_0_/_65%)]">
+            <h1 className="font-serif font-light text-4xl sm:text-5.5xl md:text-[3.4rem] lg:text-[4rem] xl:text-[4.6rem] text-[#FAF5EC] leading-[1.08] tracking-tight [text-shadow:_0_2px_12px_rgb(0_0_0_/_65%)]">
               Websites <span className="font-semibold tracking-tight">built on rock.</span>
               <span className="block mt-1">Crafted to last.</span>
             </h1>
 
-            <p className="text-stone-200 text-base sm:text-lg md:text-xl leading-relaxed font-sans font-light tracking-wide max-w-xl mx-auto mt-7 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
+            <p className="text-stone-200 text-base sm:text-lg md:text-xl leading-relaxed font-sans font-light tracking-wide max-w-xl mx-auto md:mx-0 mt-7 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
               Built on strategy. Designed for trust.<br className="lg:hidden" />Engineered for growth.
             </p>
 
-            <div className="flex flex-row items-center justify-center gap-3 mt-9">
+            <div className="flex flex-row items-center justify-center md:justify-start gap-3 mt-9">
               <a
                 href="#work"
                 onClick={(e) => smoothScroll(e, "work")}
@@ -797,6 +799,10 @@ export default function App() {
                       className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] select-none"
                     >
                       <div className={`corner-frame ${isTouched ? "is-active" : ""}`}>
+                        <span className="corner-bracket tl" />
+                        <span className="corner-bracket tr" />
+                        <span className="corner-bracket bl" />
+                        <span className="corner-bracket br" />
                         <div className="corner-frame-inner flex flex-col text-left">
                           <BrowserFrame domain={cs.domain} className="aspect-[4/3]" active={isTouched}>
                             <img
