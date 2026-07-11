@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TestimonialSlider } from "./components/TestimonialSlider";
+import { ContactForm } from "./components/ContactForm";
 import { BrowserFrame } from "./components/BrowserFrame";
 import {
   ArrowRight,
@@ -771,7 +772,7 @@ export default function App() {
             </div>
 
             <div
-              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing [touch-action:none]"
+              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing [touch-action:pan-y]"
               onMouseEnter={() => setIsWorkPaused(true)}
               onMouseLeave={() => setIsWorkPaused(false)}
               onPointerDown={onWorkPointerDown}
@@ -1363,18 +1364,13 @@ export default function App() {
             <p className="text-stone-100 text-xs md:text-sm mt-4 leading-relaxed max-w-md mx-auto font-sans font-light">
               Let's construct a deliberate digital platform prepared to represent. Start a prompt inquiry with us today.
             </p>
-            <div className="mt-8 flex flex-col items-center gap-4">
+            <div className="mt-8">
+              <ContactForm />
               <a
                 href="mailto:studio@rovoche.com"
-                className="w-full sm:w-auto inline-block text-center text-xs font-sans uppercase tracking-[0.2em] py-4 px-8 bg-accent text-stone-950 hover:brightness-115 active:scale-95 transition-all font-semibold rounded-sm shadow-lg cursor-pointer"
+                className="block text-center text-stone-400 hover:text-accent font-sans text-xs tracking-wider underline underline-offset-4 decoration-stone-600 transition-colors mt-6"
               >
-                Begin Your Project
-              </a>
-              <a
-                href="mailto:studio@rovoche.com"
-                className="text-stone-300 hover:text-accent font-sans text-xs tracking-wider underline underline-offset-4 decoration-stone-550 transition-colors mt-2"
-              >
-                studio@rovoche.com
+                Or email us directly — studio@rovoche.com
               </a>
             </div>
           </div>
