@@ -633,7 +633,7 @@ export default function App() {
           <div className="p-0 bg-transparent text-center">
             
             <h1 className="font-serif font-light text-4xl sm:text-5.5xl md:text-[4rem] lg:text-[4.75rem] xl:text-[5.5rem] text-[#FAF5EC] leading-[1.08] tracking-tight [text-shadow:_0_2px_12px_rgb(0_0_0_/_65%)]">
-              Websites <span className="italic text-accent font-light font-serif">built on rock.</span>
+              Websites <span className="font-semibold tracking-tight">built on rock.</span>
               <span className="block mt-1">Crafted to last.</span>
             </h1>
 
@@ -795,8 +795,8 @@ export default function App() {
                       onTouchEnd={() => setTouchedWorkKey(null)}
                       className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] select-none"
                     >
-                      <div className={`glow-ring ${isTouched ? "is-active" : ""}`}>
-                        <div className="glow-ring-inner flex flex-col text-left">
+                      <div className={`corner-frame ${isTouched ? "is-active" : ""}`}>
+                        <div className="corner-frame-inner flex flex-col text-left">
                           <BrowserFrame domain={cs.domain} className="aspect-[4/3]" active={isTouched}>
                             <img
                               src={cs.img}
@@ -806,7 +806,7 @@ export default function App() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
                             <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
-                              {cs.id} // {cs.tag.toUpperCase()}
+                              {cs.tag.toUpperCase()}
                             </span>
                           </BrowserFrame>
                           <div className="p-5 flex justify-between items-start gap-4">
@@ -854,8 +854,8 @@ export default function App() {
             
             {/* Left Column: Sophisticated, Poetic Editorial Content */}
             <div className="lg:col-span-5 text-left space-y-6">
-              <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent block">
-                ROVOCHÉ VALUES
+              <span className="text-[9px] uppercase font-medium tracking-[0.2em] text-stone-500 block">
+                Rovoché Values
               </span>
               <div className="h-[1px] w-12 bg-accent opacity-60" />
               <h2 className="font-serif font-light text-3xl md:text-5xl text-text leading-tight">
@@ -973,18 +973,12 @@ export default function App() {
                       : "bg-stone-950/40 border-white/5 hover:bg-stone-950/80 text-stone-400 hover:text-stone-200"
                   }`}
                 >
-                  <span className={`font-mono text-xs font-bold ${
-                    activeProcessIndex === idx ? "text-accent" : "text-stone-600 group-hover:text-stone-400"
-                  }`}>
-                    {stage.number}
-                  </span>
-                  
                   <div className="flex-1">
                     <h3 className="font-serif text-lg md:text-xl font-light tracking-tight">
                       {stage.name}
                     </h3>
                     <p className="text-[10.5px] uppercase tracking-wider font-sans mt-0.5 opacity-80">
-                      Stage {idx + 1}
+                      {stage.oneLiner}
                     </p>
                   </div>
 
@@ -1005,12 +999,6 @@ export default function App() {
                 key={activeProcessIndex}
                 className="lg:col-span-7 bg-stone-950 p-8 md:p-12 rounded-sm border border-white/5 shadow-2xl min-h-[440px] flex flex-col justify-between transition-all duration-300 relative overflow-hidden text-left animate-fade-in"
               >
-                <div className="absolute top-0 right-0 p-8 select-none pointer-events-none">
-                  <span className="font-serif italic text-white/5 text-8xl md:text-9xl font-bold leading-none">
-                    {PROCESS_STAGES[activeProcessIndex].number}
-                  </span>
-                </div>
-
                 <div className="relative z-10 space-y-6">
                   <div className="flex items-center space-x-3">
                     <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping" />
@@ -1087,9 +1075,6 @@ export default function App() {
                     }`}
                   >
                     <div className="flex items-center space-x-4">
-                      <span className={`font-mono text-xs font-bold ${isOpen ? "text-accent" : "text-stone-550"}`}>
-                        {stage.number}
-                      </span>
                       <h3 className="font-serif text-lg text-stone-100 font-light tracking-tight">
                         {stage.name}
                       </h3>
@@ -1203,9 +1188,6 @@ export default function App() {
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-start space-x-4 md:space-x-6">
-                        <span className="font-mono text-xs md:text-sm text-accent font-semibold mt-1">
-                          {service.number}
-                        </span>
                         <div>
                           <h3 className="font-serif text-xl md:text-2xl text-text font-light tracking-tight">
                             {service.title}
@@ -1282,7 +1264,6 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           
           <div className="text-center md:text-left mb-16 space-y-4">
-            <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent">COMMENDATIONS</span>
             <div className="h-[1px] w-12 bg-accent opacity-60 md:mx-0 mx-auto" />
             <h2 className="font-serif font-light text-4xl md:text-5xl text-text leading-tight">
               Said Plainly By Trusted Clients
@@ -1297,7 +1278,6 @@ export default function App() {
           {/* Elegant FAQ Layout */}
           <div className="mt-28 max-w-4xl mx-auto space-y-12">
             <div className="text-center space-y-3">
-              <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent">RESOURCES</span>
               <h3 className="font-serif font-light text-2xl md:text-3xl text-text">Frequently Asked Questions</h3>
             </div>
 
@@ -1378,7 +1358,7 @@ export default function App() {
               BUILT ON ROCK
             </span>
             <h2 className="font-serif font-light text-2xl sm:text-3.5xl text-[#FAF5EC] leading-tight">
-              Begin with a <em className="italic text-accent font-serif font-normal">strong foundation.</em>
+              Begin with a <em className="not-italic font-semibold">strong foundation.</em>
             </h2>
             <p className="text-stone-100 text-xs md:text-sm mt-4 leading-relaxed max-w-md mx-auto font-sans font-light">
               Let's construct a deliberate digital platform prepared to represent. Start a prompt inquiry with us today.
@@ -1456,7 +1436,7 @@ export default function App() {
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/10 to-stone-950/30" />
                 <div className="absolute bottom-6 left-6 md:left-12 max-w-2xl text-left">
                   <span className="inline-block bg-accent text-stone-950 font-mono text-[10px] tracking-widest px-2.5 py-1 uppercase rounded-sm mb-2 shadow-sm font-semibold">
-                    {CASE_STUDIES[activeCaseKey].id} // {CASE_STUDIES[activeCaseKey].tag}
+                    {CASE_STUDIES[activeCaseKey].tag}
                   </span>
                   <h2 className="font-serif text-3xl md:text-5xl text-stone-100 font-light tracking-tight leading-none animate-fade-in">
                     {CASE_STUDIES[activeCaseKey].title}
