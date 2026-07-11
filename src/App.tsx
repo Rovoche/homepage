@@ -666,10 +666,10 @@ export default function App() {
                     <img
                       src={cs.img}
                       alt={`${cs.title} Preview`}
-                      className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                      className="scroll-shot"
                     />
-                    <div className="absolute inset-0 bg-stone-950/20 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-                    <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md">
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
+                    <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
                       {cs.id} // {cs.tag.toUpperCase()}
                     </span>
                   </BrowserFrame>
@@ -701,26 +701,31 @@ export default function App() {
                 <span>Swipe to explore projects</span>
               </div>
             </div>
-            <div className="overflow-hidden relative w-full rounded-sm border border-white/10 bg-stone-900 shadow-2xl">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out" 
-                style={{ transform: `translateX(-${activeWorkIndex * 100}%)` }}
+            <div className="overflow-hidden relative w-full" style={{ padding: "0 9%" }}>
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${activeWorkIndex * 87}%)` }}
               >
                 {(["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const).map((key, idx) => {
                   const cs = CASE_STUDIES[key];
+                  const isActive = idx === activeWorkIndex;
                   return (
-                    <div 
-                      key={key} 
-                      onClick={() => setActiveCaseKey(key)}
-                      className="w-full shrink-0 p-6 flex flex-col space-y-4"
+                    <div
+                      key={key}
+                      onClick={() => (isActive ? setActiveCaseKey(key) : setActiveWorkIndex(idx))}
+                      style={{ width: "82%", marginRight: "5%" }}
+                      className={`shrink-0 flex flex-col space-y-4 p-4 rounded-sm bg-stone-900 border border-white/10 transition-all duration-500 ease-out ${
+                        isActive ? "scale-100 opacity-100" : "scale-[0.9] opacity-50"
+                      }`}
                     >
-                      <BrowserFrame domain={cs.domain} className="aspect-[4/3] border-white/5">
-                        <img 
-                          src={cs.img} 
+                      <BrowserFrame domain={cs.domain} className="aspect-[4/3] border-white/5" active={isActive}>
+                        <img
+                          src={cs.img}
                           alt={cs.title}
-                          className="w-full h-full object-cover object-top"
+                          className="scroll-shot"
                         />
-                        <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[8px] tracking-widest px-2 py-0.5 uppercase rounded-sm border border-white/5">
+                        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
+                        <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[8px] tracking-widest px-2 py-0.5 uppercase rounded-sm border border-white/5 z-[6]">
                           {cs.id} // {cs.tag.toUpperCase()}
                         </span>
                       </BrowserFrame>
