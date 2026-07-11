@@ -329,6 +329,28 @@ export default function App() {
     }
   };
 
+  // Ambient auto-drift: moves to the next card on its own when idle,
+  // freezes instantly on any touch/hover, resumes a moment after.
+  const [isWorkPaused, setIsWorkPaused] = useState(false);
+  const workResumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const pauseWorkDrift = () => {
+    setIsWorkPaused(true);
+    if (workResumeTimeout.current) clearTimeout(workResumeTimeout.current);
+  };
+  const scheduleWorkResume = () => {
+    if (workResumeTimeout.current) clearTimeout(workResumeTimeout.current);
+    workResumeTimeout.current = setTimeout(() => setIsWorkPaused(false), 3200);
+  };
+
+  useEffect(() => {
+    if (isWorkPaused || activeCaseKey) return;
+    const timer = setTimeout(() => {
+      scrollToWorkIndex((activeWorkIndex + 1) % WORK_ORDER.length);
+    }, 4200);
+    return () => clearTimeout(timer);
+  }, [isWorkPaused, activeCaseKey, activeWorkIndex]);
+
   // State for Services Interactive Expandable Card
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>("s1");
 
@@ -696,6 +718,10 @@ export default function App() {
 
             <div
               ref={workScrollRef}
+              onMouseEnter={pauseWorkDrift}
+              onMouseLeave={scheduleWorkResume}
+              onTouchStart={pauseWorkDrift}
+              onTouchEnd={scheduleWorkResume}
               className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth gap-6 md:gap-8 px-[7%] md:px-[14%] pb-2"
             >
               {WORK_ORDER.map((key, idx) => {
