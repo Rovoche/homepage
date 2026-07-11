@@ -739,7 +739,7 @@ export default function App() {
               <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent">PROOF OF EXCELLENCE</span>
               <div className="h-[1px] w-12 bg-accent opacity-60" />
               <h2 className="font-serif font-light text-4xl md:text-6xl text-stone-50 leading-tight tracking-tight">
-                Selected Work
+                Studio Projects
               </h2>
             </div>
             <p className="text-stone-400 text-xs md:text-sm max-w-sm font-sans leading-relaxed">
@@ -751,8 +751,7 @@ export default function App() {
               and dragged mid-motion, then resumes drifting on release. */}
           <div className="relative">
             <div className="flex flex-col gap-4 mb-6">
-              <div className="flex items-center justify-between px-1">
-                <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Studio Projects</span>
+              <div className="flex items-center justify-end px-1">
                 <div className="text-[9px] uppercase tracking-wider text-accent font-sans flex items-center space-x-1 select-none">
                   <span className="w-1 h-1 rounded-full bg-accent" />
                   <span>Hover to pause · Drag to browse · Tap to view</span>
