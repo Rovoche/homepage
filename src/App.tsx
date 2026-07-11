@@ -1365,19 +1365,19 @@ export default function App() {
         onClick={() => setActiveCaseKey(null)}
       >
         <div
-          className={`ml-auto w-full max-w-4xl h-full bg-bg shadow-2xl flex flex-col overflow-y-auto transform transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`ml-auto w-full max-w-4xl h-full bg-stone-950 shadow-2xl flex flex-col overflow-y-auto transform transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             activeCaseKey ? "translate-x-0" : "translate-x-full"
           }`}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Modal Header Controls */}
-          <div className="sticky top-0 right-0 w-full flex justify-between items-center px-6 py-4 bg-[#FAF5EC]/90 backdrop-blur-md border-b border-stone-200/60 z-10">
+          <div className="sticky top-0 right-0 w-full flex justify-between items-center px-6 py-4 bg-stone-950/90 backdrop-blur-md border-b border-white/10 z-10">
             <span className="font-sans text-[10px] font-bold tracking-[0.22em] text-accent uppercase">
               CASE ARCHIVE // PROJECT STUDY
             </span>
             <button
               onClick={() => setActiveCaseKey(null)}
-              className="p-2 text-text hover:text-accent border border-stone-200/60 hover:border-accent rounded-full transition-all duration-300 bg-[#FAF5EC]"
+              className="p-2 text-stone-300 hover:text-accent border border-white/10 hover:border-accent rounded-full transition-all duration-300 bg-stone-900"
               aria-label="Close Case Study"
             >
               <X size={16} />
@@ -1387,18 +1387,18 @@ export default function App() {
           {activeCaseKey && (
             <div className="flex-1">
               {/* Grand Banner Image Header */}
-              <div className="relative h-[45vh] min-h-[300px] w-full overflow-hidden bg-stone-900 border-b border-stone-200/40">
+              <div className="relative h-[45vh] min-h-[300px] w-full overflow-hidden bg-stone-900 border-b border-white/10">
                 <img
                   src={CASE_STUDIES[activeCaseKey].img}
                   alt={CASE_STUDIES[activeCaseKey].title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-[#FAF5EC]/10 to-[#FAF5EC]/30" />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/10 to-stone-950/30" />
                 <div className="absolute bottom-6 left-6 md:left-12 max-w-2xl text-left">
-                  <span className="inline-block bg-accent text-[#FAF5EC] font-mono text-[10px] tracking-widest px-2.5 py-1 uppercase rounded-sm mb-2 shadow-sm font-semibold">
+                  <span className="inline-block bg-accent text-stone-950 font-mono text-[10px] tracking-widest px-2.5 py-1 uppercase rounded-sm mb-2 shadow-sm font-semibold">
                     {CASE_STUDIES[activeCaseKey].id} // {CASE_STUDIES[activeCaseKey].tag}
                   </span>
-                  <h2 className="font-serif text-3xl md:text-5xl text-text font-light tracking-tight leading-none animate-fade-in">
+                  <h2 className="font-serif text-3xl md:text-5xl text-stone-100 font-light tracking-tight leading-none animate-fade-in">
                     {CASE_STUDIES[activeCaseKey].title}
                   </h2>
                 </div>
@@ -1414,7 +1414,7 @@ export default function App() {
                     <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-accent block">
                       THE INITIAL BRIEF
                     </span>
-                    <p className="text-stone-800 text-sm md:text-base leading-relaxed">
+                    <p className="text-stone-200 text-sm md:text-base leading-relaxed">
                       {CASE_STUDIES[activeCaseKey].brief}
                     </p>
                   </div>
@@ -1423,7 +1423,7 @@ export default function App() {
                     <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-accent block">
                       CRAFT STRATEGY &amp; DESIGN RATIONALE
                     </span>
-                    <p className="text-stone-700 text-xs md:text-sm leading-relaxed">
+                    <p className="text-stone-400 text-xs md:text-sm leading-relaxed">
                       {CASE_STUDIES[activeCaseKey].rationale}
                     </p>
                   </div>
@@ -1434,7 +1434,7 @@ export default function App() {
                     </span>
                     <ul className="space-y-3.5 pl-1">
                       {CASE_STUDIES[activeCaseKey].why.map((point) => (
-                        <li key={point} className="text-stone-700 text-xs md:text-sm flex items-start space-x-3 leading-relaxed">
+                        <li key={point} className="text-stone-400 text-xs md:text-sm flex items-start space-x-3 leading-relaxed">
                           <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
                           <span>{point}</span>
                         </li>
@@ -1445,9 +1445,9 @@ export default function App() {
                 </div>
 
                 {/* Technical Meta Column */}
-                <div className="lg:col-span-4 space-y-8 border-t lg:border-t-0 pt-8 lg:pt-0 border-stone-200">
+                <div className="lg:col-span-4 space-y-8 border-t lg:border-t-0 pt-8 lg:pt-0 border-white/10">
                   
-                  <div className="border-b border-stone-200 pb-5">
+                  <div className="border-b border-white/10 pb-5">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-3">
                       Brand Palette
                     </span>
@@ -1455,10 +1455,10 @@ export default function App() {
                       {CASE_STUDIES[activeCaseKey].palette.map((color) => (
                         <div key={color} className="flex flex-col items-center space-y-1">
                           <div
-                            className="w-9 h-9 rounded-sm border border-stone-300 shadow-sm"
+                            className="w-9 h-9 rounded-sm border border-white/10 shadow-sm"
                             style={{ backgroundColor: color }}
                           />
-                          <span className="text-[9px] font-mono select-all text-muted uppercase font-semibold">
+                          <span className="text-[9px] font-mono select-all text-stone-500 uppercase font-semibold">
                             {color}
                           </span>
                         </div>
@@ -1466,20 +1466,20 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="border-b border-stone-200 pb-5">
+                  <div className="border-b border-white/10 pb-5">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-2">
                       TYPOGRAPHY RULESET
                     </span>
-                    <p className="text-text font-serif text-sm font-light leading-relaxed">
+                    <p className="text-stone-200 font-serif text-sm font-light leading-relaxed">
                       {CASE_STUDIES[activeCaseKey].type}
                     </p>
                   </div>
 
-                  <div className="border-b border-stone-200 pb-5">
+                  <div className="border-b border-white/10 pb-5">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-accent block mb-2">
                       SIGNATURE VALUE DETAIL
                     </span>
-                    <p className="text-text text-xs leading-relaxed font-normal italic">
+                    <p className="text-stone-200 text-xs leading-relaxed font-normal italic">
                       {CASE_STUDIES[activeCaseKey].signature}
                     </p>
                   </div>
