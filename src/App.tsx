@@ -752,7 +752,7 @@ export default function App() {
           <div className="relative">
             <div className="flex flex-col gap-4 mb-6">
               <div className="flex items-center justify-between px-1">
-                <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Selected Concept Studies</span>
+                <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Studio Projects</span>
                 <div className="text-[9px] uppercase tracking-wider text-accent font-sans flex items-center space-x-1 select-none">
                   <span className="w-1 h-1 rounded-full bg-accent" />
                   <span>Hover to pause · Drag to browse · Tap to view</span>
@@ -772,7 +772,7 @@ export default function App() {
             </div>
 
             <div
-              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing"
+              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing [touch-action:none]"
               onMouseEnter={() => setIsWorkPaused(true)}
               onMouseLeave={() => setIsWorkPaused(false)}
               onPointerDown={onWorkPointerDown}
@@ -835,7 +835,7 @@ export default function App() {
               <div className="pointer-events-none absolute inset-y-0 right-0 w-10 md:w-24 bg-gradient-to-l from-stone-950 to-transparent z-10" />
             </div>
             <p className="text-stone-500 text-[10px] font-sans mt-4 px-1 max-w-lg leading-relaxed">
-              These are strategic concept builds created to demonstrate approach and craft — not all are commissioned client work. Ask about any project's status directly.
+              A mix of client engagements and studio-led concept work, spanning fashion, hospitality, and lifestyle. Happy to share more on any project.
             </p>
           </div>
 
