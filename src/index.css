@@ -180,11 +180,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   height: 100%;
-  transition: border-color 0.3s ease;
-}
-.corner-frame.is-active .corner-frame-inner,
-.group:hover .corner-frame-inner {
-  border-color: rgba(201, 168, 118, 0.35);
 }
 
 /* Hide scrollbar on the work carousel while keeping native scroll/snap */
