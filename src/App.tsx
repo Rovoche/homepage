@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TestimonialSlider } from "./components/TestimonialSlider";
 import { BrowserFrame } from "./components/BrowserFrame";
 import {
@@ -151,6 +151,15 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
 
 const WORK_ORDER = ["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const;
 
+const WORK_JUMP_LABELS: { key: (typeof WORK_ORDER)[number]; label: string }[] = [
+  { key: "couture", label: "Couture" },
+  { key: "beauty", label: "Beauty" },
+  { key: "ngo", label: "NGO" },
+  { key: "belle", label: "Bridal" },
+  { key: "jpman", label: "Lifestyle" },
+  { key: "vela", label: "Hospitality" }
+];
+
 interface ProcessStage {
   number: string;
   name: string;
@@ -293,11 +302,95 @@ export default function App() {
   // FAQ State
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
-  // Continuous marquee for the portfolio strip — same technique as the
-  // "who we work with" logo strip. True continuous motion, no jumps.
-  // Pauses the instant it's hovered/touched, resumes when released.
+  // Portfolio strip: JS-driven continuous drift (not CSS keyframes) so it
+  // can be grabbed mid-motion and dragged to a specific card, then resume
+  // drifting seamlessly from wherever it's released.
+  const workTrackRef = useRef<HTMLDivElement>(null);
   const [isWorkPaused, setIsWorkPaused] = useState(false);
   const [touchedWorkKey, setTouchedWorkKey] = useState<string | null>(null);
+  const workPosRef = useRef(0);
+  const workPausedRef = useRef(false);
+  const workDraggingRef = useRef(false);
+  const workDragMovedRef = useRef(false);
+  const workDragStartXRef = useRef(0);
+  const workDragStartPosRef = useRef(0);
+
+  useEffect(() => {
+    workPausedRef.current = isWorkPaused || !!activeCaseKey;
+  }, [isWorkPaused, activeCaseKey]);
+
+  useEffect(() => {
+    const track = workTrackRef.current;
+    if (!track) return;
+    let raf: number;
+    let lastTime = performance.now();
+    const SPEED = 0.045; // px per ms — ambient drift pace
+
+    const step = (time: number) => {
+      const dt = time - lastTime;
+      lastTime = time;
+      if (!workPausedRef.current && !workDraggingRef.current) {
+        workPosRef.current -= SPEED * dt;
+      }
+      const halfWidth = track.scrollWidth / 2;
+      if (halfWidth > 0) {
+        if (workPosRef.current <= -halfWidth) workPosRef.current += halfWidth;
+        if (workPosRef.current > 0) workPosRef.current -= halfWidth;
+      }
+      track.style.transform = `translateX(${workPosRef.current}px)`;
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const onWorkPointerDown = (e: React.PointerEvent) => {
+    workDraggingRef.current = true;
+    workDragMovedRef.current = false;
+    workDragStartXRef.current = e.clientX;
+    workDragStartPosRef.current = workPosRef.current;
+    setIsWorkPaused(true);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+  const onWorkPointerMove = (e: React.PointerEvent) => {
+    if (!workDraggingRef.current) return;
+    const delta = e.clientX - workDragStartXRef.current;
+    if (Math.abs(delta) > 4) workDragMovedRef.current = true;
+    workPosRef.current = workDragStartPosRef.current + delta;
+  };
+  const onWorkPointerUp = () => {
+    workDraggingRef.current = false;
+    setIsWorkPaused(false);
+  };
+
+  /** Smoothly glides the strip so the given case study's card is centered. */
+  const jumpToWorkKey = (key: string) => {
+    const track = workTrackRef.current;
+    if (!track) return;
+    const targetChild = Array.from(track.children).find(
+      (child) => (child as HTMLElement).dataset.workKey === key
+    ) as HTMLElement | undefined;
+    if (!targetChild) return;
+    const containerWidth = track.parentElement?.clientWidth ?? 0;
+    const targetPos = -(targetChild.offsetLeft - containerWidth / 2 + targetChild.offsetWidth / 2);
+    const startPos = workPosRef.current;
+    const distance = targetPos - startPos;
+    const duration = 700;
+    const startTime = performance.now();
+    setIsWorkPaused(true);
+    const animateJump = (time: number) => {
+      const elapsed = time - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      workPosRef.current = startPos + distance * eased;
+      if (t < 1) {
+        requestAnimationFrame(animateJump);
+      } else {
+        setTimeout(() => setIsWorkPaused(false), 1200);
+      }
+    };
+    requestAnimationFrame(animateJump);
+  };
 
   // State for Services Interactive Expandable Card
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>("s1");
@@ -654,43 +747,54 @@ export default function App() {
             </p>
           </div>
 
-          {/* Continuous Portfolio Marquee — same technique as the logo strip below,
-              true continuous motion instead of discrete slide-jumps. */}
+          {/* Continuous Portfolio Marquee — JS-driven so it can be paused
+              and dragged mid-motion, then resumes drifting on release. */}
           <div className="relative">
-            <div className="flex items-center justify-between mb-4 px-1">
-              <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Selected Portfolio</span>
-              <div className="text-[9px] uppercase tracking-wider text-accent font-sans flex items-center space-x-1 select-none animate-pulse">
-                <span className="w-1 h-1 rounded-full bg-accent" />
-                <span>Hover or tap a project to pause</span>
+            <div className="flex flex-col gap-4 mb-6">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Selected Concept Studies</span>
+                <div className="text-[9px] uppercase tracking-wider text-accent font-sans flex items-center space-x-1 select-none">
+                  <span className="w-1 h-1 rounded-full bg-accent" />
+                  <span>Hover to pause · Drag to browse · Tap to view</span>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 px-1">
+                {WORK_JUMP_LABELS.map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={() => jumpToWorkKey(item.key)}
+                    className="text-[10px] uppercase tracking-widest font-sans font-semibold text-stone-400 border border-white/10 hover:border-accent hover:text-accent rounded-full px-3 py-1.5 transition-colors duration-300"
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
             </div>
 
             <div
-              className="overflow-hidden relative w-full"
+              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing"
               onMouseEnter={() => setIsWorkPaused(true)}
               onMouseLeave={() => setIsWorkPaused(false)}
+              onPointerDown={onWorkPointerDown}
+              onPointerMove={onWorkPointerMove}
+              onPointerUp={onWorkPointerUp}
+              onPointerCancel={onWorkPointerUp}
             >
-              <div
-                className={`flex gap-6 md:gap-8 w-max animate-[marquee_100s_linear_infinite] ${
-                  isWorkPaused || activeCaseKey ? "[animation-play-state:paused]" : ""
-                }`}
-              >
+              <div ref={workTrackRef} className="flex gap-6 md:gap-8 w-max will-change-transform">
                 {[...WORK_ORDER, ...WORK_ORDER].map((key, idx) => {
                   const cs = CASE_STUDIES[key];
                   const isTouched = touchedWorkKey === `${key}-${idx}`;
                   return (
                     <div
                       key={`${key}-${idx}`}
-                      onClick={() => setActiveCaseKey(key)}
-                      onTouchStart={() => {
-                        setIsWorkPaused(true);
-                        setTouchedWorkKey(`${key}-${idx}`);
+                      data-work-key={key}
+                      onClick={() => {
+                        if (workDragMovedRef.current) return;
+                        setActiveCaseKey(key);
                       }}
-                      onTouchEnd={() => {
-                        setIsWorkPaused(false);
-                        setTouchedWorkKey(null);
-                      }}
-                      className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] cursor-pointer"
+                      onTouchStart={() => setTouchedWorkKey(`${key}-${idx}`)}
+                      onTouchEnd={() => setTouchedWorkKey(null)}
+                      className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] select-none"
                     >
                       <div className={`glow-ring ${isTouched ? "is-active" : ""}`}>
                         <div className="glow-ring-inner flex flex-col text-left">
@@ -699,6 +803,7 @@ export default function App() {
                               src={cs.img}
                               alt={`${cs.title} Preview`}
                               className="scroll-shot"
+                              draggable={false}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
                             <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
@@ -729,6 +834,9 @@ export default function App() {
               <div className="pointer-events-none absolute inset-y-0 left-0 w-10 md:w-24 bg-gradient-to-r from-stone-950 to-transparent z-10" />
               <div className="pointer-events-none absolute inset-y-0 right-0 w-10 md:w-24 bg-gradient-to-l from-stone-950 to-transparent z-10" />
             </div>
+            <p className="text-stone-500 text-[10px] font-sans mt-4 px-1 max-w-lg leading-relaxed">
+              These are strategic concept builds created to demonstrate approach and craft — not all are commissioned client work. Ask about any project's status directly.
+            </p>
           </div>
 
           <div className="mt-24 pt-12 border-t border-white/10 text-center">
@@ -1446,6 +1554,18 @@ export default function App() {
                     <span>Visit Live Site</span>
                     <ExternalLink size={14} />
                   </a>
+
+                  <button
+                    onClick={() => {
+                      const currentIdx = WORK_ORDER.indexOf(activeCaseKey as (typeof WORK_ORDER)[number]);
+                      const nextKey = WORK_ORDER[(currentIdx + 1) % WORK_ORDER.length];
+                      setActiveCaseKey(nextKey);
+                    }}
+                    className="w-full inline-flex items-center justify-center space-x-2.5 py-3.5 px-6 border border-white/10 text-stone-300 font-sans text-xs uppercase tracking-[0.2em] font-semibold hover:border-accent hover:text-accent transition-all rounded-sm"
+                  >
+                    <span>Next Project</span>
+                    <ArrowRight size={14} />
+                  </button>
 
                 </div>
 
