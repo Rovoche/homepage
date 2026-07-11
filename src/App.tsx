@@ -20,7 +20,9 @@ interface CaseStudy {
   id: string;
   tag: string;
   title: string;
+  blurb: string;
   img: string;
+  domain: string;
   url: string;
   brief: string;
   rationale: string;
@@ -35,7 +37,9 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     id: "01",
     tag: "Fashion / Couture",
     title: "Bespoke Couture Site",
-    img: "SBL-SCC.png",
+    blurb: "A luxurious, slow-paced virtual showroom designed to isolate individual fashion garments like physical art.",
+    img: "SBL-FULL.png",
+    domain: "styledbylayo.rovoche.com",
     url: "https://styledbylayo.rovoche.com/",
     brief: "A bespoke couture house needed a site that matched the weight of their garments — hand-finished, made-to-order, not mass production.",
     rationale: "The hero opens on the work itself before any text loads, because the craft sells faster than the copy. The signature collection is presented one piece at a time rather than as a grid, so each garment gets full attention.",
@@ -52,7 +56,9 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     id: "02",
     tag: "Beauty / Identity",
     title: "Makeup Artist Portfolio",
-    img: "KIKI-SCC.png",
+    blurb: "Live social media integration and unedited video layouts centered to prioritize client conversions.",
+    img: "KIKI-FULL.png",
+    domain: "kikiglam.rovoche.com",
     url: "https://kikiglam.rovoche.com/",
     brief: "A working makeup artist needed her real proof of skill — her Instagram presence — brought into a proper site without losing its immediacy.",
     rationale: "We embedded her actual reels directly rather than re-hosting curated images, so visitors see current, unedited proof of her work. The layout stays minimal so nothing competes with the content.",
@@ -69,7 +75,9 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     id: "03",
     tag: "NGO / Platform",
     title: "Youth Community Platform",
-    img: "TSH-SCC.png",
+    blurb: "Information-rich platforms designed to simplify youth narrative storytelling, ensuring secure compliance.",
+    img: "TSH-FULL.png",
+    domain: "twaynesafehaven.org",
     url: "https://twaynesafehaven.org",
     brief: "A youth storytelling community needed a site that reads as credible to funders and welcoming to the young people it serves.",
     rationale: "A calm, structured palette with a custom animated emblem gives the organization a mark of its own rather than a generic shield-and-text logo. An animated timeline turns a decade of history into something scannable.",
@@ -82,22 +90,62 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     type: "DM Serif Display for headings, DM Sans for body.",
     signature: "A hand-built animated emblem with a waving tri-colour flag, made specifically for this brand."
   },
-  commerce: {
+  belle: {
     id: "04",
-    tag: "Commerce / Fashion",
-    title: "Made-to-Order Fashion Site",
-    img: "PEASIS-SCC.png",
-    url: "https://peasis.com",
-    brief: "A custom fashion brand needed a full site that felt considered end to end, without the overhead of a traditional store build.",
-    rationale: "A recurring visual motif gives the brand a signature beyond its logo. A process animation makes the made-to-order model feel like craft rather than a delay, which matters when asking a client to commit before production starts.",
+    tag: "Fashion / Bridal",
+    title: "Bridal Atelier Showcase",
+    blurb: "A quiet, editorial bridal site that treats each gown like a gallery piece rather than a product photo.",
+    img: "BELLE-FULL.png",
+    domain: "belle.rovoche.com",
+    url: "https://belle.rovoche.com/",
+    brief: "A luxury Abuja bridal house needed a site that felt as considered and unhurried as a private fitting, spanning bridal, evening, and traditional wear under one atelier.",
+    rationale: "Signature pieces are shown as full-bleed feature panels instead of a thumbnail grid, so each gown gets the same weight a magazine editorial would give it. A six-stage Couture Journey timeline mirrors the studio's real process, turning 'how we work' into something a bride can actually follow before ever picking up the phone.",
     why: [
-      "A repeated motif builds recognition beyond the logo alone",
-      "A process animation reframes 'made-to-order' as craft, not delay",
-      "Package tiers shown clearly upfront reduce back-and-forth before commitment"
+      "Full-bleed garment panels instead of a cramped product grid",
+      "A six-stage journey timeline builds trust before the first consultation call",
+      "Four disciplines — bridal, evening, traditional, native — organized under one coherent identity"
+    ],
+    palette: ["#2B2521", "#C9A876", "#FAF5EC"],
+    type: "Serif display headlines paired with a light, wide-tracked sans for structure.",
+    signature: "A dark 'Couture Journey' timeline section that turns the studio's fitting process into a visual narrative."
+  },
+  jpman: {
+    id: "05",
+    tag: "Commerce / Lifestyle",
+    title: "Japanese Lifestyle Storefront",
+    blurb: "A retail and editorial hybrid selling imported Japanese goods as a lifestyle, not just a product catalog.",
+    img: "JPMAN-FULL.png",
+    domain: "jpman.rovoche.com",
+    url: "https://jpman.rovoche.com/",
+    brief: "A Lagos-based Japanese import retailer needed a storefront that sold a feeling — a calmer, more intentional way of living — not just a list of imported goods.",
+    rationale: "Instead of stock product photography, the browsing-by-mood section uses abstract minimalist shapes to represent moments like 'The Morning Ritual' rather than literal items, which reads as editorial rather than e-commerce. A running journal and seasonal edit keep the storefront feeling like a publication guests return to, not just a shop.",
+    why: [
+      "Mood-based browsing (by moment, not category) matches how a lifestyle brand actually gets shopped",
+      "Abstract shape icons replace stock photography for a distinct, editorial visual identity",
+      "A journal and seasonal edit give repeat visitors a reason to come back between purchases"
+    ],
+    palette: ["#1A1210", "#C65D3B", "#F3ECDF"],
+    type: "A restrained serif for editorial headers, clean sans for product and journal copy.",
+    signature: "Abstract mood-shape icons standing in for product photography in the 'Choose the Moment' section."
+  },
+  vela: {
+    id: "06",
+    tag: "Hospitality / Shortlet",
+    title: "Luxury Shortlet Booking Site",
+    blurb: "A live-feeling booking experience built for how Lagos shortlet guests actually reach out — over WhatsApp.",
+    img: "VELA-FULL.png",
+    domain: "vela.rovoche.com",
+    url: "https://vela.rovoche.com/",
+    brief: "A Lekki and Victoria Island shortlet operator needed a site that reads as hotel-grade trustworthy, not a random listing, while still routing every serious guest into a direct WhatsApp conversation.",
+    rationale: "A verified-and-secure trust bar sits above the fold before any apartment is shown, because shortlet guests are wary of scam listings first and browsing second. The availability checker is styled like a real booking engine but the actual conversion path is WhatsApp, matching how Lagos guests really book instead of forcing a foreign OTA-style flow.",
+    why: [
+      "Trust signals (verified, instant availability, 24/7 support) placed before the room listings, not after",
+      "A styled availability form that still resolves to a direct WhatsApp conversation, matching real guest behavior",
+      "Staff photos and named support humanize a shortlet booking that's usually anonymous"
     ],
     palette: ["#FAF5EC", "#2B2521", "#C9A876"],
-    type: "Cormorant Garamond for display, Jost for structure.",
-    signature: "A cutting-motion transition marking the shift into the made-to-order process section."
+    type: "Cormorant Garamond for display, Jost for structure — matching the studio's hospitality-grade system.",
+    signature: "A WhatsApp-first 'Check availability' form styled as a real booking engine, built around how Lagos guests actually book."
   }
 };
 
@@ -603,136 +651,45 @@ export default function App() {
 
           {/* Majestic, High-Weight Asymmetric Grid Layout giving projects supreme authority */}
           {/* Desktop/Tablet Grid View */}
-          <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 lg:gap-y-24 text-left">
-            
-            {/* Case 1: Bespoke Couture */}
-            <div 
-              onClick={() => setActiveCaseKey("couture")}
-              className="group cursor-pointer flex flex-col space-y-5 transition-all duration-500 hover:translate-y-[-6px] relative"
-            >
-              <BrowserFrame domain="styledbylayo.rovoche.com" className="aspect-[4/3]">
-                <img 
-                  src="SBL-SCC.png" 
-                  alt="Bespoke Couture Site Preview"
-                  className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-stone-950/20 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-                <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md">
-                  01 // BESPOKE COUTURE SITE
-                </span>
-              </BrowserFrame>
-              <div className="flex justify-between items-start pt-2">
-                <div>
-                  <h3 className="font-serif text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
-                    Bespoke Couture Site
-                  </h3>
-                  <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light max-w-sm leading-relaxed">
-                    A luxurious, slow-paced virtual showroom designed to isolate individual fashion garments like physical art.
-                  </p>
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 lg:gap-y-24 text-left">
+            {(["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const).map((key, idx) => {
+              const cs = CASE_STUDIES[key];
+              return (
+                <div
+                  key={key}
+                  onClick={() => setActiveCaseKey(key)}
+                  className={`group cursor-pointer flex flex-col space-y-5 transition-all duration-500 hover:translate-y-[-6px] relative ${
+                    idx % 3 === 1 ? "lg:mt-12" : ""
+                  }`}
+                >
+                  <BrowserFrame domain={cs.domain} className="aspect-[4/3]">
+                    <img
+                      src={cs.img}
+                      alt={`${cs.title} Preview`}
+                      className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                    />
+                    <div className="absolute inset-0 bg-stone-950/20 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
+                    <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md">
+                      {cs.id} // {cs.tag.toUpperCase()}
+                    </span>
+                  </BrowserFrame>
+                  <div className="flex justify-between items-start pt-2">
+                    <div>
+                      <h3 className="font-serif text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
+                        {cs.title}
+                      </h3>
+                      <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light max-w-sm leading-relaxed">
+                        {cs.blurb}
+                      </p>
+                    </div>
+                    <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold group-hover:underline mt-1.5 shrink-0">
+                      <span>Explore Case</span>
+                      <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                  </div>
                 </div>
-                <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold group-hover:underline mt-1.5 shrink-0">
-                  <span>Explore Case</span>
-                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </div>
-            </div>
-
-            {/* Case 2: Makeup Artist Portfolio */}
-            <div 
-              onClick={() => setActiveCaseKey("beauty")}
-              className="group cursor-pointer flex flex-col space-y-5 transition-all duration-500 hover:translate-y-[-6px] md:mt-12 relative"
-            >
-              <BrowserFrame domain="kikiglam.rovoche.com" className="aspect-[4/3]">
-                <img 
-                  src="KIKI-SCC.png" 
-                  alt="Makeup Artist Portfolio Preview"
-                  className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-stone-950/20 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-                <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md">
-                  02 // BEAUTY PORTFOLIO
-                </span>
-              </BrowserFrame>
-              <div className="flex justify-between items-start pt-2">
-                <div>
-                  <h3 className="font-serif text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
-                    Makeup Artist Portfolio
-                  </h3>
-                  <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light max-w-sm leading-relaxed">
-                    Live social media integration and unedited video layouts centered to prioritize client conversions.
-                  </p>
-                </div>
-                <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold group-hover:underline mt-1.5 shrink-0">
-                  <span>Explore Case</span>
-                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </div>
-            </div>
-
-            {/* Case 3: Youth Platform */}
-            <div 
-              onClick={() => setActiveCaseKey("ngo")}
-              className="group cursor-pointer flex flex-col space-y-5 transition-all duration-500 hover:translate-y-[-6px] relative"
-            >
-              <BrowserFrame domain="twaynesafehaven.org" className="aspect-[4/3]">
-                <img 
-                  src="TSH-SCC.png" 
-                  alt="Youth Community Platform Preview"
-                  className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-stone-950/20 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-                <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md">
-                  03 // NGO / PLATFORM
-                </span>
-              </BrowserFrame>
-              <div className="flex justify-between items-start pt-2">
-                <div>
-                  <h3 className="font-serif text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
-                    Youth Community Platform
-                  </h3>
-                  <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light max-w-sm leading-relaxed">
-                    Information-rich platforms designed to simplify youth narrative storytelling, ensuring secure compliance.
-                  </p>
-                </div>
-                <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold group-hover:underline mt-1.5 shrink-0">
-                  <span>Explore Case</span>
-                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </div>
-            </div>
-
-            {/* Case 4: Made-to-Order Commerce */}
-            <div 
-              onClick={() => setActiveCaseKey("commerce")}
-              className="group cursor-pointer flex flex-col space-y-5 transition-all duration-500 hover:translate-y-[-6px] md:mt-12 relative"
-            >
-              <BrowserFrame domain="peasis.com" className="aspect-[4/3]">
-                <img 
-                  src="PEASIS-SCC.png" 
-                  alt="Made-to-Order Fashion Site Preview"
-                  className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-stone-950/20 pointer-events-none transition-opacity duration-500 group-hover:opacity-0" />
-                <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md">
-                  04 // LUXURY E-COMMERCE
-                </span>
-              </BrowserFrame>
-              <div className="flex justify-between items-start pt-2">
-                <div>
-                  <h3 className="font-serif text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
-                    Made-to-Order Fashion Site
-                  </h3>
-                  <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light max-w-sm leading-relaxed">
-                    Custom order pathways reframed as premium slow craft to convert discerning shoppers seamlessly.
-                  </p>
-                </div>
-                <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold group-hover:underline mt-1.5 shrink-0">
-                  <span>Explore Case</span>
-                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </div>
-            </div>
-
+              );
+            })}
           </div>
 
           {/* Swipeable Carousel View Exclusively on Mobile/Small Screens */}
@@ -749,48 +706,46 @@ export default function App() {
                 className="flex transition-transform duration-500 ease-in-out" 
                 style={{ transform: `translateX(-${activeWorkIndex * 100}%)` }}
               >
-                {[
-                  { key: "couture", number: "01", tag: "BESPOKE COUTURE", title: "Bespoke Couture Site", img: "SBL-SCC.png", domain: "styledbylayo.rovoche.com", desc: "A luxurious, slow-paced virtual showroom designed to isolate individual fashion garments like physical art." },
-                  { key: "beauty", number: "02", tag: "BEAUTY PORTFOLIO", title: "Makeup Artist Portfolio", img: "KIKI-SCC.png", domain: "kikiglam.rovoche.com", desc: "Live social media integration and unedited video layouts centered to prioritize client conversions." },
-                  { key: "ngo", number: "03", tag: "NGO / PLATFORM", title: "Youth Community Platform", img: "TSH-SCC.png", domain: "twaynesafehaven.org", desc: "Information-rich platforms designed to simplify youth narrative storytelling, ensuring secure compliance." },
-                  { key: "commerce", number: "04", tag: "LUXURY E-COMMERCE", title: "Made-to-Order Fashion Site", img: "PEASIS-SCC.png", domain: "peasis.com", desc: "Custom order pathways reframed as premium slow craft to convert discerning shoppers seamlessly." }
-                ].map((item, idx) => (
-                  <div 
-                    key={item.key} 
-                    onClick={() => setActiveCaseKey(item.key)}
-                    className="w-full shrink-0 p-6 flex flex-col space-y-4"
-                  >
-                    <BrowserFrame domain={item.domain} className="aspect-[4/3] border-white/5">
-                      <img 
-                        src={item.img} 
-                        alt={item.title}
-                        className="w-full h-full object-cover object-top"
-                      />
-                      <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[8px] tracking-widest px-2 py-0.5 uppercase rounded-sm border border-white/5">
-                        {item.number} // {item.tag}
-                      </span>
-                    </BrowserFrame>
-                    <div className="space-y-2 text-left">
-                      <h3 className="font-serif text-xl text-stone-100 font-light tracking-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-stone-400 text-xs font-sans leading-relaxed">
-                        {item.desc}
-                      </p>
-                      <div className="pt-2 flex items-center space-x-2 text-[10px] font-sans uppercase tracking-[0.16em] text-accent font-semibold">
-                        <span>Explore Case Study</span>
-                        <ArrowRight size={12} />
+                {(["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const).map((key, idx) => {
+                  const cs = CASE_STUDIES[key];
+                  return (
+                    <div 
+                      key={key} 
+                      onClick={() => setActiveCaseKey(key)}
+                      className="w-full shrink-0 p-6 flex flex-col space-y-4"
+                    >
+                      <BrowserFrame domain={cs.domain} className="aspect-[4/3] border-white/5">
+                        <img 
+                          src={cs.img} 
+                          alt={cs.title}
+                          className="w-full h-full object-cover object-top"
+                        />
+                        <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[8px] tracking-widest px-2 py-0.5 uppercase rounded-sm border border-white/5">
+                          {cs.id} // {cs.tag.toUpperCase()}
+                        </span>
+                      </BrowserFrame>
+                      <div className="space-y-2 text-left">
+                        <h3 className="font-serif text-xl text-stone-100 font-light tracking-tight">
+                          {cs.title}
+                        </h3>
+                        <p className="text-stone-400 text-xs font-sans leading-relaxed">
+                          {cs.blurb}
+                        </p>
+                        <div className="pt-2 flex items-center space-x-2 text-[10px] font-sans uppercase tracking-[0.16em] text-accent font-semibold">
+                          <span>Explore Case Study</span>
+                          <ArrowRight size={12} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
             {/* Carousel Navigation Controller */}
             <div className="flex items-center justify-between mt-6 px-1">
               <div className="flex space-x-1.5 matches-slider">
-                {[0, 1, 2, 3].map((idx) => (
+                {[0, 1, 2, 3, 4, 5].map((idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveWorkIndex(idx)}
@@ -803,17 +758,17 @@ export default function App() {
               </div>
               <div className="flex items-center space-x-3.5">
                 <button
-                  onClick={() => setActiveWorkIndex((prev) => (prev > 0 ? prev - 1 : 3))}
+                  onClick={() => setActiveWorkIndex((prev) => (prev > 0 ? prev - 1 : 5))}
                   className="p-2 border border-white/10 rounded-sm text-stone-400 hover:text-stone-100 hover:border-accent active:scale-95 transition-all text-sm font-sans uppercase tracking-widest flex items-center justify-center cursor-pointer"
                   aria-label="Previous Slide"
                 >
                   <ChevronRight size={14} className="rotate-180" />
                 </button>
                 <span className="font-mono text-[10px] text-stone-400 select-none tracking-widest">
-                  0{activeWorkIndex + 1} / 04
+                  0{activeWorkIndex + 1} / 06
                 </span>
                 <button
-                  onClick={() => setActiveWorkIndex((prev) => (prev < 3 ? prev + 1 : 0))}
+                  onClick={() => setActiveWorkIndex((prev) => (prev < 5 ? prev + 1 : 0))}
                   className="p-2 border border-white/10 rounded-sm text-stone-400 hover:text-stone-100 hover:border-accent active:scale-95 transition-all text-sm font-sans uppercase tracking-widest flex items-center justify-center cursor-pointer"
                   aria-label="Next Slide"
                 >
