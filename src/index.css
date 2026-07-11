@@ -113,7 +113,7 @@ body {
   width: 100%;
   height: auto;
   display: block;
-  animation: scrollThroughShot 13s ease-in-out infinite;
+  animation: scrollThroughShot 21s ease-in-out infinite;
   animation-play-state: paused;
 }
 .is-scrolling .scroll-shot {
@@ -127,13 +127,13 @@ body {
   width: 100%;
   height: auto;
   display: block;
-  animation: scrollThroughShot 18s ease-in-out infinite;
+  animation: scrollThroughShot 26s ease-in-out infinite;
 }
 
 /* Portfolio card: a thin gold outline that continuously sweeps
-   around the OUTSIDE of the whole card, speeding up and brightening
-   when the card is active/centered. Built as a padding-ring so the
-   light genuinely travels around the border, not inside it. */
+   around the OUTSIDE of the whole card. Present but understated at
+   rest on every card; brightens and quickens on the focused one so
+   attention has somewhere clear to land. */
 @property --glow-angle {
   syntax: "<angle>";
   inherits: false;
@@ -158,8 +158,9 @@ body {
     #8a6f44 96%,
     transparent 100%
   );
-  animation: glowSweep 9s linear infinite;
-  transition: filter 0.4s ease;
+  animation: glowSweep 13s linear infinite;
+  opacity: 0.55;
+  transition: opacity 0.4s ease, filter 0.4s ease;
 }
 .glow-ring-inner {
   background: #0c0a09;
@@ -169,7 +170,8 @@ body {
 }
 .glow-ring.is-active,
 .group:hover .glow-ring {
-  animation-duration: 2.6s;
+  opacity: 1;
+  animation-duration: 5s;
   filter: brightness(1.4);
 }
 
