@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TestimonialSlider } from "./components/TestimonialSlider";
 import { BrowserFrame } from "./components/BrowserFrame";
 import {
@@ -149,6 +149,8 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
   }
 };
 
+const WORK_ORDER = ["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const;
+
 interface ProcessStage {
   number: string;
   name: string;
@@ -293,6 +295,39 @@ export default function App() {
 
   // State for Mobile Work Horizontal Carousel
   const [activeWorkIndex, setActiveWorkIndex] = useState(0);
+  const workScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = workScrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const children = Array.from(el.children) as HTMLElement[];
+      const containerCenter = el.scrollLeft + el.clientWidth / 2;
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      children.forEach((child, i) => {
+        const childCenter = child.offsetLeft + child.offsetWidth / 2;
+        const dist = Math.abs(childCenter - containerCenter);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIdx = i;
+        }
+      });
+      setActiveWorkIndex(closestIdx);
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToWorkIndex = (idx: number) => {
+    const el = workScrollRef.current;
+    if (!el) return;
+    const child = el.children[idx] as HTMLElement | undefined;
+    if (child) {
+      child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+  };
 
   // State for Services Interactive Expandable Card
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>("s1");
@@ -649,111 +684,72 @@ export default function App() {
             </p>
           </div>
 
-          {/* Majestic, High-Weight Asymmetric Grid Layout giving projects supreme authority */}
-          {/* Desktop/Tablet Grid View */}
-          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 lg:gap-y-24 text-left">
-            {(["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const).map((key, idx) => {
-              const cs = CASE_STUDIES[key];
-              return (
-                <div
-                  key={key}
-                  onClick={() => setActiveCaseKey(key)}
-                  className={`group cursor-pointer flex flex-col space-y-5 transition-all duration-500 hover:translate-y-[-6px] relative ${
-                    idx % 3 === 1 ? "lg:mt-12" : ""
-                  }`}
-                >
-                  <BrowserFrame domain={cs.domain} className="aspect-[4/3]">
-                    <img
-                      src={cs.img}
-                      alt={`${cs.title} Preview`}
-                      className="scroll-shot"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
-                    <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
-                      {cs.id} // {cs.tag.toUpperCase()}
-                    </span>
-                  </BrowserFrame>
-                  <div className="flex justify-between items-start pt-2">
-                    <div>
-                      <h3 className="font-serif text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
-                        {cs.title}
-                      </h3>
-                      <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light max-w-sm leading-relaxed">
-                        {cs.blurb}
-                      </p>
-                    </div>
-                    <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold group-hover:underline mt-1.5 shrink-0">
-                      <span>Explore Case</span>
-                      <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Swipeable Carousel View Exclusively on Mobile/Small Screens */}
-          <div className="block md:hidden relative mt-8">
-            <div className="flex items-center justify-between mb-2 px-1">
+          {/* Unified Scroll-Snap Carousel — same mechanism on mobile and desktop */}
+          <div className="relative">
+            <div className="flex items-center justify-between mb-4 px-1">
               <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Selected Portfolio</span>
               <div className="text-[9px] uppercase tracking-wider text-accent font-sans flex items-center space-x-1 select-none animate-pulse">
                 <span className="w-1 h-1 rounded-full bg-accent" />
-                <span>Swipe to explore projects</span>
+                <span>Scroll or swipe to explore</span>
               </div>
             </div>
-            <div className="overflow-hidden relative w-full" style={{ padding: "0 9%" }}>
-              <div
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${activeWorkIndex * 87}%)` }}
-              >
-                {(["couture", "beauty", "ngo", "belle", "jpman", "vela"] as const).map((key, idx) => {
-                  const cs = CASE_STUDIES[key];
-                  const isActive = idx === activeWorkIndex;
-                  return (
+
+            <div
+              ref={workScrollRef}
+              className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth gap-6 md:gap-8 px-[7%] md:px-[14%] pb-2"
+            >
+              {WORK_ORDER.map((key, idx) => {
+                const cs = CASE_STUDIES[key];
+                const isActive = idx === activeWorkIndex;
+                return (
+                  <div
+                    key={key}
+                    className="group snap-center shrink-0 w-[86%] sm:w-[64%] md:w-[42%] lg:w-[30%] transition-all duration-500"
+                  >
                     <div
-                      key={key}
-                      onClick={() => (isActive ? setActiveCaseKey(key) : setActiveWorkIndex(idx))}
-                      style={{ width: "82%", marginRight: "5%" }}
-                      className={`shrink-0 flex flex-col space-y-4 p-4 rounded-sm bg-stone-900 border border-white/10 transition-all duration-500 ease-out ${
-                        isActive ? "scale-100 opacity-100" : "scale-[0.9] opacity-50"
-                      }`}
+                      onClick={() => (isActive ? setActiveCaseKey(key) : scrollToWorkIndex(idx))}
+                      className={`glow-ring cursor-pointer ${isActive ? "is-active" : ""}`}
                     >
-                      <BrowserFrame domain={cs.domain} className="aspect-[4/3] border-white/5" active={isActive}>
-                        <img
-                          src={cs.img}
-                          alt={cs.title}
-                          className="scroll-shot"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
-                        <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[8px] tracking-widest px-2 py-0.5 uppercase rounded-sm border border-white/5 z-[6]">
-                          {cs.id} // {cs.tag.toUpperCase()}
-                        </span>
-                      </BrowserFrame>
-                      <div className="space-y-2 text-left">
-                        <h3 className="font-serif text-xl text-stone-100 font-light tracking-tight">
-                          {cs.title}
-                        </h3>
-                        <p className="text-stone-400 text-xs font-sans leading-relaxed">
-                          {cs.blurb}
-                        </p>
-                        <div className="pt-2 flex items-center space-x-2 text-[10px] font-sans uppercase tracking-[0.16em] text-accent font-semibold">
-                          <span>Explore Case Study</span>
-                          <ArrowRight size={12} />
+                      <div className="glow-ring-inner flex flex-col text-left">
+                        <BrowserFrame domain={cs.domain} className="aspect-[4/3]" active={isActive}>
+                          <img
+                            src={cs.img}
+                            alt={`${cs.title} Preview`}
+                            className="scroll-shot"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
+                          <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
+                            {cs.id} // {cs.tag.toUpperCase()}
+                          </span>
+                        </BrowserFrame>
+                        <div className="p-5 flex justify-between items-start gap-4">
+                          <div>
+                            <h3 className="font-serif text-xl md:text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
+                              {cs.title}
+                            </h3>
+                            <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light leading-relaxed">
+                              {cs.blurb}
+                            </p>
+                            <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold mt-4">
+                              <span>Explore Case</span>
+                              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Carousel Navigation Controller */}
             <div className="flex items-center justify-between mt-6 px-1">
-              <div className="flex space-x-1.5 matches-slider">
-                {[0, 1, 2, 3, 4, 5].map((idx) => (
+              <div className="flex space-x-1.5">
+                {WORK_ORDER.map((_, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setActiveWorkIndex(idx)}
+                    onClick={() => scrollToWorkIndex(idx)}
                     className={`h-1 hover:brightness-110 transition-all duration-300 ${
                       activeWorkIndex === idx ? "w-6 bg-accent" : "w-1.5 bg-stone-700"
                     }`}
@@ -763,17 +759,17 @@ export default function App() {
               </div>
               <div className="flex items-center space-x-3.5">
                 <button
-                  onClick={() => setActiveWorkIndex((prev) => (prev > 0 ? prev - 1 : 5))}
+                  onClick={() => scrollToWorkIndex(activeWorkIndex > 0 ? activeWorkIndex - 1 : WORK_ORDER.length - 1)}
                   className="p-2 border border-white/10 rounded-sm text-stone-400 hover:text-stone-100 hover:border-accent active:scale-95 transition-all text-sm font-sans uppercase tracking-widest flex items-center justify-center cursor-pointer"
                   aria-label="Previous Slide"
                 >
                   <ChevronRight size={14} className="rotate-180" />
                 </button>
                 <span className="font-mono text-[10px] text-stone-400 select-none tracking-widest">
-                  0{activeWorkIndex + 1} / 06
+                  0{activeWorkIndex + 1} / 0{WORK_ORDER.length}
                 </span>
                 <button
-                  onClick={() => setActiveWorkIndex((prev) => (prev < 5 ? prev + 1 : 0))}
+                  onClick={() => scrollToWorkIndex(activeWorkIndex < WORK_ORDER.length - 1 ? activeWorkIndex + 1 : 0)}
                   className="p-2 border border-white/10 rounded-sm text-stone-400 hover:text-stone-100 hover:border-accent active:scale-95 transition-all text-sm font-sans uppercase tracking-widest flex items-center justify-center cursor-pointer"
                   aria-label="Next Slide"
                 >
@@ -1396,7 +1392,7 @@ export default function App() {
                 <img
                   src={CASE_STUDIES[activeCaseKey].img}
                   alt={CASE_STUDIES[activeCaseKey].title}
-                  className="w-full h-full object-cover object-top"
+                  className="scroll-shot-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/10 to-stone-950/30" />
                 <div className="absolute bottom-6 left-6 md:left-12 max-w-2xl text-left">
