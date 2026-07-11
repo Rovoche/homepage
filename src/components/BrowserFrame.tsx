@@ -4,23 +4,19 @@ interface BrowserFrameProps {
   domain: string;
   children: React.ReactNode;
   className?: string;
-  /** Forces the glow + auto-scroll to run (used on mobile, where there's no hover state) */
+  /** Forces the auto-scroll to run (used when a card is the active/centered one) */
   active?: boolean;
 }
 
 /**
- * Clean-edged frame for screenshot previews.
- * - A quiet gold light travels around the border at rest, and
- *   brightens/speeds up on hover (desktop) or when `active` (mobile).
- * - The child <img> should use the .scroll-shot class to get the
- *   slow scroll-through-the-page animation, triggered by the same states.
+ * Clips and holds the screenshot preview. Purely a viewport for the
+ * scrolling screenshot — the gold outline lives one level up, wrapped
+ * around the whole card (see .glow-ring / .glow-ring-inner in index.css).
  */
 export function BrowserFrame({ domain, children, className = "", active = false }: BrowserFrameProps) {
   return (
     <div
-      className={`glow-ring relative overflow-hidden bg-stone-900 rounded-sm ${
-        active ? "is-active is-scrolling" : ""
-      } ${className}`}
+      className={`relative overflow-hidden bg-stone-900 ${active ? "is-scrolling" : ""} ${className}`}
     >
       {children}
     </div>
