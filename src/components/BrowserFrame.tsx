@@ -11,7 +11,7 @@ interface BrowserFrameProps {
 /**
  * Clips and holds the screenshot preview. Purely a viewport for the
  * scrolling screenshot — the gold outline lives one level up, wrapped
- * around the whole card (see .glow-ring / .glow-ring-inner in index.css).
+ * around the whole card (see .corner-frame / .corner-frame-inner in index.css).
  */
 export function BrowserFrame({ domain, children, className = "", active = false }: BrowserFrameProps) {
   return (
