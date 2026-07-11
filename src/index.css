@@ -100,3 +100,67 @@ body {
   mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
 }
+
+/* Portfolio card: scroll-through-screenshot animation.
+   Travels down the full page screenshot, pauses, travels back up, loops.
+   Paused by default — triggered by .is-scrolling on the frame. */
+@keyframes scrollThroughShot {
+  0%, 6% { transform: translateY(0); }
+  46%, 54% { transform: translateY(-84%); }
+  94%, 100% { transform: translateY(0); }
+}
+.scroll-shot {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: scrollThroughShot 13s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.is-scrolling .scroll-shot {
+  animation-play-state: running;
+}
+.group:hover .scroll-shot {
+  animation-play-state: running;
+}
+
+/* Portfolio card: quiet traveling gold light around the card border.
+   Slow ambient rotation at rest, speeds up and brightens when active. */
+@keyframes travelGlow {
+  to { transform: rotate(360deg); }
+}
+.glow-ring {
+  position: relative;
+  isolation: isolate;
+}
+.glow-ring::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 78%,
+    #c9a876 87%,
+    #f3d9a6 91%,
+    #c9a876 95%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.4;
+  animation: travelGlow 7s linear infinite;
+  transition: opacity 0.5s ease, animation-duration 0.5s ease;
+  pointer-events: none;
+  z-index: 5;
+}
+.glow-ring.is-active::before {
+  opacity: 1;
+  animation-duration: 2.6s;
+}
+.group:hover .glow-ring::before {
+  opacity: 1;
+  animation-duration: 2.6s;
+}
