@@ -10,6 +10,13 @@ interface Testimonial {
 
 const TESTIMONIALS_DATA: Testimonial[] = [
   {
+    id: "michael",
+    stars: 5,
+    quote: "ROVOCHÉ approaches digital work with unusual care and professionalism. Their understanding of trust, presentation, and user experience is evident throughout every project. They consistently deliver work that reflects quality, attention to detail, and long-term thinking.",
+    author: "Michael",
+    role: "Founder, Lumineuron",
+  },
+  {
     id: "samuel",
     stars: 5,
     quote: "ROVOCHÉ helped us translate years of community impact into a website that finally reflected the quality of our work. The result feels structured, credible, and far easier for partners and supporters to understand.",
@@ -22,13 +29,6 @@ const TESTIMONIALS_DATA: Testimonial[] = [
     quote: "What stood out most was the attention to detail. The website feels elegant, intentional, and aligned with the quality we want customers to associate with our brand.",
     author: "Hannah",
     role: "Founder, Peasis Fashion",
-  },
-  {
-    id: "michael",
-    stars: 5,
-    quote: "ROVOCHÉ approaches digital work with unusual care and professionalism. Their understanding of trust, presentation, and user experience is evident throughout every project. They consistently deliver work that reflects quality, attention to detail, and long-term thinking.",
-    author: "Michael",
-    role: "CEO, Herkimer Capital",
   },
 ];
 
