@@ -134,45 +134,57 @@ body {
    around the OUTSIDE of the whole card. Present but understated at
    rest on every card; brightens and quickens on the focused one so
    attention has somewhere clear to land. */
-@property --glow-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-@keyframes glowSweep {
-  to {
-    --glow-angle: 360deg;
-  }
-}
-.glow-ring {
-  --glow-angle: 0deg;
+/* Portfolio card: gold corner brackets draw in on focus (hover on
+   desktop, touch on mobile) — like a viewfinder locking on, rather
+   than a decorative glow. Invisible at rest. */
+.corner-frame {
   position: relative;
-  padding: 1.5px;
-  border-radius: 0.125rem;
-  background: conic-gradient(
-    from var(--glow-angle),
-    transparent 0%,
-    transparent 80%,
-    #8a6f44 88%,
-    #f3d9a6 92%,
-    #8a6f44 96%,
-    transparent 100%
-  );
-  animation: glowSweep 13s linear infinite;
-  opacity: 0.55;
-  transition: opacity 0.4s ease, filter 0.4s ease;
 }
-.glow-ring-inner {
+.corner-frame::before,
+.corner-frame::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #c9a876;
+  border-style: solid;
+  border-width: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease, width 0.25s ease, height 0.25s ease;
+  pointer-events: none;
+  z-index: 6;
+}
+.corner-frame::before {
+  top: -2px;
+  left: -2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+.corner-frame::after {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+.corner-frame.is-active::before,
+.corner-frame.is-active::after,
+.group:hover .corner-frame::before,
+.group:hover .corner-frame::after {
+  opacity: 1;
+  width: 26px;
+  height: 26px;
+}
+.corner-frame-inner {
   background: #0c0a09;
-  border-radius: inherit;
+  border-radius: 0.125rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   height: 100%;
+  transition: border-color 0.3s ease;
 }
-.glow-ring.is-active,
-.group:hover .glow-ring {
-  opacity: 1;
-  animation-duration: 5s;
-  filter: brightness(1.4);
+.corner-frame.is-active .corner-frame-inner,
+.group:hover .corner-frame-inner {
+  border-color: rgba(201, 168, 118, 0.35);
 }
 
 /* Hide scrollbar on the work carousel while keeping native scroll/snap */
