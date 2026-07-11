@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { TestimonialSlider } from "./components/TestimonialSlider";
 import { BrowserFrame } from "./components/BrowserFrame";
 import {
@@ -293,63 +293,11 @@ export default function App() {
   // FAQ State
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
-  // State for Mobile Work Horizontal Carousel
-  const [activeWorkIndex, setActiveWorkIndex] = useState(0);
-  const workScrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = workScrollRef.current;
-    if (!el) return;
-    const handleScroll = () => {
-      const children = Array.from(el.children) as HTMLElement[];
-      const containerCenter = el.scrollLeft + el.clientWidth / 2;
-      let closestIdx = 0;
-      let closestDist = Infinity;
-      children.forEach((child, i) => {
-        const childCenter = child.offsetLeft + child.offsetWidth / 2;
-        const dist = Math.abs(childCenter - containerCenter);
-        if (dist < closestDist) {
-          closestDist = dist;
-          closestIdx = i;
-        }
-      });
-      setActiveWorkIndex(closestIdx);
-    };
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToWorkIndex = (idx: number) => {
-    const el = workScrollRef.current;
-    if (!el) return;
-    const child = el.children[idx] as HTMLElement | undefined;
-    if (child) {
-      child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
-  };
-
-  // Ambient auto-drift: moves to the next card on its own when idle,
-  // freezes instantly on any touch/hover, resumes a moment after.
+  // Continuous marquee for the portfolio strip — same technique as the
+  // "who we work with" logo strip. True continuous motion, no jumps.
+  // Pauses the instant it's hovered/touched, resumes when released.
   const [isWorkPaused, setIsWorkPaused] = useState(false);
-  const workResumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const pauseWorkDrift = () => {
-    setIsWorkPaused(true);
-    if (workResumeTimeout.current) clearTimeout(workResumeTimeout.current);
-  };
-  const scheduleWorkResume = () => {
-    if (workResumeTimeout.current) clearTimeout(workResumeTimeout.current);
-    workResumeTimeout.current = setTimeout(() => setIsWorkPaused(false), 3200);
-  };
-
-  useEffect(() => {
-    if (isWorkPaused || activeCaseKey) return;
-    const timer = setTimeout(() => {
-      scrollToWorkIndex((activeWorkIndex + 1) % WORK_ORDER.length);
-    }, 4200);
-    return () => clearTimeout(timer);
-  }, [isWorkPaused, activeCaseKey, activeWorkIndex]);
+  const [touchedWorkKey, setTouchedWorkKey] = useState<string | null>(null);
 
   // State for Services Interactive Expandable Card
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>("s1");
@@ -706,102 +654,80 @@ export default function App() {
             </p>
           </div>
 
-          {/* Unified Scroll-Snap Carousel — same mechanism on mobile and desktop */}
+          {/* Continuous Portfolio Marquee — same technique as the logo strip below,
+              true continuous motion instead of discrete slide-jumps. */}
           <div className="relative">
             <div className="flex items-center justify-between mb-4 px-1">
               <span className="text-[9px] uppercase font-semibold tracking-wider text-stone-500">Selected Portfolio</span>
               <div className="text-[9px] uppercase tracking-wider text-accent font-sans flex items-center space-x-1 select-none animate-pulse">
                 <span className="w-1 h-1 rounded-full bg-accent" />
-                <span>Scroll or swipe to explore</span>
+                <span>Hover or tap a project to pause</span>
               </div>
             </div>
 
             <div
-              ref={workScrollRef}
-              onMouseEnter={pauseWorkDrift}
-              onMouseLeave={scheduleWorkResume}
-              onTouchStart={pauseWorkDrift}
-              onTouchEnd={scheduleWorkResume}
-              className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth gap-6 md:gap-8 px-[7%] md:px-[14%] pb-2"
+              className="overflow-hidden relative w-full"
+              onMouseEnter={() => setIsWorkPaused(true)}
+              onMouseLeave={() => setIsWorkPaused(false)}
             >
-              {WORK_ORDER.map((key, idx) => {
-                const cs = CASE_STUDIES[key];
-                const isActive = idx === activeWorkIndex;
-                return (
-                  <div
-                    key={key}
-                    className="group snap-center shrink-0 w-[86%] sm:w-[64%] md:w-[42%] lg:w-[30%] transition-all duration-500"
-                  >
+              <div
+                className={`flex gap-6 md:gap-8 w-max animate-[marquee_100s_linear_infinite] ${
+                  isWorkPaused || activeCaseKey ? "[animation-play-state:paused]" : ""
+                }`}
+              >
+                {[...WORK_ORDER, ...WORK_ORDER].map((key, idx) => {
+                  const cs = CASE_STUDIES[key];
+                  const isTouched = touchedWorkKey === `${key}-${idx}`;
+                  return (
                     <div
-                      onClick={() => (isActive ? setActiveCaseKey(key) : scrollToWorkIndex(idx))}
-                      className={`glow-ring cursor-pointer ${isActive ? "is-active" : ""}`}
+                      key={`${key}-${idx}`}
+                      onClick={() => setActiveCaseKey(key)}
+                      onTouchStart={() => {
+                        setIsWorkPaused(true);
+                        setTouchedWorkKey(`${key}-${idx}`);
+                      }}
+                      onTouchEnd={() => {
+                        setIsWorkPaused(false);
+                        setTouchedWorkKey(null);
+                      }}
+                      className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] cursor-pointer"
                     >
-                      <div className="glow-ring-inner flex flex-col text-left">
-                        <BrowserFrame domain={cs.domain} className="aspect-[4/3]" active={isActive}>
-                          <img
-                            src={cs.img}
-                            alt={`${cs.title} Preview`}
-                            className="scroll-shot"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
-                          <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
-                            {cs.id} // {cs.tag.toUpperCase()}
-                          </span>
-                        </BrowserFrame>
-                        <div className="p-5 flex justify-between items-start gap-4">
-                          <div>
-                            <h3 className="font-serif text-xl md:text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
-                              {cs.title}
-                            </h3>
-                            <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light leading-relaxed">
-                              {cs.blurb}
-                            </p>
-                            <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold mt-4">
-                              <span>Explore Case</span>
-                              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                      <div className={`glow-ring ${isTouched ? "is-active" : ""}`}>
+                        <div className="glow-ring-inner flex flex-col text-left">
+                          <BrowserFrame domain={cs.domain} className="aspect-[4/3]" active={isTouched}>
+                            <img
+                              src={cs.img}
+                              alt={`${cs.title} Preview`}
+                              className="scroll-shot"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent pointer-events-none z-[4]" />
+                            <span className="absolute top-2 left-2 bg-stone-950/90 text-accent font-mono text-[9px] tracking-widest px-2.5 py-1 uppercase rounded-sm border border-white/5 shadow-md z-[6]">
+                              {cs.id} // {cs.tag.toUpperCase()}
                             </span>
+                          </BrowserFrame>
+                          <div className="p-5 flex justify-between items-start gap-4">
+                            <div>
+                              <h3 className="font-serif text-xl md:text-2xl text-stone-100 font-light tracking-tight group-hover:text-accent transition-colors duration-300">
+                                {cs.title}
+                              </h3>
+                              <p className="text-stone-400 text-xs font-sans mt-2 tracking-wide font-light leading-relaxed">
+                                {cs.blurb}
+                              </p>
+                              <span className="flex items-center space-x-2 text-[10px] font-sans uppercase tracking-widest text-[#C9A876] font-semibold mt-4">
+                                <span>Explore Case</span>
+                                <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Carousel Navigation Controller */}
-            <div className="flex items-center justify-between mt-6 px-1">
-              <div className="flex space-x-1.5">
-                {WORK_ORDER.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => scrollToWorkIndex(idx)}
-                    className={`h-1 hover:brightness-110 transition-all duration-300 ${
-                      activeWorkIndex === idx ? "w-6 bg-accent" : "w-1.5 bg-stone-700"
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
+                  );
+                })}
               </div>
-              <div className="flex items-center space-x-3.5">
-                <button
-                  onClick={() => scrollToWorkIndex(activeWorkIndex > 0 ? activeWorkIndex - 1 : WORK_ORDER.length - 1)}
-                  className="p-2 border border-white/10 rounded-sm text-stone-400 hover:text-stone-100 hover:border-accent active:scale-95 transition-all text-sm font-sans uppercase tracking-widest flex items-center justify-center cursor-pointer"
-                  aria-label="Previous Slide"
-                >
-                  <ChevronRight size={14} className="rotate-180" />
-                </button>
-                <span className="font-mono text-[10px] text-stone-400 select-none tracking-widest">
-                  0{activeWorkIndex + 1} / 0{WORK_ORDER.length}
-                </span>
-                <button
-                  onClick={() => scrollToWorkIndex(activeWorkIndex < WORK_ORDER.length - 1 ? activeWorkIndex + 1 : 0)}
-                  className="p-2 border border-white/10 rounded-sm text-stone-400 hover:text-stone-100 hover:border-accent active:scale-95 transition-all text-sm font-sans uppercase tracking-widest flex items-center justify-center cursor-pointer"
-                  aria-label="Next Slide"
-                >
-                  <ChevronRight size={14} />
-                </button>
-              </div>
+              {/* Edge fades so cards don't hard-cut at the container boundary */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-10 md:w-24 bg-gradient-to-r from-stone-950 to-transparent z-10" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-10 md:w-24 bg-gradient-to-l from-stone-950 to-transparent z-10" />
             </div>
           </div>
 
