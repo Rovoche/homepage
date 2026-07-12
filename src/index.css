@@ -9,6 +9,7 @@
   --color-text: #2B2521;
   --color-muted: #6E6357;
   --color-accent: #C9A876;
+  --color-dark-elevated: #262019;
 }
 
 body {
@@ -184,7 +185,7 @@ body {
   height: 26px;
 }
 .corner-frame-inner {
-  background: #0c0a09;
+  background: #262019;
   border-radius: 0.125rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
