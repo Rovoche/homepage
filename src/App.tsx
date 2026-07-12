@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TestimonialSlider } from "./components/TestimonialSlider";
 import { ContactForm } from "./components/ContactForm";
+import { Reveal } from "./components/Reveal";
 import { BrowserFrame } from "./components/BrowserFrame";
 import {
   ArrowRight,
@@ -508,7 +508,7 @@ export default function App() {
               onClick={(e) => smoothScroll(e, "work")}
               className="text-[11px] uppercase tracking-[0.22em] text-inherit hover:text-accent transition-colors duration-300"
             >
-              Work
+              Projects
             </a>
             <a
               href="#identity"
@@ -667,12 +667,12 @@ export default function App() {
       {/* 4. INDUSTRIES BANNER - COLOR RHYTHM: LIGHT */}
       <section id="industries" className="py-20 bg-beige border-y border-stone-300/40 relative z-10 text-left">
         <div className="max-w-7xl mx-auto px-6 mb-10">
-          <div className="flex flex-col items-start space-y-2">
+          <Reveal className="flex flex-col items-start space-y-2">
             <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#C9A876]">WHO WE WORK WITH</span>
             <h2 className="font-serif font-light text-xl md:text-3xl text-text leading-tight max-w-xl">
               Architectural web design for ambitious brands and growing businesses
             </h2>
-          </div>
+          </Reveal>
         </div>
 
         <div className="w-full overflow-hidden mask-linear">
@@ -737,7 +737,7 @@ export default function App() {
         <div className="absolute inset-0 mix-blend-overlay opacity-[0.03] pointer-events-none bg-stone-900" />
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           
-          <div className="mb-24 flex flex-col md:flex-row md:items-end md:justify-between gap-8 text-left">
+          <Reveal className="mb-24 flex flex-col md:flex-row md:items-end md:justify-between gap-8 text-left">
             <div className="space-y-4">
               <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent">PROOF OF EXCELLENCE</span>
               <div className="h-[1px] w-12 bg-accent opacity-60" />
@@ -748,7 +748,7 @@ export default function App() {
             <p className="text-stone-400 text-xs md:text-sm max-w-sm font-sans leading-relaxed">
               We construct digital landmarks for ambitious businesses. Explore each project to see how strategy, design, and performance come together.
             </p>
-          </div>
+          </Reveal>
 
           {/* Continuous Portfolio Marquee — JS-driven so it can be paused
               and dragged mid-motion, then resumes drifting on release. */}
@@ -860,7 +860,7 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
             {/* Left Column: Sophisticated, Poetic Editorial Content */}
-            <div className="lg:col-span-5 text-left space-y-6">
+            <Reveal className="lg:col-span-5 text-left space-y-6">
               <span className="text-[9px] uppercase font-medium tracking-[0.2em] text-stone-500 block">
                 Rovoché Values
               </span>
@@ -888,10 +888,10 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* Right Column: Sophisticated Twin Art Gallery Viewports using existing ROV-1 and ROV-24 footage */}
-            <div className="lg:col-span-7 grid grid-cols-12 gap-4 relative">
+            <Reveal delay={150} className="lg:col-span-7 grid grid-cols-12 gap-4 relative">
               
               {/* Floating Museum Frame A: ROV-1.mp4 (Bottom watermarks cropped out elegantly) */}
               <div className="col-span-7 bg-stone-950 aspect-[4/5] rounded-sm shadow-xl border border-stone-300/40 overflow-hidden relative group">
@@ -936,7 +936,7 @@ export default function App() {
                 </div>
               </div>
 
-            </div>
+            </Reveal>
 
           </div>
         </div>
@@ -948,7 +948,7 @@ export default function App() {
         
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           
-          <div className="mb-20 text-center md:text-left space-y-4">
+          <Reveal className="mb-20 text-center md:text-left space-y-4">
             <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent">METHODOLOGY</span>
             <h2 className="font-serif font-light text-4xl md:text-5xl text-stone-50 leading-tight">
               A Process Built in Stages
@@ -962,7 +962,7 @@ export default function App() {
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               <span>Tap a stage to explore the methodology.</span>
             </div>
-          </div>
+          </Reveal>
 
           {/* Interactive Staggered Stage Selector Compass Layout */}
           {/* Desktop/Tablet Split View */}
@@ -1004,7 +1004,7 @@ export default function App() {
             {activeProcessIndex !== null ? (
               <div 
                 key={activeProcessIndex}
-                className="lg:col-span-7 bg-stone-950 p-8 md:p-12 rounded-sm border border-white/5 shadow-2xl min-h-[440px] flex flex-col justify-between transition-all duration-300 relative overflow-hidden text-left animate-fade-in"
+                className="lg:col-span-7 bg-[#262019] p-8 md:p-12 rounded-sm border border-white/5 shadow-2xl min-h-[440px] flex flex-col justify-between transition-all duration-300 relative overflow-hidden text-left animate-fade-in"
               >
                 <div className="relative z-10 space-y-6">
                   <div className="flex items-center space-x-3">
@@ -1162,11 +1162,11 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             
             {/* Sticky Sidebar Left Column */}
-            <div className="lg:col-span-4 lg:sticky lg:top-28 h-fit space-y-6 text-left">
+            <Reveal className="lg:col-span-4 lg:sticky lg:top-28 h-fit space-y-6 text-left">
               <span className="text-[10px] uppercase font-semibold tracking-[0.28em] text-accent">SERVICES</span>
               <div className="h-[1px] w-12 bg-accent opacity-60" />
               <h2 className="font-serif font-light text-3xl md:text-5xl text-text leading-tight">
-                Architectural Web Building
+                What We Build
               </h2>
               <p className="text-muted text-sm md:text-base leading-relaxed">
                 We craft each custom digital touchpoint with precise intention, structural density, and modular speed.
@@ -1177,15 +1177,15 @@ export default function App() {
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                 <span>Select a service to view details.</span>
               </div>
-            </div>
+            </Reveal>
 
             {/* Interactive Expandable Cards Right Column */}
             <div className="lg:col-span-8 flex flex-col space-y-5">
-              {SERVICES_DATA.map((service) => {
+              {SERVICES_DATA.map((service, idx) => {
                 const isExpanded = expandedServiceId === service.id;
                 return (
+                  <Reveal key={service.id} delay={idx * 90}>
                   <div
-                    key={service.id}
                     onClick={() => setExpandedServiceId(isExpanded ? null : service.id)}
                     className={`p-6 md:p-8 bg-[#FAF5EC] border rounded-sm transition-all duration-500 cursor-pointer text-left ${
                       isExpanded 
@@ -1258,6 +1258,7 @@ export default function App() {
                       </div>
                     </div>
                   </div>
+                  </Reveal>
                 );
               })}
             </div>
@@ -1267,23 +1268,11 @@ export default function App() {
       </section>
 
       {/* 8. TESTIMONIALS & FAQ EMBED - COLOR RHYTHM: LIGHT */}
-      <section id="testimonials" className="py-24 bg-panel border-b border-stone-300/40 relative">
+      <section id="faq" className="py-24 bg-panel border-b border-stone-300/40 relative">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
-          <div className="text-center md:text-left mb-16 space-y-4">
-            <div className="h-[1px] w-12 bg-accent opacity-60 md:mx-0 mx-auto" />
-            <h2 className="font-serif font-light text-4xl md:text-5xl text-text leading-tight">
-              Said Plainly By Trusted Clients
-            </h2>
-          </div>
-
-          {/* Premium auto-scrolling slow-motion testimonial slider/marquee */}
-          <div className="mt-8">
-            <TestimonialSlider />
-          </div>
 
           {/* Elegant FAQ Layout */}
-          <div className="mt-28 max-w-4xl mx-auto space-y-12">
+          <Reveal className="max-w-4xl mx-auto space-y-12">
             <div className="text-center space-y-3">
               <h3 className="font-serif font-light text-2xl md:text-3xl text-text">Frequently Asked Questions</h3>
             </div>
@@ -1333,7 +1322,7 @@ export default function App() {
               ))}
 
             </div>
-          </div>
+          </Reveal>
 
         </div>
       </section>
@@ -1359,7 +1348,7 @@ export default function App() {
         </div>
 
         {/* Dynamic conversion CTA Card - free flowing container */}
-        <div className="relative z-10 max-w-lg mx-auto px-6 text-center">
+        <Reveal className="relative z-10 max-w-lg mx-auto px-6 text-center">
           <div className="px-6 py-12 md:p-14">
             <span className="text-[10px] uppercase font-bold tracking-[0.28em] text-accent block mb-4 select-none">
               BUILT ON ROCK
@@ -1380,7 +1369,7 @@ export default function App() {
               </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* 10. FOOTER - COLOR RHYTHM: DARK (ABSOLUTE MINIMAL INTENTION, VIDEOS AND WATERMARKS REMOVED) */}
