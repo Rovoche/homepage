@@ -459,7 +459,7 @@ export default function App() {
             loop
             className="absolute top-0 left-0 w-full h-full object-cover object-[75%_center] md:object-center origin-top scale-[1.28]"
           >
-            <source src="rov-2.mp4" type="video/mp4" />
+            <source src="Rov-Hero.mp4" type="video/mp4" />
           </video>
           {/* Subtle localized dark linear gradients to eliminate white haze and blend into neighboring content */}
           <div className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-stone-950/80 to-transparent pointer-events-none" />
@@ -620,7 +620,7 @@ export default function App() {
             playsInline
             className="absolute top-0 left-0 w-full h-full object-cover object-[75%_center] md:object-center origin-top scale-[1.28]"
           >
-            <source src="rov-2.mp4" type="video/mp4" />
+            <source src="Rov-Hero.mp4" type="video/mp4" />
           </video>
           {/* Subtle localized dark linear gradients to eliminate white haze and blend into neighboring content */}
           <div className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-stone-950 to-transparent pointer-events-none" />
