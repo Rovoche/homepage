@@ -774,7 +774,7 @@ export default function App() {
             </div>
 
             <div
-              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing [touch-action:pan-y]"
+              className="overflow-hidden relative w-full cursor-grab active:cursor-grabbing [touch-action:pan-y] bg-stone-950"
               onMouseEnter={() => setIsWorkPaused(true)}
               onMouseLeave={() => setIsWorkPaused(false)}
               onPointerDown={onWorkPointerDown}
@@ -782,7 +782,7 @@ export default function App() {
               onPointerUp={onWorkPointerUp}
               onPointerCancel={onWorkPointerUp}
             >
-              <div ref={workTrackRef} className="flex gap-6 md:gap-8 w-max will-change-transform">
+              <div ref={workTrackRef} className="flex gap-6 md:gap-8 w-max will-change-transform bg-stone-950">
                 {[...WORK_ORDER, ...WORK_ORDER].map((key, idx) => {
                   const cs = CASE_STUDIES[key];
                   const isTouched = touchedWorkKey === `${key}-${idx}`;
