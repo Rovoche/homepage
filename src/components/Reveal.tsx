@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 interface RevealProps {
   children: React.ReactNode;
@@ -8,14 +8,16 @@ interface RevealProps {
 }
 
 /**
- * Reveals content as though it's rising into place from its own base —
- * a clip-path wipe from the bottom, not a generic opacity fade. Ties to
- * the "built on rock / foundation" identity instead of a stock fade-up.
- * Fires once per element, respects prefers-reduced-motion.
+ * Fades and slides content into place the first time it scrolls into
+ * view. Driven by a real CSS @keyframes animation (see .reveal-el /
+ * .is-visible in index.css) rather than inline styles, and uses a plain
+ * threshold with no restrictive rootMargin - both changes made after a
+ * clip-path + negative-rootMargin version got stuck permanently invisible
+ * on some mobile viewports. Fires once per element, respects
+ * prefers-reduced-motion.
  */
 export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -23,7 +25,7 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      setVisible(true);
+      el.style.opacity = "1";
       return;
     }
 
@@ -31,28 +33,32 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setVisible(true);
+            const target = entry.target as HTMLElement;
+            target.style.animationDelay = `${delay}ms`;
+            target.classList.add("is-visible");
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0.12 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+
+    // Safety net: if the observer never fires for any reason (edge-case
+    // browser quirk, element never intersects), force it visible after
+    // a few seconds so content can never get permanently stuck hidden.
+    const safety = setTimeout(() => {
+      el.classList.add("is-visible");
+    }, 4000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(safety);
+    };
+  }, [delay]);
 
   return (
-    <div
-      ref={ref}
-      className={`transition-all ease-[cubic-bezier(0.19,1,0.22,1)] duration-[1100ms] ${className}`}
-      style={{
-        transitionDelay: `${delay}ms`,
-        clipPath: visible ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
-        transform: visible ? "translateY(0px)" : "translateY(18px)",
-        opacity: visible ? 1 : 0,
-      }}
-    >
+    <div ref={ref} className={`reveal-el ${className}`}>
       {children}
     </div>
   );
