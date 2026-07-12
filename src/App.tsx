@@ -873,20 +873,20 @@ export default function App() {
               </p>
               
               <div className="space-y-4 pt-4 border-t border-stone-300/40 font-sans">
-                <div className="flex items-start space-x-3 text-left">
+                <Reveal delay={150} className="flex items-start space-x-3 text-left">
                   <CheckCircle2 size={16} className="text-accent mt-1 shrink-0" />
                   <div>
                     <h4 className="font-serif text-base text-text">Absolute Credibility</h4>
                     <p className="text-[#6D6559] text-xs leading-relaxed mt-0.5 font-light">We replace standard templates with custom-crafted visual layouts that immediately prove your team's stature and competence to prospects.</p>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3 text-left">
+                </Reveal>
+                <Reveal delay={280} className="flex items-start space-x-3 text-left">
                   <CheckCircle2 size={16} className="text-accent mt-1 shrink-0" />
                   <div>
                     <h4 className="font-serif text-base text-text">Unwavering Trust</h4>
                     <p className="text-[#6D6559] text-xs leading-relaxed mt-0.5 font-light">Our clean typography, rapid loading speed, and structural security foster client confidence, ensuring a seamless path to booking or buying.</p>
                   </div>
-                </div>
+                </Reveal>
               </div>
             </Reveal>
 
@@ -971,8 +971,8 @@ export default function App() {
             {/* Visual Navigation Steps - Steerable Hub Column */}
             <div className="lg:col-span-5 flex flex-col space-y-4">
               {PROCESS_STAGES.map((stage, idx) => (
+                <Reveal key={stage.number} delay={idx * 100}>
                 <button
-                  key={stage.number}
                   onClick={() => setActiveProcessIndex(activeProcessIndex === idx ? null : idx)}
                   className={`w-full text-left p-6 transition-all duration-500 rounded-sm border flex items-center space-x-6 relative group ${
                     activeProcessIndex === idx
@@ -997,6 +997,7 @@ export default function App() {
                     }`} />
                   </span>
                 </button>
+                </Reveal>
               ))}
             </div>
 
@@ -1004,7 +1005,7 @@ export default function App() {
             {activeProcessIndex !== null ? (
               <div 
                 key={activeProcessIndex}
-                className="lg:col-span-7 bg-[#262019] p-8 md:p-12 rounded-sm border border-white/5 shadow-2xl min-h-[440px] flex flex-col justify-between transition-all duration-300 relative overflow-hidden text-left animate-fade-in"
+                className="lg:col-span-7 bg-stone-950 p-8 md:p-12 rounded-sm border border-white/5 shadow-2xl min-h-[440px] flex flex-col justify-between transition-all duration-300 relative overflow-hidden text-left animate-fade-in"
               >
                 <div className="relative z-10 space-y-6">
                   <div className="flex items-center space-x-3">
@@ -1297,7 +1298,7 @@ export default function App() {
                   a: "We stay close following launch to walk you through backend tasks, verify accessibility compliance, configure metrics, and plan modular platform iterations."
                 }
               ].map((faq, fIdx) => (
-                <div key={faq.q} className="py-5">
+                <Reveal key={faq.q} delay={fIdx * 80} className="py-5">
                   <button
                     onClick={() => toggleFaq(fIdx)}
                     className="w-full flex items-center justify-between text-left group"
@@ -1318,7 +1319,7 @@ export default function App() {
                       {faq.a}
                     </p>
                   </div>
-                </div>
+                </Reveal>
               ))}
 
             </div>
