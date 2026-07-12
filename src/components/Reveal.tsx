@@ -3,18 +3,17 @@ import React, { useEffect, useRef, useState } from "react";
 interface RevealProps {
   children: React.ReactNode;
   className?: string;
-  /** Stagger delay in ms - use idx * 80 or similar for cascading lists */
+  /** Stagger delay in ms - use idx * 90 or similar for cascading lists */
   delay?: number;
-  /** How far (px) the content slides up from as it reveals */
-  y?: number;
 }
 
 /**
- * Fades and slides content up into place the first time it scrolls into
- * view. Fires once per element (doesn't re-trigger on scroll back up),
- * and respects prefers-reduced-motion by skipping the animation entirely.
+ * Reveals content as though it's rising into place from its own base —
+ * a clip-path wipe from the bottom, not a generic opacity fade. Ties to
+ * the "built on rock / foundation" identity instead of a stock fade-up.
+ * Fires once per element, respects prefers-reduced-motion.
  */
-export function Reveal({ children, className = "", delay = 0, y = 28 }: RevealProps) {
+export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -37,7 +36,7 @@ export function Reveal({ children, className = "", delay = 0, y = 28 }: RevealPr
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -46,12 +45,12 @@ export function Reveal({ children, className = "", delay = 0, y = 28 }: RevealPr
   return (
     <div
       ref={ref}
-      className={`transition-all ease-[cubic-bezier(0.16,1,0.3,1)] duration-[900ms] ${
-        visible ? "opacity-100" : "opacity-0"
-      } ${className}`}
+      className={`transition-all ease-[cubic-bezier(0.19,1,0.22,1)] duration-[1100ms] ${className}`}
       style={{
         transitionDelay: `${delay}ms`,
-        transform: visible ? "translateY(0px)" : `translateY(${y}px)`,
+        clipPath: visible ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
+        transform: visible ? "translateY(0px)" : "translateY(18px)",
+        opacity: visible ? 1 : 0,
       }}
     >
       {children}
