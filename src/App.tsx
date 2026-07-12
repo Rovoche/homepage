@@ -626,7 +626,7 @@ export default function App() {
           <div className="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-stone-950 to-transparent pointer-events-none" />
           <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-stone-950 to-transparent pointer-events-none" />
           {/* Protective premium darkening gradient overlay to ensure stellar wordmark contrast on mobile */}
-          <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-stone-950/65 to-stone-950/75 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-950/28 via-stone-950/50 to-stone-950/62 pointer-events-none" />
         </div>
 
         {/* HERO CONTENT - Left-aligned on desktop so the headline doesn't sit
@@ -640,8 +640,8 @@ export default function App() {
               <span className="block mt-1">Crafted to last.</span>
             </h1>
 
-            <p className="text-stone-200 text-base sm:text-lg md:text-xl leading-relaxed font-sans font-light tracking-wide max-w-xl mx-auto md:mx-0 mt-7 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
-              Built on strategy. Designed for trust.<br className="lg:hidden" />Engineered for growth.
+            <p className="text-stone-200 text-base sm:text-lg md:text-xl leading-relaxed font-sans font-light tracking-wide max-w-xl mx-auto md:mx-0 mt-11 [text-shadow:_0_1px_6px_rgb(0_0_0_/_55%)]">
+              Built on strategy. Designed for trust.<br className="lg:hidden" />{" "}Engineered for growth.
             </p>
 
             <div className="flex flex-row items-center justify-center md:justify-start gap-3 mt-9">
@@ -655,7 +655,7 @@ export default function App() {
               <a
                 href="#cta"
                 onClick={(e) => smoothScroll(e, "cta")}
-                className="text-[10px] font-sans uppercase tracking-[0.2em] py-3.5 px-6 border border-white/30 text-white hover:bg-white/10 transition-all rounded-sm backdrop-blur-[2px]"
+                className="text-[10px] font-sans uppercase tracking-[0.2em] py-3.5 px-6 border border-white/60 bg-white/5 text-white hover:bg-white/15 hover:border-white transition-all rounded-sm backdrop-blur-[2px]"
               >
                 Start Project
               </a>
