@@ -32,6 +32,23 @@ body {
 }
 
 /* Infinite Scrolling Marquee Logic */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-el {
+  opacity: 0;
+}
+.reveal-el.is-visible {
+  animation: revealUp 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
