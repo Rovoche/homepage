@@ -457,7 +457,7 @@ export default function App() {
             muted
             playsInline
             loop
-            className="absolute top-0 left-0 w-full h-full object-cover origin-top scale-[1.28]"
+            className="absolute top-0 left-0 w-full h-full object-cover object-[75%_center] md:object-center origin-top scale-[1.28]"
           >
             <source src="rov-2.mp4" type="video/mp4" />
           </video>
@@ -618,7 +618,7 @@ export default function App() {
             muted
             loop
             playsInline
-            className="absolute top-0 left-0 w-full h-full object-cover origin-top scale-[1.28]"
+            className="absolute top-0 left-0 w-full h-full object-cover object-[75%_center] md:object-center origin-top scale-[1.28]"
           >
             <source src="rov-2.mp4" type="video/mp4" />
           </video>
