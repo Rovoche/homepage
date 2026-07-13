@@ -35,7 +35,7 @@ body {
 @keyframes revealUp {
   from {
     opacity: 0;
-    transform: translateY(38px);
+    transform: translateY(52px);
   }
   to {
     opacity: 1;
@@ -47,7 +47,7 @@ body {
   will-change: opacity, transform;
 }
 .reveal-el.is-visible {
-  animation: revealUp 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: revealUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes marquee {
