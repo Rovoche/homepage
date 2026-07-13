@@ -798,7 +798,7 @@ export default function App() {
                       onTouchEnd={() => setTouchedWorkKey(null)}
                       className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] select-none"
                     >
-                      <Reveal delay={(idx % WORK_ORDER.length) * 100} className={`corner-frame ${isTouched ? "is-active" : ""}`}>
+                      <div className={`corner-frame ${isTouched ? "is-active" : ""}`}>
                         <span className="corner-bracket tl" />
                         <span className="corner-bracket tr" />
                         <span className="corner-bracket bl" />
@@ -831,7 +831,7 @@ export default function App() {
                             </div>
                           </div>
                         </div>
-                      </Reveal>
+                      </div>
                     </div>
                   );
                 })}
