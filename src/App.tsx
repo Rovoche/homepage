@@ -298,7 +298,7 @@ export default function App() {
   const [activeCaseKey, setActiveCaseKey] = useState<string | null>(null);
 
   // Advanced Process state journey tracker
-  const [activeProcessIndex, setActiveProcessIndex] = useState<number | null>(0);
+  const [activeProcessIndex, setActiveProcessIndex] = useState<number | null>(null);
 
   // FAQ State
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
@@ -315,6 +315,25 @@ export default function App() {
   const workDragMovedRef = useRef(false);
   const workDragStartXRef = useRef(0);
   const workDragStartPosRef = useRef(0);
+  const workSectionVisibleRef = useRef(false);
+
+  // Only run the ambient drift while the carousel is actually near the
+  // viewport - it used to run continuously for the entire time the page
+  // was open, which competed for frame budget right when the browser
+  // needed to paint this section into view, causing a dropped-frame
+  // flash of the page background at the section boundary.
+  useEffect(() => {
+    const section = document.getElementById("work");
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        workSectionVisibleRef.current = entry.isIntersecting;
+      },
+      { rootMargin: "200px 0px" }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     workPausedRef.current = isWorkPaused || !!activeCaseKey;
@@ -330,15 +349,15 @@ export default function App() {
     const step = (time: number) => {
       const dt = time - lastTime;
       lastTime = time;
-      if (!workPausedRef.current && !workDraggingRef.current) {
+      if (workSectionVisibleRef.current && !workPausedRef.current && !workDraggingRef.current) {
         workPosRef.current -= SPEED * dt;
+        const halfWidth = track.scrollWidth / 2;
+        if (halfWidth > 0) {
+          if (workPosRef.current <= -halfWidth) workPosRef.current += halfWidth;
+          if (workPosRef.current > 0) workPosRef.current -= halfWidth;
+        }
+        track.style.transform = `translateX(${workPosRef.current}px)`;
       }
-      const halfWidth = track.scrollWidth / 2;
-      if (halfWidth > 0) {
-        if (workPosRef.current <= -halfWidth) workPosRef.current += halfWidth;
-        if (workPosRef.current > 0) workPosRef.current -= halfWidth;
-      }
-      track.style.transform = `translateX(${workPosRef.current}px)`;
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
