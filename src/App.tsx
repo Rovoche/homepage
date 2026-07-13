@@ -633,7 +633,7 @@ export default function App() {
             directly over the subject's face; stays centered on mobile where
             there's no room to offset it meaningfully. */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center md:text-left mt-12 md:mt-16">
-          <div className="p-0 bg-transparent md:max-w-2xl">
+          <Reveal className="p-0 bg-transparent md:max-w-2xl">
             
             <h1 className="font-serif font-light text-4xl sm:text-5.5xl md:text-[3.4rem] lg:text-[4rem] xl:text-[4.6rem] text-[#FAF5EC] leading-[1.08] tracking-tight [text-shadow:_0_2px_12px_rgb(0_0_0_/_65%)]">
               Websites <span className="font-semibold tracking-tight">built on rock.</span>
@@ -660,7 +660,7 @@ export default function App() {
                 Start Project
               </a>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -798,7 +798,7 @@ export default function App() {
                       onTouchEnd={() => setTouchedWorkKey(null)}
                       className="group shrink-0 w-[78vw] sm:w-[58vw] md:w-[32vw] lg:w-[25vw] select-none"
                     >
-                      <div className={`corner-frame ${isTouched ? "is-active" : ""}`}>
+                      <Reveal delay={(idx % WORK_ORDER.length) * 100} className={`corner-frame ${isTouched ? "is-active" : ""}`}>
                         <span className="corner-bracket tl" />
                         <span className="corner-bracket tr" />
                         <span className="corner-bracket bl" />
@@ -831,7 +831,7 @@ export default function App() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Reveal>
                     </div>
                   );
                 })}
